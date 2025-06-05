@@ -8,6 +8,7 @@ export interface JobApplication {
   salary: string;
   workMode: 'remoto' | 'ibrido' | 'in-presenza' | 'ND';
   status: JobStatus;
+  tags: string[];
   createdAt: string;
 }
 
