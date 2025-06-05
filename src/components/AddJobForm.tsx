@@ -192,7 +192,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
                 ref={textareaRef}
                 id="jobDescription"
                 value={jobDescription}
-                onChangeValue={(e) => setJobDescription(e.target.value)}
+                onChange={(e) => setJobDescription(e.target.value)}
                 placeholder="Incolla qui la job description completa..."
                 className="mt-2 min-h-[150px] sm:min-h-[200px] bg-background border-border text-foreground resize-none"
                 required
