@@ -192,11 +192,6 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
               </span>
             </div>
           </div>
-          {!isMobile && (
-            <Button variant="ghost" size="sm" onClick={handleClose} className="text-foreground hover:bg-accent">
-              <X className="w-4 h-4" />
-            </Button>
-          )}
         </div>
       </div>
 
