@@ -16,7 +16,7 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({ onLogin, onSignup 
           <div className="p-2 bg-blue-600 dark:bg-blue-500 rounded-xl">
             <Briefcase className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Flow Guru</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">TrackZilla</h1>
         </div>
         <div className="flex items-center gap-3">
           <Button 

@@ -15,7 +15,6 @@ export const AuthPage = () => {
   const [activeTab, setActiveTab] = useState('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [magicLinkEmail, setMagicLinkEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [magicLinkLoading, setMagicLinkLoading] = useState(false);
   const { signIn, signUp, signInWithMagicLink } = useAuth();
@@ -54,10 +53,10 @@ export const AuthPage = () => {
   };
 
   const handleMagicLink = async () => {
-    if (!magicLinkEmail) {
+    if (!email) {
       toast({
         title: "Errore",
-        description: "Inserisci la tua email",
+        description: "Inserisci la tua email nel campo sopra",
         variant: "destructive",
       });
       return;
@@ -65,12 +64,11 @@ export const AuthPage = () => {
 
     setMagicLinkLoading(true);
     try {
-      await signInWithMagicLink(magicLinkEmail);
+      await signInWithMagicLink(email);
       toast({
         title: "Magic Link inviato",
         description: "Controlla la tua email per il link di accesso",
       });
-      setMagicLinkEmail('');
     } catch (error: any) {
       toast({
         title: "Errore",
@@ -121,7 +119,7 @@ export const AuthPage = () => {
                 <Briefcase className="w-8 h-8 text-white" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Flow Guru</CardTitle>
+            <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">TrackZilla</CardTitle>
             <CardDescription className="text-gray-600 dark:text-gray-300">
               Accedi al tuo account per iniziare a tracciare le tue candidature
             </CardDescription>
@@ -179,19 +177,6 @@ export const AuthPage = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="magic-link-email" className="text-gray-700 dark:text-gray-200">
-                    Accedi con Magic Link
-                  </Label>
-                  <Input
-                    id="magic-link-email"
-                    type="email"
-                    placeholder="inserisci la tua email"
-                    value={magicLinkEmail}
-                    onChange={(e) => setMagicLinkEmail(e.target.value)}
-                    className="dark:bg-blue-800/30 dark:border-blue-700 dark:text-white"
-                  />
-                </div>
                 <Button 
                   variant="outline"
                   className="w-full border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/30" 
@@ -199,7 +184,7 @@ export const AuthPage = () => {
                   disabled={magicLinkLoading}
                 >
                   <Wand2 className="w-4 h-4 mr-2" />
-                  {magicLinkLoading ? 'Invio in corso...' : 'Invia Magic Link'}
+                  {magicLinkLoading ? 'Invio Magic Link...' : 'Accedi con Magic Link'}
                 </Button>
               </TabsContent>
               

@@ -74,7 +74,7 @@ export const JobTracker = () => {
                 <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Flow Guru</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">TrackZilla</h1>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-200">Benvenuto, {user?.email}</p>
               </div>
             </div>
