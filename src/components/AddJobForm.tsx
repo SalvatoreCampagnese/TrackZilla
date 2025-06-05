@@ -184,6 +184,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
 
       {/* Form content */}
       <div className="flex-1 overflow-y-auto">
+        {jobDescription}
         {step === 'extract' && (
           <div className="space-y-4 sm:space-y-6">
             <div>
