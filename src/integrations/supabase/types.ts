@@ -14,6 +14,7 @@ export type Database = {
           application_date: string
           company_name: string
           created_at: string
+          deleted: boolean
           id: string
           job_description: string
           role_description: string
@@ -28,6 +29,7 @@ export type Database = {
           application_date: string
           company_name: string
           created_at?: string
+          deleted?: boolean
           id?: string
           job_description: string
           role_description: string
@@ -42,6 +44,7 @@ export type Database = {
           application_date?: string
           company_name?: string
           created_at?: string
+          deleted?: boolean
           id?: string
           job_description?: string
           role_description?: string

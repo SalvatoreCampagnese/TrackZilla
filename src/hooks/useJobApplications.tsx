@@ -21,6 +21,7 @@ export const useJobApplications = () => {
       const { data, error } = await supabase
         .from('job_applications')
         .select('*')
+        .eq('deleted', false)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -66,7 +67,8 @@ export const useJobApplications = () => {
           salary: application.salary,
           work_mode: application.workMode,
           status: application.status,
-          tags: application.tags
+          tags: application.tags,
+          deleted: false
         })
         .select()
         .single();
@@ -107,7 +109,8 @@ export const useJobApplications = () => {
       const { error } = await supabase
         .from('job_applications')
         .update({ status })
-        .eq('id', id);
+        .eq('id', id)
+        .eq('deleted', false);
 
       if (error) throw error;
 
@@ -135,7 +138,7 @@ export const useJobApplications = () => {
     try {
       const { error } = await supabase
         .from('job_applications')
-        .delete()
+        .update({ deleted: true })
         .eq('id', id);
 
       if (error) throw error;

@@ -17,11 +17,12 @@ export const useGhostingUpdater = () => {
       
       console.log(`Checking for applications older than ${ghostingDays} days (before ${cutoffDate.toISOString()})`);
       
-      // Find applications that should be marked as ghosting
+      // Find applications that should be marked as ghosting (only non-deleted ones)
       const { data: applications, error: fetchError } = await supabase
         .from('job_applications')
         .select('id, application_date, status, company_name')
         .eq('status', 'in-corso')
+        .eq('deleted', false)
         .lt('application_date', cutoffDate.toISOString().split('T')[0]);
 
       if (fetchError) {
@@ -41,7 +42,8 @@ export const useGhostingUpdater = () => {
         const { error } = await supabase
           .from('job_applications')
           .update({ status: 'ghosting' })
-          .eq('id', app.id);
+          .eq('id', app.id)
+          .eq('deleted', false);
 
         if (error) {
           console.error(`Error updating application ${app.id}:`, error);
