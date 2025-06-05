@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
@@ -172,16 +171,11 @@ export const JobTracker = () => {
         </div>
 
         {/* Add Form Modal */}
-        {showAddForm && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white dark:bg-card rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border dark:border-border">
-              <AddJobForm
-                onAdd={handleAddApplication}
-                onCancel={() => setShowAddForm(false)}
-              />
-            </div>
-          </div>
-        )}
+        <AddJobForm
+          open={showAddForm}
+          onAdd={handleAddApplication}
+          onCancel={() => setShowAddForm(false)}
+        />
 
         {/* Settings Modal */}
         <SettingsModal 
