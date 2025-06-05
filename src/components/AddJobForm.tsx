@@ -428,6 +428,8 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
           side="bottom" 
           className="h-[90vh] flex flex-col p-4"
           onOpenAutoFocus={(e) => e.preventDefault()}
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onInteractOutside={(e) => e.preventDefault()}
         >
           <SheetHeader className="flex-shrink-0">
             <SheetTitle className="sr-only">Aggiungi Candidatura</SheetTitle>
@@ -443,6 +445,8 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
       <DialogContent 
         className="max-w-2xl w-full max-h-[90vh] flex flex-col p-6"
         onOpenAutoFocus={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="sr-only">Aggiungi Candidatura</DialogTitle>
