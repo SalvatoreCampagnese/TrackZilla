@@ -1,34 +1,39 @@
 
 import React, { useState } from 'react';
-import { JobApplication } from '@/types/job';
+import { useAuth } from '@/hooks/useAuth';
+import { useJobApplications } from '@/hooks/useJobApplications';
 import { AddJobForm } from './AddJobForm';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
-import { Briefcase, Plus, Target, TrendingUp, Clock, CheckCircle } from 'lucide-react';
+import { Briefcase, Plus, Target, TrendingUp, Clock, CheckCircle, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 
 export const JobTracker = () => {
-  const [applications, setApplications] = useState<JobApplication[]>([]);
+  const { user, signOut } = useAuth();
+  const { applications, loading, addApplication, updateApplicationStatus, deleteApplication } = useJobApplications();
   const [showAddForm, setShowAddForm] = useState(false);
 
-  const handleAddApplication = (application: JobApplication) => {
-    setApplications(prev => [application, ...prev]);
+  const handleAddApplication = async (applicationData: any) => {
+    await addApplication(applicationData);
     setShowAddForm(false);
   };
 
-  const handleUpdateStatus = (id: string, status: JobApplication['status']) => {
-    setApplications(prev => 
-      prev.map(app => 
-        app.id === id ? { ...app, status } : app
-      )
-    );
+  const handleSignOut = async () => {
+    await signOut();
   };
 
-  const handleDeleteApplication = (id: string) => {
-    setApplications(prev => prev.filter(app => app.id !== id));
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Caricamento candidature...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Calcoli per i counter rapidi
   const totalApplications = applications.length;
@@ -51,14 +56,25 @@ export const JobTracker = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-blue-600 rounded-xl">
-              <Briefcase className="w-8 h-8 text-white" />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-blue-600 rounded-xl">
+                <Briefcase className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Job Tracker</h1>
+                <p className="text-gray-600">Benvenuto, {user?.email}</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Job Tracker</h1>
-              <p className="text-gray-600">Traccia le tue candidature lavorative</p>
-            </div>
+            
+            <Button 
+              onClick={handleSignOut}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              Esci
+            </Button>
           </div>
           
           <div className="flex items-center justify-between mb-6">
@@ -152,8 +168,8 @@ export const JobTracker = () => {
           <TabsContent value="applications" className="mt-6">
             <JobList
               applications={applications}
-              onUpdateStatus={handleUpdateStatus}
-              onDelete={handleDeleteApplication}
+              onUpdateStatus={updateApplicationStatus}
+              onDelete={deleteApplication}
             />
           </TabsContent>
           
