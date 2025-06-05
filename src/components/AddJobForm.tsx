@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { JobApplication, JobStatus } from '@/types/job';
 import { parseJobDescription } from '@/utils/jobParser';
@@ -19,11 +18,16 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
   const [applicationDate, setApplicationDate] = useState(
     new Date().toISOString().split('T')[0]
   );
-  const [parsedData, setParsedData] = useState({
+  const [parsedData, setParsedData] = useState<{
+    companyName: string;
+    roleDescription: string;
+    salary: string;
+    workMode: 'remoto' | 'ibrido' | 'in-presenza' | 'ND';
+  }>({
     companyName: '',
     roleDescription: '',
     salary: '',
-    workMode: 'ND' as const
+    workMode: 'ND'
   });
   const [status, setStatus] = useState<JobStatus>('in-corso');
   const [isParsed, setIsParsed] = useState(false);
@@ -157,7 +161,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
                   value={parsedData.workMode}
                   onChange={(e) => setParsedData(prev => ({ 
                     ...prev, 
-                    workMode: e.target.value as any 
+                    workMode: e.target.value as 'remoto' | 'ibrido' | 'in-presenza' | 'ND'
                   }))}
                   className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
