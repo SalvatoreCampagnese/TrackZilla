@@ -18,11 +18,11 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const handleSave = () => {
-    // Salva le impostazioni nel localStorage o in un contesto
+    // Salva le impostazioni nel localStorage
     localStorage.setItem('ghostingDays', ghostingDays.toString());
     localStorage.setItem('darkMode', isDarkMode.toString());
     
-    // Applica il dark mode
+    // Applica il dark mode con transizione fluida
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -30,6 +30,16 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
     }
     
     onOpenChange(false);
+  };
+
+  const handleDarkModeToggle = (checked: boolean) => {
+    setIsDarkMode(checked);
+    // Applica immediatamente per preview
+    if (checked) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   // Carica le impostazioni salvate
@@ -95,9 +105,9 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {isDarkMode ? (
-                    <Moon className="w-4 h-4" />
+                    <Moon className="w-4 h-4 text-blue-400" />
                   ) : (
-                    <Sun className="w-4 h-4" />
+                    <Sun className="w-4 h-4 text-yellow-500" />
                   )}
                   <Label htmlFor="dark-mode">
                     Modalità scura
@@ -106,9 +116,12 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                 <Switch
                   id="dark-mode"
                   checked={isDarkMode}
-                  onCheckedChange={setIsDarkMode}
+                  onCheckedChange={handleDarkModeToggle}
                 />
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                {isDarkMode ? 'Tema scuro attivo - perfetto contrasto' : 'Tema chiaro attivo'}
+              </p>
             </CardContent>
           </Card>
         </div>
