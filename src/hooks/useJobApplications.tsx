@@ -80,8 +80,8 @@ export const useJobApplications = () => {
         companyName: data.company_name,
         roleDescription: data.role_description,
         salary: data.salary,
-        workMode: data.work_mode,
-        status: data.status,
+        workMode: data.work_mode as JobApplication['workMode'],
+        status: data.status as JobStatus,
         tags: data.tags || [],
         createdAt: data.created_at
       };

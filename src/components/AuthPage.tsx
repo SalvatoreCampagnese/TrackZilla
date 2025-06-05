@@ -5,13 +5,25 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mail, Lock, Sparkles } from 'lucide-react';
+import { Mail, Lock, User, Briefcase, Sparkles } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 export const AuthPage = () => {
   const { signIn, signUp, signInWithMagicLink } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  
+  // Login form state
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  
+  // Registration form state
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [role, setRole] = useState('');
+  
+  // Magic link state
+  const [magicEmail, setMagicEmail] = useState('');
+  
   const [loading, setLoading] = useState(false);
   const [magicLinkSent, setMagicLinkSent] = useState(false);
 
@@ -19,7 +31,7 @@ export const AuthPage = () => {
     e.preventDefault();
     setLoading(true);
     
-    const { error } = await signIn(email, password);
+    const { error } = await signIn(loginEmail, loginPassword);
     
     if (error) {
       toast({
@@ -41,7 +53,12 @@ export const AuthPage = () => {
     e.preventDefault();
     setLoading(true);
     
-    const { error } = await signUp(email, password);
+    const metadata = {
+      full_name: fullName,
+      role: role
+    };
+    
+    const { error } = await signUp(registerEmail, registerPassword, metadata);
     
     if (error) {
       toast({
@@ -63,7 +80,7 @@ export const AuthPage = () => {
     e.preventDefault();
     setLoading(true);
     
-    const { error } = await signInWithMagicLink(email);
+    const { error } = await signInWithMagicLink(magicEmail);
     
     if (error) {
       toast({
@@ -87,7 +104,7 @@ export const AuthPage = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-gray-900">
-            Accedi a Job Tracker
+            Job Tracker
           </CardTitle>
           <p className="text-gray-600">
             Traccia le tue candidature lavorative
@@ -95,14 +112,14 @@ export const AuthPage = () => {
         </CardHeader>
         
         <CardContent>
-          <Tabs defaultValue="signin" className="w-full">
+          <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="signin">Accedi</TabsTrigger>
-              <TabsTrigger value="signup">Registrati</TabsTrigger>
+              <TabsTrigger value="login">Accedi</TabsTrigger>
+              <TabsTrigger value="register">Registrati</TabsTrigger>
               <TabsTrigger value="magic">Magic Link</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="signin">
+            <TabsContent value="login">
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
                   <div className="relative">
@@ -110,8 +127,8 @@ export const AuthPage = () => {
                     <Input
                       type="email"
                       placeholder="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
                       className="pl-10"
                       required
                     />
@@ -121,8 +138,8 @@ export const AuthPage = () => {
                     <Input
                       type="password"
                       placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
                       className="pl-10"
                       required
                     />
@@ -134,16 +151,37 @@ export const AuthPage = () => {
               </form>
             </TabsContent>
             
-            <TabsContent value="signup">
+            <TabsContent value="register">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
+                  <div className="relative">
+                    <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      type="text"
+                      placeholder="Nome completo"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="pl-10"
+                      required
+                    />
+                  </div>
+                  <div className="relative">
+                    <Briefcase className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      type="text"
+                      placeholder="Ruolo/Posizione (opzionale)"
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
                   <div className="relative">
                     <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <Input
                       type="email"
                       placeholder="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={registerEmail}
+                      onChange={(e) => setRegisterEmail(e.target.value)}
                       className="pl-10"
                       required
                     />
@@ -153,8 +191,8 @@ export const AuthPage = () => {
                     <Input
                       type="password"
                       placeholder="Password (min 6 caratteri)"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={registerPassword}
+                      onChange={(e) => setRegisterPassword(e.target.value)}
                       className="pl-10"
                       required
                       minLength={6}
@@ -176,8 +214,8 @@ export const AuthPage = () => {
                       <Input
                         type="email"
                         placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={magicEmail}
+                        onChange={(e) => setMagicEmail(e.target.value)}
                         className="pl-10"
                         required
                       />
