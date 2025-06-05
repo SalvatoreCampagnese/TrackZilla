@@ -14,15 +14,13 @@ export const AuthPage = () => {
   // Login form state
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [useMagicLink, setUseMagicLink] = useState(false);
   
   // Registration form state
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [role, setRole] = useState('');
-  
-  // Magic link state
-  const [magicEmail, setMagicEmail] = useState('');
   
   const [loading, setLoading] = useState(false);
   const [magicLinkSent, setMagicLinkSent] = useState(false);
@@ -43,6 +41,29 @@ export const AuthPage = () => {
       toast({
         title: "Accesso effettuato",
         description: "Benvenuto in Job Tracker!"
+      });
+    }
+    
+    setLoading(false);
+  };
+
+  const handleMagicLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    const { error } = await signInWithMagicLink(loginEmail);
+    
+    if (error) {
+      toast({
+        title: "Errore invio magic link",
+        description: error.message,
+        variant: "destructive"
+      });
+    } else {
+      setMagicLinkSent(true);
+      toast({
+        title: "Magic link inviato",
+        description: "Controlla la tua email per accedere"
       });
     }
     
@@ -76,27 +97,9 @@ export const AuthPage = () => {
     setLoading(false);
   };
 
-  const handleMagicLink = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    const { error } = await signInWithMagicLink(magicEmail);
-    
-    if (error) {
-      toast({
-        title: "Errore invio magic link",
-        description: error.message,
-        variant: "destructive"
-      });
-    } else {
-      setMagicLinkSent(true);
-      toast({
-        title: "Magic link inviato",
-        description: "Controlla la tua email per accedere"
-      });
-    }
-    
-    setLoading(false);
+  const resetMagicLinkState = () => {
+    setMagicLinkSent(false);
+    setUseMagicLink(false);
   };
 
   return (
@@ -113,42 +116,96 @@ export const AuthPage = () => {
         
         <CardContent>
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Accedi</TabsTrigger>
               <TabsTrigger value="register">Registrati</TabsTrigger>
-              <TabsTrigger value="magic">Magic Link</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
-              <form onSubmit={handleSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      value={loginEmail}
-                      onChange={(e) => setLoginEmail(e.target.value)}
-                      className="pl-10"
-                      required
-                    />
+              {magicLinkSent ? (
+                <div className="text-center space-y-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                    <Mail className="w-8 h-8 text-green-600" />
                   </div>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      value={loginPassword}
-                      onChange={(e) => setLoginPassword(e.target.value)}
-                      className="pl-10"
-                      required
-                    />
+                  <h3 className="text-lg font-semibold">Magic link inviato!</h3>
+                  <p className="text-gray-600">
+                    Controlla la tua email e clicca sul link per accedere
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    onClick={resetMagicLinkState}
+                    className="w-full"
+                  >
+                    Torna al login
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {!useMagicLink ? (
+                    <form onSubmit={handleSignIn} className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                          <Input
+                            type="email"
+                            placeholder="Email"
+                            value={loginEmail}
+                            onChange={(e) => setLoginEmail(e.target.value)}
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                          <Input
+                            type="password"
+                            placeholder="Password"
+                            value={loginPassword}
+                            onChange={(e) => setLoginPassword(e.target.value)}
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? 'Accesso in corso...' : 'Accedi'}
+                      </Button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handleMagicLink} className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="relative">
+                          <Sparkles className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                          <Input
+                            type="email"
+                            placeholder="Email"
+                            value={loginEmail}
+                            onChange={(e) => setLoginEmail(e.target.value)}
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? 'Invio in corso...' : 'Invia Magic Link'}
+                      </Button>
+                      <p className="text-sm text-gray-600 text-center">
+                        Ti invieremo un link per accedere senza password
+                      </p>
+                    </form>
+                  )}
+                  
+                  <div className="text-center">
+                    <Button 
+                      variant="link" 
+                      onClick={() => setUseMagicLink(!useMagicLink)}
+                      className="text-sm"
+                    >
+                      {useMagicLink ? 'Accedi con password' : 'Accedi con magic link'}
+                    </Button>
                   </div>
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Accesso in corso...' : 'Accedi'}
-                </Button>
-              </form>
+              )}
             </TabsContent>
             
             <TabsContent value="register">
@@ -203,49 +260,6 @@ export const AuthPage = () => {
                   {loading ? 'Registrazione in corso...' : 'Registrati'}
                 </Button>
               </form>
-            </TabsContent>
-            
-            <TabsContent value="magic">
-              {!magicLinkSent ? (
-                <form onSubmit={handleMagicLink} className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="relative">
-                      <Sparkles className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        type="email"
-                        placeholder="Email"
-                        value={magicEmail}
-                        onChange={(e) => setMagicEmail(e.target.value)}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Invio in corso...' : 'Invia Magic Link'}
-                  </Button>
-                  <p className="text-sm text-gray-600 text-center">
-                    Ti invieremo un link per accedere senza password
-                  </p>
-                </form>
-              ) : (
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                    <Mail className="w-8 h-8 text-green-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold">Magic link inviato!</h3>
-                  <p className="text-gray-600">
-                    Controlla la tua email e clicca sul link per accedere
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setMagicLinkSent(false)}
-                    className="w-full"
-                  >
-                    Invia di nuovo
-                  </Button>
-                </div>
-              )}
             </TabsContent>
           </Tabs>
         </CardContent>
