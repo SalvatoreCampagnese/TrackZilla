@@ -52,27 +52,6 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
     }
   }, [open, step]);
 
-  // Effetto per mantenere il focus sulla textarea durante la digitazione
-  useEffect(() => {
-    if (open && step === 'extract' && textareaRef.current) {
-      const textarea = textareaRef.current;
-      
-      const handleFocus = () => {
-        // Mantieni il focus sulla textarea
-        if (document.activeElement !== textarea) {
-          textarea.focus();
-        }
-      };
-
-      // Aggiungi un listener per prevenire lo spostamento del focus
-      document.addEventListener('focusin', handleFocus);
-      
-      return () => {
-        document.removeEventListener('focusin', handleFocus);
-      };
-    }
-  }, [open, step, jobDescription]);
-
   const predefinedTags = [
     'Dream Job',
     'Startup',
@@ -168,16 +147,6 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
     onCancel();
   };
 
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setJobDescription(e.target.value);
-    // Mantieni il focus sulla textarea dopo ogni cambio
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-      }
-    }, 0);
-  };
-
   const FormContent = () => (
     <div className="flex flex-col h-full">
       {/* Header with step indicator */}
@@ -223,17 +192,10 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
                 ref={textareaRef}
                 id="jobDescription"
                 value={jobDescription}
-                onChange={handleTextareaChange}
+                onChange={(e) => setJobDescription(e.target.value)}
                 placeholder="Incolla qui la job description completa..."
                 className="mt-2 min-h-[150px] sm:min-h-[200px] bg-background border-border text-foreground resize-none"
                 required
-                onBlur={(e) => {
-                  // Previeni la perdita di focus se l'utente sta ancora interagendo con la textarea
-                  e.preventDefault();
-                  if (textareaRef.current) {
-                    textareaRef.current.focus();
-                  }
-                }}
               />
               <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Incolla l'intera job description per estrarre automaticamente i dati principali
