@@ -38,10 +38,10 @@ export const JobTracker = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-blue-950 dark:to-slate-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-background dark:to-background flex items-center justify-center p-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 sm:h-32 sm:w-32 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-white text-sm sm:text-base">Caricamento candidature...</p>
+          <p className="mt-4 text-gray-600 dark:text-foreground text-sm sm:text-base">Caricamento candidature...</p>
         </div>
       </div>
     );
@@ -64,7 +64,7 @@ export const JobTracker = () => {
     : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-blue-950 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-background dark:to-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
@@ -74,8 +74,8 @@ export const JobTracker = () => {
                 <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">TrackZilla</h1>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-200">Benvenuto, {user?.email}</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-foreground">TrackZilla</h1>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-muted-foreground">Benvenuto, {user?.email}</p>
               </div>
             </div>
             
@@ -84,7 +84,7 @@ export const JobTracker = () => {
                 onClick={() => setShowSettings(true)}
                 variant="outline"
                 size="icon"
-                className="border-gray-300 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 flex-shrink-0"
+                className="border-gray-300 dark:border-border dark:text-foreground dark:hover:bg-accent flex-shrink-0"
               >
                 <Settings className="w-4 h-4" />
               </Button>
@@ -93,7 +93,7 @@ export const JobTracker = () => {
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="flex items-center gap-2 border-gray-300 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 text-xs sm:text-sm"
+                className="flex items-center gap-2 border-gray-300 dark:border-border dark:text-foreground dark:hover:bg-accent text-xs sm:text-sm"
               >
                 <LogOut className="w-4 h-4" />
                 <span className="hidden xs:inline">Esci</span>
@@ -105,13 +105,13 @@ export const JobTracker = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
-                <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-200">
+                <span className="text-xs sm:text-sm text-gray-600 dark:text-muted-foreground">
                   {applications.length} candidature totali
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-200">
+                <span className="text-xs sm:text-sm text-gray-600 dark:text-muted-foreground">
                   {applications.filter(app => app.status === 'in-corso').length} in corso
                 </span>
               </div>
@@ -129,40 +129,40 @@ export const JobTracker = () => {
 
           {/* Counter rapidi */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <Card className="bg-white dark:bg-blue-900/50 border-gray-200 dark:border-blue-800">
+            <Card className="bg-white dark:bg-card border-gray-200 dark:border-border">
               <CardContent className="flex items-center justify-between p-3 sm:p-4">
                 <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-200">Totali</p>
-                  <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{totalApplications}</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-muted-foreground">Totali</p>
+                  <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-foreground">{totalApplications}</p>
                 </div>
                 <Target className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400" />
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-blue-900/50 border-gray-200 dark:border-blue-800">
+            <Card className="bg-white dark:bg-card border-gray-200 dark:border-border">
               <CardContent className="flex items-center justify-between p-3 sm:p-4">
                 <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-200">Tasso Risposta</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-muted-foreground">Tasso Risposta</p>
                   <p className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">{responseRate.toFixed(1)}%</p>
                 </div>
                 <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-green-600 dark:text-green-400" />
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-blue-900/50 border-gray-200 dark:border-blue-800">
+            <Card className="bg-white dark:bg-card border-gray-200 dark:border-border">
               <CardContent className="flex items-center justify-between p-3 sm:p-4">
                 <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-200">Colloqui</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-muted-foreground">Colloqui</p>
                   <p className="text-lg sm:text-2xl font-bold text-purple-600 dark:text-purple-400">{interviewsObtained}</p>
                 </div>
                 <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600 dark:text-purple-400" />
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-blue-900/50 border-gray-200 dark:border-blue-800">
+            <Card className="bg-white dark:bg-card border-gray-200 dark:border-border">
               <CardContent className="flex items-center justify-between p-3 sm:p-4">
                 <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-200">Tempo Medio</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-muted-foreground">Tempo Medio</p>
                   <p className="text-lg sm:text-2xl font-bold text-orange-600 dark:text-orange-400">{avgFeedbackTime}g</p>
                 </div>
                 <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600 dark:text-orange-400" />
@@ -174,7 +174,7 @@ export const JobTracker = () => {
         {/* Add Form Modal */}
         {showAddForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white dark:bg-blue-900 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border dark:border-blue-800">
+            <div className="bg-white dark:bg-card rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border dark:border-border">
               <AddJobForm
                 onAdd={handleAddApplication}
                 onCancel={() => setShowAddForm(false)}
@@ -191,12 +191,12 @@ export const JobTracker = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="applications" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-gray-100 dark:bg-blue-900/50 h-9 sm:h-10">
-            <TabsTrigger value="applications" className="dark:text-white dark:data-[state=active]:bg-blue-800 dark:data-[state=active]:text-white text-xs sm:text-sm">
+          <TabsList className="grid w-full grid-cols-2 bg-gray-100 dark:bg-muted h-9 sm:h-10">
+            <TabsTrigger value="applications" className="dark:text-muted-foreground dark:data-[state=active]:bg-background dark:data-[state=active]:text-foreground text-xs sm:text-sm">
               <span className="sm:hidden">Candidature</span>
               <span className="hidden sm:inline">Candidature</span>
             </TabsTrigger>
-            <TabsTrigger value="statistics" className="dark:text-white dark:data-[state=active]:bg-blue-800 dark:data-[state=active]:text-white text-xs sm:text-sm">
+            <TabsTrigger value="statistics" className="dark:text-muted-foreground dark:data-[state=active]:bg-background dark:data-[state=active]:text-foreground text-xs sm:text-sm">
               <span className="sm:hidden">Stats</span>
               <span className="hidden sm:inline">Statistiche</span>
             </TabsTrigger>
