@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Briefcase, ArrowLeft } from 'lucide-react';
+import { Briefcase, ArrowLeft, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export const AuthPage = () => {
@@ -15,8 +15,10 @@ export const AuthPage = () => {
   const [activeTab, setActiveTab] = useState('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [magicLinkEmail, setMagicLinkEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const [magicLinkLoading, setMagicLinkLoading] = useState(false);
+  const { signIn, signUp, signInWithMagicLink } = useAuth();
   const { toast } = useToast();
 
   const handleAuth = async (type: 'signin' | 'signup') => {
@@ -48,6 +50,35 @@ export const AuthPage = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleMagicLink = async () => {
+    if (!magicLinkEmail) {
+      toast({
+        title: "Errore",
+        description: "Inserisci la tua email",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setMagicLinkLoading(true);
+    try {
+      await signInWithMagicLink(magicLinkEmail);
+      toast({
+        title: "Magic Link inviato",
+        description: "Controlla la tua email per il link di accesso",
+      });
+      setMagicLinkEmail('');
+    } catch (error: any) {
+      toast({
+        title: "Errore",
+        description: error.message || "Si è verificato un errore",
+        variant: "destructive",
+      });
+    } finally {
+      setMagicLinkLoading(false);
     }
   };
 
@@ -135,6 +166,40 @@ export const AuthPage = () => {
                   disabled={loading}
                 >
                   {loading ? 'Accesso in corso...' : 'Accedi'}
+                </Button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-gray-300 dark:border-blue-700" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-white dark:bg-blue-900/50 px-2 text-gray-500 dark:text-gray-400">
+                      oppure
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="magic-link-email" className="text-gray-700 dark:text-gray-200">
+                    Accedi con Magic Link
+                  </Label>
+                  <Input
+                    id="magic-link-email"
+                    type="email"
+                    placeholder="inserisci la tua email"
+                    value={magicLinkEmail}
+                    onChange={(e) => setMagicLinkEmail(e.target.value)}
+                    className="dark:bg-blue-800/30 dark:border-blue-700 dark:text-white"
+                  />
+                </div>
+                <Button 
+                  variant="outline"
+                  className="w-full border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/30" 
+                  onClick={handleMagicLink}
+                  disabled={magicLinkLoading}
+                >
+                  <Wand2 className="w-4 h-4 mr-2" />
+                  {magicLinkLoading ? 'Invio in corso...' : 'Invia Magic Link'}
                 </Button>
               </TabsContent>
               
