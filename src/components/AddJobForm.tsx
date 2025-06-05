@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { JobApplication, JobStatus } from '@/types/job';
 import { parseJobDescription } from '@/utils/jobParser';
@@ -168,7 +169,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
                 type="date"
                 value={applicationDate}
                 onChange={(e) => setApplicationDate(e.target.value)}
-                className="bg-background border-border text-foreground pr-10"
+                className="bg-background border-border text-foreground pr-10 [&::-webkit-calendar-picker-indicator]:opacity-0"
                 required
               />
               <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
