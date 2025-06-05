@@ -6,9 +6,11 @@ import { Briefcase, Target, TrendingUp, Clock, CheckCircle, BarChart3, Users, Za
 
 interface LandingPageProps {
   onGetStarted: () => void;
+  onLogin?: () => void;
+  onSignup?: () => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin, onSignup }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-blue-950 dark:to-slate-900">
       {/* Header */}
@@ -20,13 +22,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Flow Guru</h1>
           </div>
-          <Button 
-            onClick={onGetStarted}
-            variant="outline"
-            className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400"
-          >
-            Accedi
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button 
+              onClick={onLogin || onGetStarted}
+              variant="ghost"
+              className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+            >
+              Accedi
+            </Button>
+            <Button 
+              onClick={onSignup || onGetStarted}
+              className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
+            >
+              Registrati
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -166,6 +176,56 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
                 </p>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* New Section with Text and Image */}
+      <section className="py-16 sm:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="order-2 lg:order-1">
+              <img 
+                src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Analisi delle candidature"
+                className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl"
+              />
+            </div>
+            <div className="order-1 lg:order-2">
+              <h3 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                Analizza e migliora le tue performance
+              </h3>
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                Con Flow Guru puoi visualizzare statistiche dettagliate sui tuoi tassi di risposta, identificare i pattern di successo e ottimizzare la tua strategia di ricerca lavoro.
+              </p>
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-gray-700 dark:text-gray-300">Tracciamento automatico dei tempi di risposta</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-gray-700 dark:text-gray-300">Identificazione delle aziende più reattive</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-gray-700 dark:text-gray-300">Suggerimenti per migliorare il tuo approccio</span>
+                </li>
+              </ul>
+              <Button 
+                onClick={onGetStarted}
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+              >
+                Inizia l'analisi gratuita
+              </Button>
+            </div>
           </div>
         </div>
       </section>

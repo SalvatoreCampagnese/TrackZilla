@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 
 export const AuthPage = () => {
   const [showAuth, setShowAuth] = useState(false);
+  const [activeTab, setActiveTab] = useState('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -50,8 +51,24 @@ export const AuthPage = () => {
     }
   };
 
+  const handleLogin = () => {
+    setActiveTab('signin');
+    setShowAuth(true);
+  };
+
+  const handleSignup = () => {
+    setActiveTab('signup');
+    setShowAuth(true);
+  };
+
   if (!showAuth) {
-    return <LandingPage onGetStarted={() => setShowAuth(true)} />;
+    return (
+      <LandingPage 
+        onGetStarted={() => setShowAuth(true)} 
+        onLogin={handleLogin}
+        onSignup={handleSignup}
+      />
+    );
   }
 
   return (
@@ -79,7 +96,7 @@ export const AuthPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="signin" className="w-full">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-gray-100 dark:bg-blue-900/50">
                 <TabsTrigger value="signin" className="dark:text-white dark:data-[state=active]:bg-blue-800">
                   Accedi
