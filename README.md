@@ -1,4 +1,5 @@
-# Welcome to your Lovable project
+
+# Welcome to Flow Guru
 
 ## Project info
 

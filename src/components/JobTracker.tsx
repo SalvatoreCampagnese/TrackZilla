@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
@@ -74,7 +73,7 @@ export const JobTracker = () => {
                 <Briefcase className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Job Tracker</h1>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Flow Guru</h1>
                 <p className="text-gray-600 dark:text-gray-200">Benvenuto, {user?.email}</p>
               </div>
             </div>
