@@ -40,15 +40,33 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState('');
 
-  // Effetto per gestire l'autofocus quando la modale si apre
+  // Force focus on textarea when modal opens
   useEffect(() => {
     if (open && step === 'extract') {
-      const timer = setTimeout(() => {
+      // Multiple attempts to ensure focus
+      const focusTextarea = () => {
         if (textareaRef.current) {
           textareaRef.current.focus();
+          textareaRef.current.setSelectionRange(
+            textareaRef.current.value.length,
+            textareaRef.current.value.length
+          );
         }
-      }, 150);
-      return () => clearTimeout(timer);
+      };
+
+      // Immediate focus
+      focusTextarea();
+      
+      // Delayed focus to override any modal focus management
+      const timer1 = setTimeout(focusTextarea, 50);
+      const timer2 = setTimeout(focusTextarea, 100);
+      const timer3 = setTimeout(focusTextarea, 200);
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+        clearTimeout(timer3);
+      };
     }
   }, [open, step]);
 
@@ -184,7 +202,6 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
 
       {/* Form content */}
       <div className="flex-1 overflow-y-auto">
-        {jobDescription}
         {step === 'extract' && (
           <div className="space-y-4 sm:space-y-6">
             <div>
@@ -197,6 +214,11 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
                 placeholder="Incolla qui la job description completa..."
                 className="mt-2 min-h-[150px] sm:min-h-[200px] bg-background border-border text-foreground resize-none"
                 required
+                autoFocus
+                onFocus={(e) => {
+                  // Ensure cursor is at the end when focused
+                  e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+                }}
               />
               <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Incolla l'intera job description per estrarre automaticamente i dati principali
