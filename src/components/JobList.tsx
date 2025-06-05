@@ -51,12 +51,12 @@ export const JobList: React.FC<JobListProps> = ({
 
   if (applications.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center">
-          <Building2 className="w-12 h-12 text-gray-400 dark:text-blue-300" />
+      <div className="text-center py-8 sm:py-12 px-4">
+        <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-4 bg-gray-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center">
+          <Building2 className="w-8 h-8 sm:w-12 sm:h-12 text-gray-400 dark:text-blue-300" />
         </div>
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Nessuna candidatura</h3>
-        <p className="text-gray-500 dark:text-gray-300">Aggiungi la tua prima candidatura per iniziare il tracking</p>
+        <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">Nessuna candidatura</h3>
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-300">Aggiungi la tua prima candidatura per iniziare il tracking</p>
       </div>
     );
   }
@@ -64,9 +64,9 @@ export const JobList: React.FC<JobListProps> = ({
   return (
     <div>
       {/* Filter */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <Select value={filter} onValueChange={(value) => setFilter(value as JobStatus | 'all')}>
-          <SelectTrigger className="w-48 dark:bg-blue-800/50 dark:border-blue-700 dark:text-white">
+          <SelectTrigger className="w-full sm:w-48 dark:bg-blue-800/50 dark:border-blue-700 dark:text-white">
             <SelectValue placeholder="Filtra per stato" />
           </SelectTrigger>
           <SelectContent className="dark:bg-blue-800 dark:border-blue-700">
@@ -81,21 +81,21 @@ export const JobList: React.FC<JobListProps> = ({
       </div>
 
       {/* Applications Grid */}
-      <div className="grid gap-6">
+      <div className="grid gap-4 sm:gap-6">
         {filteredApplications.map((application) => (
           <Card key={application.id} className="hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-blue-900/50 border-gray-200 dark:border-blue-800">
             <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">
                       {application.companyName}
                     </h3>
-                    <Badge className={getStatusColor(application.status)}>
+                    <Badge className={`${getStatusColor(application.status)} text-xs whitespace-nowrap`}>
                       {JOB_STATUS_LABELS[application.status]}
                     </Badge>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-200 text-sm leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-200 text-sm leading-relaxed line-clamp-3">
                     {application.roleDescription}
                   </p>
                 </div>
@@ -103,7 +103,7 @@ export const JobList: React.FC<JobListProps> = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => onDelete(application.id)}
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20"
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 flex-shrink-0"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
@@ -111,20 +111,20 @@ export const JobList: React.FC<JobListProps> = ({
             </CardHeader>
             
             <CardContent className="pt-0">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-200">
-                  <Calendar className="w-4 h-4" />
-                  <span>{new Date(application.applicationDate).toLocaleDateString('it-IT')}</span>
+                  <Calendar className="w-4 h-4 flex-shrink-0" />
+                  <span className="truncate">{new Date(application.applicationDate).toLocaleDateString('it-IT')}</span>
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-200">
-                  <Euro className="w-4 h-4" />
-                  <span>{application.salary}</span>
+                  <Euro className="w-4 h-4 flex-shrink-0" />
+                  <span className="truncate">{application.salary}</span>
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-200">
-                  <MapPin className="w-4 h-4" />
-                  <span>
+                  <MapPin className="w-4 h-4 flex-shrink-0" />
+                  <span className="truncate">
                     {getWorkModeIcon(application.workMode)} {application.workMode}
                   </span>
                 </div>
@@ -134,12 +134,12 @@ export const JobList: React.FC<JobListProps> = ({
                     value={application.status} 
                     onValueChange={(value) => onUpdateStatus(application.id, value as JobStatus)}
                   >
-                    <SelectTrigger className="h-8 text-xs dark:bg-blue-800/30 dark:border-blue-700 dark:text-white">
+                    <SelectTrigger className="h-8 text-xs w-full sm:w-auto dark:bg-blue-800/30 dark:border-blue-700 dark:text-white">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="dark:bg-blue-800 dark:border-blue-700">
                       {Object.entries(JOB_STATUS_LABELS).map(([key, label]) => (
-                        <SelectItem key={key} value={key} className="dark:text-white dark:hover:bg-blue-700">
+                        <SelectItem key={key} value={key} className="dark:text-white dark:hover:bg-blue-700 text-xs">
                           {label}
                         </SelectItem>
                       ))}
@@ -151,10 +151,10 @@ export const JobList: React.FC<JobListProps> = ({
               {/* Job Description Preview */}
               <details className="group">
                 <summary className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 cursor-pointer hover:text-blue-700 dark:hover:text-blue-300">
-                  <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" />
-                  Visualizza job description completa
+                  <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180 flex-shrink-0" />
+                  <span className="truncate">Visualizza job description completa</span>
                 </summary>
-                <div className="mt-3 p-3 bg-gray-50 dark:bg-blue-800/30 rounded-lg text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
+                <div className="mt-3 p-3 bg-gray-50 dark:bg-blue-800/30 rounded-lg text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap break-words">
                   {application.jobDescription}
                 </div>
               </details>
