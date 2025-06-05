@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { JobApplication, JobStatus } from '@/types/job';
 import { parseJobDescription } from '@/utils/jobParser';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,7 @@ interface AddJobFormProps {
 
 export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open }) => {
   const isMobile = useIsMobile();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [step, setStep] = useState<'extract' | 'details'>('extract');
   const [jobDescription, setJobDescription] = useState('');
   const [applicationDate, setApplicationDate] = useState(
@@ -39,6 +40,17 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
   const [status, setStatus] = useState<JobStatus>('in-corso');
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState('');
+
+  // Effetto per gestire l'autofocus quando la modale si apre
+  useEffect(() => {
+    if (open && step === 'extract' && textareaRef.current) {
+      // Delay per assicurarsi che la modale sia completamente renderizzata
+      const timer = setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [open, step]);
 
   const predefinedTags = [
     'Dream Job',
@@ -177,13 +189,13 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
             <div>
               <Label htmlFor="jobDescription" className="text-foreground font-medium">Descrizione del Lavoro *</Label>
               <Textarea
+                ref={textareaRef}
                 id="jobDescription"
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
                 placeholder="Incolla qui la job description completa..."
                 className="mt-2 min-h-[150px] sm:min-h-[200px] bg-background border-border text-foreground resize-none"
                 required
-                autoFocus={false}
               />
               <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Incolla l'intera job description per estrarre automaticamente i dati principali
@@ -412,7 +424,11 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={handleClose}>
-        <SheetContent side="bottom" className="h-[90vh] flex flex-col p-4">
+        <SheetContent 
+          side="bottom" 
+          className="h-[90vh] flex flex-col p-4"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           <SheetHeader className="flex-shrink-0">
             <SheetTitle className="sr-only">Aggiungi Candidatura</SheetTitle>
           </SheetHeader>
@@ -424,7 +440,10 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl w-full max-h-[90vh] flex flex-col p-6">
+      <DialogContent 
+        className="max-w-2xl w-full max-h-[90vh] flex flex-col p-6"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="sr-only">Aggiungi Candidatura</DialogTitle>
         </DialogHeader>
