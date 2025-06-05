@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { X, Wand2, Plus, Tag, Calendar } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -195,8 +196,8 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
         </div>
       </div>
 
-      {/* Form content */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Scrollable form content */}
+      <ScrollArea className="flex-1 pr-4">
         {step === 'extract' && (
           <div className="space-y-4 sm:space-y-6">
             <div>
@@ -391,7 +392,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
             </div>
           </form>
         )}
-      </div>
+      </ScrollArea>
 
       {/* Footer buttons */}
       <div className="flex-shrink-0 pt-4 sm:pt-6 border-t mt-4 sm:mt-6">
