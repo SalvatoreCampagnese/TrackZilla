@@ -5,7 +5,8 @@ import { useJobApplications } from '@/hooks/useJobApplications';
 import { AddJobForm } from './AddJobForm';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
-import { Briefcase, Plus, Target, TrendingUp, Clock, CheckCircle, LogOut } from 'lucide-react';
+import { SettingsModal } from './SettingsModal';
+import { Briefcase, Plus, Target, TrendingUp, Clock, CheckCircle, LogOut, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,6 +15,7 @@ export const JobTracker = () => {
   const { user, signOut } = useAuth();
   const { applications, loading, addApplication, updateApplicationStatus, deleteApplication } = useJobApplications();
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const handleAddApplication = async (applicationData: any) => {
     await addApplication(applicationData);
@@ -67,14 +69,24 @@ export const JobTracker = () => {
               </div>
             </div>
             
-            <Button 
-              onClick={handleSignOut}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              <LogOut className="w-4 h-4" />
-              Esci
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                onClick={() => setShowSettings(true)}
+                variant="outline"
+                size="icon"
+              >
+                <Settings className="w-4 h-4" />
+              </Button>
+              
+              <Button 
+                onClick={handleSignOut}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" />
+                Esci
+              </Button>
+            </div>
           </div>
           
           <div className="flex items-center justify-between mb-6">
@@ -157,6 +169,12 @@ export const JobTracker = () => {
             </div>
           </div>
         )}
+
+        {/* Settings Modal */}
+        <SettingsModal 
+          open={showSettings} 
+          onOpenChange={setShowSettings} 
+        />
 
         {/* Tabs */}
         <Tabs defaultValue="applications" className="w-full">
