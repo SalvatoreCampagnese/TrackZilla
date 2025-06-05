@@ -183,6 +183,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
                 placeholder="Incolla qui la job description completa..."
                 className="mt-2 min-h-[150px] sm:min-h-[200px] bg-background border-border text-foreground resize-none"
                 required
+                autoFocus={false}
               />
               <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Incolla l'intera job description per estrarre automaticamente i dati principali
@@ -197,7 +198,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
                   type="date"
                   value={applicationDate}
                   onChange={(e) => setApplicationDate(e.target.value)}
-                  className="bg-background border-border text-foreground pr-10 [&::-webkit-calendar-picker-indicator]:opacity-0 w-auto"
+                  className="bg-background border-border text-foreground pr-10 w-auto [&::-webkit-calendar-picker-indicator]:opacity-0"
                   required
                 />
                 <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
