@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { JobApplication, JobStatus } from '@/types/job';
 import { parseJobDescription } from '@/utils/jobParser';
@@ -43,14 +42,36 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
 
   // Effetto per gestire l'autofocus quando la modale si apre
   useEffect(() => {
-    if (open && step === 'extract' && textareaRef.current) {
-      // Delay per assicurarsi che la modale sia completamente renderizzata
+    if (open && step === 'extract') {
       const timer = setTimeout(() => {
-        textareaRef.current?.focus();
-      }, 100);
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+        }
+      }, 150);
       return () => clearTimeout(timer);
     }
   }, [open, step]);
+
+  // Effetto per mantenere il focus sulla textarea durante la digitazione
+  useEffect(() => {
+    if (open && step === 'extract' && textareaRef.current) {
+      const textarea = textareaRef.current;
+      
+      const handleFocus = () => {
+        // Mantieni il focus sulla textarea
+        if (document.activeElement !== textarea) {
+          textarea.focus();
+        }
+      };
+
+      // Aggiungi un listener per prevenire lo spostamento del focus
+      document.addEventListener('focusin', handleFocus);
+      
+      return () => {
+        document.removeEventListener('focusin', handleFocus);
+      };
+    }
+  }, [open, step, jobDescription]);
 
   const predefinedTags = [
     'Dream Job',
@@ -147,6 +168,16 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
     onCancel();
   };
 
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setJobDescription(e.target.value);
+    // Mantieni il focus sulla textarea dopo ogni cambio
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
+    }, 0);
+  };
+
   const FormContent = () => (
     <div className="flex flex-col h-full">
       {/* Header with step indicator */}
@@ -192,10 +223,17 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel, open })
                 ref={textareaRef}
                 id="jobDescription"
                 value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
+                onChange={handleTextareaChange}
                 placeholder="Incolla qui la job description completa..."
                 className="mt-2 min-h-[150px] sm:min-h-[200px] bg-background border-border text-foreground resize-none"
                 required
+                onBlur={(e) => {
+                  // Previeni la perdita di focus se l'utente sta ancora interagendo con la textarea
+                  e.preventDefault();
+                  if (textareaRef.current) {
+                    textareaRef.current.focus();
+                  }
+                }}
               />
               <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Incolla l'intera job description per estrarre automaticamente i dati principali
