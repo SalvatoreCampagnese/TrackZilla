@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mail, Lock, User, Briefcase, Sparkles } from 'lucide-react';
+import { Mail, Lock, User, Briefcase, Sparkles, WandSparkles } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 export const AuthPage = () => {
@@ -199,9 +199,16 @@ export const AuthPage = () => {
                     <Button 
                       variant="link" 
                       onClick={() => setUseMagicLink(!useMagicLink)}
-                      className="text-sm"
+                      className="text-sm flex items-center gap-1 mx-auto"
                     >
-                      {useMagicLink ? 'Accedi con password' : 'Accedi con magic link'}
+                      {useMagicLink ? (
+                        'Accedi con password'
+                      ) : (
+                        <>
+                          <WandSparkles className="w-4 h-4" />
+                          Accedi con magic link
+                        </>
+                      )}
                     </Button>
                   </div>
                 </div>
