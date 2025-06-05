@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
+import { useGhostingUpdater } from '@/hooks/useGhostingUpdater';
 import { AddJobForm } from './AddJobForm';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
@@ -13,9 +14,12 @@ import { Card, CardContent } from '@/components/ui/card';
 
 export const JobTracker = () => {
   const { user, signOut } = useAuth();
-  const { applications, loading, addApplication, updateApplicationStatus, deleteApplication } = useJobApplications();
+  const { applications, loading, addApplication, updateApplicationStatus, deleteApplication, refetch } = useJobApplications();
   const [showAddForm, setShowAddForm] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+
+  // Initialize the ghosting updater
+  useGhostingUpdater();
 
   const handleAddApplication = async (applicationData: any) => {
     await addApplication(applicationData);
@@ -26,9 +30,15 @@ export const JobTracker = () => {
     await signOut();
   };
 
+  const handleUpdateStatus = async (id: string, status: any) => {
+    await updateApplicationStatus(id, status);
+    // Refetch applications to ensure UI is updated
+    await refetch();
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-blue-950 dark:to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-white">Caricamento candidature...</p>
@@ -187,7 +197,7 @@ export const JobTracker = () => {
           <TabsContent value="applications" className="mt-6">
             <JobList
               applications={applications}
-              onUpdateStatus={updateApplicationStatus}
+              onUpdateStatus={handleUpdateStatus}
               onDelete={deleteApplication}
             />
           </TabsContent>
