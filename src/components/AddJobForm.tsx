@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { JobApplication, JobStatus } from '@/types/job';
 import { parseJobDescription } from '@/utils/jobParser';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { X, Wand2, Plus, Tag } from 'lucide-react';
+import { X, Wand2, Plus, Tag, Calendar } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface AddJobFormProps {
@@ -115,10 +114,10 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
   };
 
   return (
-    <div className="p-6 bg-white dark:bg-card text-gray-900 dark:text-foreground">
+    <div className="p-6 bg-background text-foreground">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-foreground">Aggiungi Candidatura</h2>
+          <h2 className="text-xl font-semibold text-foreground">Aggiungi Candidatura</h2>
           <div className="flex items-center gap-2 mt-2">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
               step === 'extract' ? 'bg-blue-600 text-white' : 'bg-green-600 text-white'
@@ -128,18 +127,18 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
             <span className={step === 'extract' ? 'text-blue-600 font-medium' : 'text-green-600'}>
               Estrazione Dati
             </span>
-            <div className="w-8 h-0.5 bg-gray-300 dark:bg-gray-600"></div>
+            <div className="w-8 h-0.5 bg-border"></div>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              step === 'details' ? 'bg-blue-600 text-white' : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400'
+              step === 'details' ? 'bg-blue-600 text-white' : 'bg-muted text-muted-foreground'
             }`}>
               2
             </div>
-            <span className={step === 'details' ? 'text-blue-600 font-medium' : 'text-gray-500 dark:text-gray-400'}>
+            <span className={step === 'details' ? 'text-blue-600 font-medium' : 'text-muted-foreground'}>
               Dettagli
             </span>
           </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={onCancel} className="dark:text-foreground dark:hover:bg-accent">
+        <Button variant="ghost" size="sm" onClick={onCancel} className="text-foreground hover:bg-accent">
           <X className="w-4 h-4" />
         </Button>
       </div>
@@ -147,30 +146,33 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
       {step === 'extract' && (
         <div className="space-y-6">
           <div>
-            <Label htmlFor="jobDescription" className="text-gray-900 dark:text-foreground">Descrizione del Lavoro *</Label>
+            <Label htmlFor="jobDescription" className="text-foreground">Descrizione del Lavoro *</Label>
             <Textarea
               id="jobDescription"
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Incolla qui la job description completa..."
-              className="mt-1 min-h-[200px] bg-white dark:bg-background border-gray-300 dark:border-border text-gray-900 dark:text-foreground"
+              className="mt-1 min-h-[200px] bg-background border-border text-foreground"
               required
             />
-            <p className="text-sm text-gray-500 dark:text-muted-foreground mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               Incolla l'intera job description per estrarre automaticamente i dati principali
             </p>
           </div>
 
           <div>
-            <Label htmlFor="applicationDate" className="text-gray-900 dark:text-foreground">Data di Candidatura</Label>
-            <Input
-              id="applicationDate"
-              type="date"
-              value={applicationDate}
-              onChange={(e) => setApplicationDate(e.target.value)}
-              className="mt-1 w-auto bg-white dark:bg-background border-gray-300 dark:border-border text-gray-900 dark:text-foreground"
-              required
-            />
+            <Label htmlFor="applicationDate" className="text-foreground">Data di Candidatura</Label>
+            <div className="relative w-fit mt-1">
+              <Input
+                id="applicationDate"
+                type="date"
+                value={applicationDate}
+                onChange={(e) => setApplicationDate(e.target.value)}
+                className="bg-background border-border text-foreground pr-10"
+                required
+              />
+              <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
+            </div>
           </div>
 
           <Button
@@ -195,29 +197,29 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="companyName" className="text-gray-900 dark:text-foreground">Nome Azienda *</Label>
+                <Label htmlFor="companyName" className="text-foreground">Nome Azienda *</Label>
                 <Input
                   id="companyName"
                   value={parsedData.companyName}
                   onChange={(e) => setParsedData(prev => ({ ...prev, companyName: e.target.value }))}
-                  className="mt-1 bg-white dark:bg-background border-gray-300 dark:border-border text-gray-900 dark:text-foreground"
+                  className="mt-1 bg-background border-border text-foreground"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="salary" className="text-gray-900 dark:text-foreground">RAL</Label>
+                <Label htmlFor="salary" className="text-foreground">RAL</Label>
                 <Input
                   id="salary"
                   value={parsedData.salary}
                   onChange={(e) => setParsedData(prev => ({ ...prev, salary: e.target.value }))}
-                  className="mt-1 bg-white dark:bg-background border-gray-300 dark:border-border text-gray-900 dark:text-foreground"
+                  className="mt-1 bg-background border-border text-foreground"
                   placeholder="es. 45k, ND"
                 />
               </div>
 
               <div>
-                <Label htmlFor="workMode" className="text-gray-900 dark:text-foreground">Modalità di Lavoro</Label>
+                <Label htmlFor="workMode" className="text-foreground">Modalità di Lavoro</Label>
                 <select
                   id="workMode"
                   value={parsedData.workMode}
@@ -225,7 +227,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
                     ...prev, 
                     workMode: e.target.value as 'remoto' | 'ibrido' | 'in-presenza' | 'ND'
                   }))}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-background text-gray-900 dark:text-foreground"
+                  className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background text-foreground"
                 >
                   <option value="ND">Non specificato</option>
                   <option value="remoto">Remoto</option>
@@ -235,12 +237,12 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
               </div>
 
               <div>
-                <Label htmlFor="status" className="text-gray-900 dark:text-foreground">Stato Candidatura</Label>
+                <Label htmlFor="status" className="text-foreground">Stato Candidatura</Label>
                 <select
                   id="status"
                   value={status}
                   onChange={(e) => setStatus(e.target.value as JobStatus)}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-background text-gray-900 dark:text-foreground"
+                  className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background text-foreground"
                 >
                   <option value="in-corso">In corso</option>
                   <option value="primo-colloquio">Primo colloquio</option>
@@ -256,12 +258,12 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
             </div>
 
             <div className="md:col-span-2">
-              <Label htmlFor="roleDescription" className="text-gray-900 dark:text-foreground">Descrizione Ruolo</Label>
+              <Label htmlFor="roleDescription" className="text-foreground">Descrizione Ruolo</Label>
               <Textarea
                 id="roleDescription"
                 value={parsedData.roleDescription}
                 onChange={(e) => setParsedData(prev => ({ ...prev, roleDescription: e.target.value }))}
-                className="mt-1 bg-white dark:bg-background border-gray-300 dark:border-border text-gray-900 dark:text-foreground"
+                className="mt-1 bg-background border-border text-foreground"
                 rows={2}
               />
             </div>
@@ -269,7 +271,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
 
           {/* Tags Section */}
           <div className="space-y-4">
-            <Label className="flex items-center gap-2 text-gray-900 dark:text-foreground">
+            <Label className="flex items-center gap-2 text-foreground">
               <Tag className="w-4 h-4" />
               Tag Personalizzati
             </Label>
@@ -298,14 +300,14 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
 
             {/* Predefined Tags */}
             <div className="space-y-2">
-              <p className="text-sm text-gray-600 dark:text-muted-foreground">Tag predefiniti:</p>
+              <p className="text-sm text-muted-foreground">Tag predefiniti:</p>
               <div className="flex flex-wrap gap-2">
                 {predefinedTags.filter(tag => !tags.includes(tag)).map((tag) => (
                   <button
                     key={tag}
                     type="button"
                     onClick={() => handleAddTag(tag)}
-                    className="inline-flex items-center gap-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 px-2 py-1 rounded-full text-sm transition-colors"
+                    className="inline-flex items-center gap-1 bg-muted hover:bg-accent text-foreground px-2 py-1 rounded-full text-sm transition-colors"
                   >
                     <Plus className="w-3 h-3" />
                     {tag}
@@ -320,7 +322,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
                 value={newTag}
                 onChange={(e) => setNewTag(e.target.value)}
                 placeholder="Aggiungi tag personalizzato..."
-                className="flex-1 bg-white dark:bg-background border-gray-300 dark:border-border text-gray-900 dark:text-foreground"
+                className="flex-1 bg-background border-border text-foreground"
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCustomTag())}
               />
               <Button
@@ -329,7 +331,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
                 variant="outline"
                 size="sm"
                 disabled={!newTag.trim()}
-                className="dark:text-foreground dark:border-border dark:hover:bg-accent"
+                className="text-foreground border-border hover:bg-accent"
               >
                 <Plus className="w-4 h-4" />
               </Button>
@@ -342,7 +344,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ onAdd, onCancel }) => {
               type="button"
               variant="outline"
               onClick={() => setStep('extract')}
-              className="flex-1 dark:text-foreground dark:border-border dark:hover:bg-accent"
+              className="flex-1 text-foreground border-border hover:bg-accent"
             >
               Indietro
             </Button>
