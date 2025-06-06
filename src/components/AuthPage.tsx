@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Briefcase, ArrowLeft, Wand2 } from 'lucide-react';
+import { ArrowLeft, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export const AuthPage = () => {
@@ -111,7 +111,7 @@ export const AuthPage = () => {
         <Button
           variant="ghost"
           onClick={() => setShowAuth(false)}
-          className="mb-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+          className="mb-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Torna alla home
@@ -120,8 +120,8 @@ export const AuthPage = () => {
         <Card className="bg-white dark:bg-card border-gray-200 dark:border-border">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <div className="p-3 bg-blue-600 dark:bg-blue-500 rounded-xl">
-                <Briefcase className="w-8 h-8 text-white" />
+              <div className="w-12 h-12 rounded-xl overflow-hidden">
+                <img src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" alt="TrackZilla Logo" className="w-full h-full object-cover" />
               </div>
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900 dark:text-foreground">TrackZilla</CardTitle>
@@ -166,7 +166,7 @@ export const AuthPage = () => {
                   </div>
                   <Button 
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600" 
+                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full" 
                     disabled={loading}
                   >
                     {loading ? 'Accesso in corso...' : 'Accedi'}
@@ -186,7 +186,7 @@ export const AuthPage = () => {
 
                 <Button 
                   variant="outline"
-                  className="w-full border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-background dark:hover:text-blue-400" 
+                  className="w-full border-red-600 text-red-600 hover:bg-red-50 dark:border-red-400 dark:text-red-400 dark:hover:bg-background dark:hover:text-red-400 rounded-full" 
                   onClick={handleMagicLink}
                   disabled={magicLinkLoading}
                 >
@@ -221,7 +221,7 @@ export const AuthPage = () => {
                   </div>
                   <Button 
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600" 
+                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full" 
                     disabled={loading}
                   >
                     {loading ? 'Registrazione in corso...' : 'Registrati'}
