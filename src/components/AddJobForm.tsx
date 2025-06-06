@@ -232,152 +232,154 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
           )}
 
           {step === 'details' && (
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-              <div className="space-y-4 p-3 sm:p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
-                <h3 className="font-medium text-green-900 dark:text-green-100 flex items-center gap-2 text-sm sm:text-base">
-                  <Wand2 className="w-4 h-4" />
-                  Extracted Data (editable)
-                </h3>
-                
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="companyName" className="text-foreground font-medium">Company Name *</Label>
-                    <Input
-                      id="companyName"
-                      value={parsedData.companyName}
-                      onChange={(e) => setParsedData(prev => ({ ...prev, companyName: e.target.value }))}
-                      className="mt-1 bg-background border-border text-foreground"
-                      required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ScrollArea className="h-full">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 pr-4">
+                <div className="space-y-4 p-3 sm:p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+                  <h3 className="font-medium text-green-900 dark:text-green-100 flex items-center gap-2 text-sm sm:text-base">
+                    <Wand2 className="w-4 h-4" />
+                    Extracted Data (editable)
+                  </h3>
+                  
+                  <div className="space-y-4">
                     <div>
-                      <Label htmlFor="salary" className="text-foreground font-medium">Salary</Label>
+                      <Label htmlFor="companyName" className="text-foreground font-medium">Company Name *</Label>
                       <Input
-                        id="salary"
-                        value={parsedData.salary}
-                        onChange={(e) => setParsedData(prev => ({ ...prev, salary: e.target.value }))}
+                        id="companyName"
+                        value={parsedData.companyName}
+                        onChange={(e) => setParsedData(prev => ({ ...prev, companyName: e.target.value }))}
                         className="mt-1 bg-background border-border text-foreground"
-                        placeholder="e.g. 45k, ND"
+                        required
                       />
                     </div>
 
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="salary" className="text-foreground font-medium">Salary</Label>
+                        <Input
+                          id="salary"
+                          value={parsedData.salary}
+                          onChange={(e) => setParsedData(prev => ({ ...prev, salary: e.target.value }))}
+                          className="mt-1 bg-background border-border text-foreground"
+                          placeholder="e.g. 45k, ND"
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="workMode" className="text-foreground font-medium">Work Mode</Label>
+                        <select
+                          id="workMode"
+                          value={parsedData.workMode}
+                          onChange={(e) => setParsedData(prev => ({ ...prev, workMode: e.target.value as 'remoto' | 'ibrido' | 'in-presenza' | 'ND' }))}
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-background text-foreground"
+                        >
+                          <option value="ND">Not specified</option>
+                          <option value="remoto">Remote</option>
+                          <option value="ibrido">Hybrid</option>
+                          <option value="in-presenza">On-site</option>
+                        </select>
+                      </div>
+                    </div>
+
                     <div>
-                      <Label htmlFor="workMode" className="text-foreground font-medium">Work Mode</Label>
+                      <Label htmlFor="status" className="text-foreground font-medium">Application Status</Label>
                       <select
-                        id="workMode"
-                        value={parsedData.workMode}
-                        onChange={(e) => setParsedData(prev => ({ ...prev, workMode: e.target.value as 'remoto' | 'ibrido' | 'in-presenza' | 'ND' }))}
+                        id="status"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value as JobStatus)}
                         className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-background text-foreground"
                       >
-                        <option value="ND">Not specified</option>
-                        <option value="remoto">Remote</option>
-                        <option value="ibrido">Hybrid</option>
-                        <option value="in-presenza">On-site</option>
+                        <option value="in-corso">In progress</option>
+                        <option value="primo-colloquio">First interview</option>
+                        <option value="secondo-colloquio">Second interview</option>
+                        <option value="colloquio-tecnico">Technical interview</option>
+                        <option value="colloquio-finale">Final interview</option>
+                        <option value="offerta-ricevuta">Offer received</option>
+                        <option value="rifiutato">Rejected</option>
+                        <option value="ghosting">Ghosting</option>
+                        <option value="ritirato">Withdrawn</option>
                       </select>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="roleDescription" className="text-foreground font-medium">Role Description</Label>
+                      <Textarea
+                        id="roleDescription"
+                        value={parsedData.roleDescription}
+                        onChange={(e) => setParsedData(prev => ({ ...prev, roleDescription: e.target.value }))}
+                        className="mt-1 bg-background border-border text-foreground resize-none focus-visible:ring-red-500 focus-visible:border-red-500"
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tags Section */}
+                <div className="space-y-3 sm:space-y-4">
+                  <Label className="flex items-center gap-2 text-foreground font-medium">
+                    <Tag className="w-4 h-4" />
+                    Custom Tags
+                  </Label>
+                  
+                  {/* Selected Tags */}
+                  {tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map((tag, index) => (
+                        <div key={index} className="inline-flex items-center gap-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 px-2 py-1 rounded-full text-xs sm:text-sm">
+                          <Tag className="w-3 h-3" />
+                          {tag}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveTag(tag)}
+                            className="ml-1 text-red-600 dark:text-red-300 hover:text-red-800 dark:hover:text-red-100"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Predefined Tags */}
+                  <div className="space-y-2">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Predefined tags:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {predefinedTags.filter(tag => !tags.includes(tag)).map((tag) => (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => handleAddTag(tag)}
+                          className="inline-flex items-center gap-1 bg-muted hover:bg-accent text-foreground px-2 py-1 rounded-full text-xs sm:text-sm transition-colors"
+                        >
+                          <Plus className="w-3 h-3" />
+                          {tag}
+                        </button>
+                      ))}
                     </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="status" className="text-foreground font-medium">Application Status</Label>
-                    <select
-                      id="status"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value as JobStatus)}
-                      className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-background text-foreground"
-                    >
-                      <option value="in-corso">In progress</option>
-                      <option value="primo-colloquio">First interview</option>
-                      <option value="secondo-colloquio">Second interview</option>
-                      <option value="colloquio-tecnico">Technical interview</option>
-                      <option value="colloquio-finale">Final interview</option>
-                      <option value="offerta-ricevuta">Offer received</option>
-                      <option value="rifiutato">Rejected</option>
-                      <option value="ghosting">Ghosting</option>
-                      <option value="ritirato">Withdrawn</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="roleDescription" className="text-foreground font-medium">Role Description</Label>
-                    <Textarea
-                      id="roleDescription"
-                      value={parsedData.roleDescription}
-                      onChange={(e) => setParsedData(prev => ({ ...prev, roleDescription: e.target.value }))}
-                      className="mt-1 bg-background border-border text-foreground resize-none focus-visible:ring-red-500 focus-visible:border-red-500"
-                      rows={3}
+                  {/* Custom Tag Input */}
+                  <div className="flex gap-2">
+                    <Input
+                      value={newTag}
+                      onChange={(e) => setNewTag(e.target.value)}
+                      placeholder="Add custom tag..."
+                      className="flex-1 bg-background border-border text-foreground text-sm"
+                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCustomTag())}
                     />
+                    <Button
+                      type="button"
+                      onClick={handleAddCustomTag}
+                      variant="outline"
+                      size="sm"
+                      disabled={!newTag.trim()}
+                      className="text-foreground border-border hover:bg-accent px-3 rounded-full"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-              </div>
-
-              {/* Tags Section */}
-              <div className="space-y-3 sm:space-y-4">
-                <Label className="flex items-center gap-2 text-foreground font-medium">
-                  <Tag className="w-4 h-4" />
-                  Custom Tags
-                </Label>
-                
-                {/* Selected Tags */}
-                {tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag, index) => (
-                      <div key={index} className="inline-flex items-center gap-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 px-2 py-1 rounded-full text-xs sm:text-sm">
-                        <Tag className="w-3 h-3" />
-                        {tag}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveTag(tag)}
-                          className="ml-1 text-red-600 dark:text-red-300 hover:text-red-800 dark:hover:text-red-100"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Predefined Tags */}
-                <div className="space-y-2">
-                  <p className="text-xs sm:text-sm text-muted-foreground">Predefined tags:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {predefinedTags.filter(tag => !tags.includes(tag)).map((tag) => (
-                      <button
-                        key={tag}
-                        type="button"
-                        onClick={() => handleAddTag(tag)}
-                        className="inline-flex items-center gap-1 bg-muted hover:bg-accent text-foreground px-2 py-1 rounded-full text-xs sm:text-sm transition-colors"
-                      >
-                        <Plus className="w-3 h-3" />
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Custom Tag Input */}
-                <div className="flex gap-2">
-                  <Input
-                    value={newTag}
-                    onChange={(e) => setNewTag(e.target.value)}
-                    placeholder="Add custom tag..."
-                    className="flex-1 bg-background border-border text-foreground text-sm"
-                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCustomTag())}
-                  />
-                  <Button
-                    type="button"
-                    onClick={handleAddCustomTag}
-                    variant="outline"
-                    size="sm"
-                    disabled={!newTag.trim()}
-                    className="text-foreground border-border hover:bg-accent px-3 rounded-full"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </form>
+              </form>
+            </ScrollArea>
           )}
         </ScrollArea>
       </div>
