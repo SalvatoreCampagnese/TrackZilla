@@ -68,7 +68,9 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
       };
     }
   }, [open, step]);
+  
   const predefinedTags = ['Dream Job', 'Startup', 'Important', 'Interesting Salary', 'Referral', 'Remote Friendly', 'Big Company', 'Growth Opportunity'];
+  
   const handleParseJob = () => {
     if (!jobDescription.trim()) {
       toast({
@@ -143,6 +145,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
     setNewTag('');
     onCancel();
   };
+
   const FormContent = () => (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Header with step indicator */}
@@ -441,8 +444,10 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
           side="bottom"
           className="h-[90vh] flex flex-col p-4 bg-gradient-to-br from-gray-900 to-gray-800 border-white/20"
           onOpenAutoFocus={(e) => e.preventDefault()}
+          onCloseAutoFocus={(e) => e.preventDefault()}
           onPointerDownOutside={(e) => e.preventDefault()}
           onInteractOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
         >
           <SheetHeader className="flex-shrink-0">
             <SheetTitle className="sr-only">Add Application</SheetTitle>
@@ -457,8 +462,10 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={(e) => e.preventDefault()}
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
         className="max-w-2xl w-full max-h-[90vh] flex flex-col p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-white/20"
       >
         <DialogHeader className="flex-shrink-0">
