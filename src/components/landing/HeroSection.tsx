@@ -36,7 +36,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </h1>
           
           <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
-            Let's make your job search more organized and efficient using TrackZilla with many of the latest features in managing applications every day.
+            Job hunt got you feeling like you're fighting a Gila monster with a spoon? Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick. Grrrrrrowl less, track more. Built with brain, nerd fuel, and a deep hatred for chaos.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">
