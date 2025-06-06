@@ -1,5 +1,6 @@
 
 
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
@@ -38,8 +39,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Main image covering the whole column */}
           <div className="relative h-[600px] w-full">
             <img 
-              src="/lovable-uploads/1cfab0e7-65a8-4956-b798-4ac8733c8283.png" 
-              alt="TrackZilla User" 
+              src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" 
+              alt="TrackZilla Logo" 
               className="w-full h-full object-cover rounded-xl animate-scale-in" 
             />
             
@@ -104,4 +105,5 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
     </section>;
 };
+
 
