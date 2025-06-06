@@ -14,7 +14,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
         
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-          <span className="text-blue-600 dark:text-blue-400">TrackZilla</span>
+          <span className="text-blue-600 dark:text-blue-400">Job hunt got you feeling like you’re fighting a Gila monster?
+Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.
+Grrrrrrowl less, track more.
+
+
+Built with brain, nerd fuel, and a deep hatred for chaos.</span>
         </h1>
         
         <p className="text-2xl sm:text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6 tracking-wide">TAME THE JOB HUNT
