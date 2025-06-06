@@ -168,7 +168,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
 
       {/* Scrollable form content */}
       <div className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full pr-4  w-full">
+        <ScrollArea className="">
           {step === 'extract' && <div className="space-y-4 sm:space-y-6">
               <div>
                 <Label htmlFor="jobDescription" className="text-foreground font-medium">Job Description *</Label>
