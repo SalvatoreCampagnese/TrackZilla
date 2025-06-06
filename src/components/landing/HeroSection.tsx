@@ -52,13 +52,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
             
             <div className="absolute bottom-4 left-4 bg-white rounded-xl p-4 shadow-lg">
-              <p className="text-sm text-gray-500 mb-1">Total Applications</p>
+              
               <p className="text-xl font-bold text-gray-800">$245.00</p>
               <div className="flex items-center mt-2">
                 <div className="flex space-x-1">
                   <div className="w-2 h-6 bg-red-600 rounded"></div>
                   <div className="w-2 h-4 bg-red-400 rounded"></div>
-                  <div className="w-2 h-8 bg-red-700 rounded"></div>
+                  
                   <div className="w-2 h-3 bg-red-500 rounded"></div>
                 </div>
               </div>
