@@ -56,7 +56,7 @@ export const FeaturesSection: React.FC = () => {
   };
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-12 lg:py-12 overflow-hidden">
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-transparent"></div>
       
