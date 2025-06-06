@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { JobApplication } from '@/types/job';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Clock, TrendingUp, Users, CheckCircle } from 'lucide-react';
+import { Clock, TrendingUp, Users, CheckCircle, Award } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface StatisticsProps {
   applications: JobApplication[];
@@ -30,7 +30,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
       }, 0) / applications.length)
     : 0;
 
-  // Data for advanced interview stages chart - showing jobs with most advanced stages
+  // Data for advanced interview stages - showing jobs with most advanced stages
   const advancedInterviewsData = applications
     .filter(app => ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status))
     .map(app => {
@@ -43,16 +43,24 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         'offerta-ricevuta': 5
       }[app.status] || 0;
 
+      const stageLabels = {
+        'primo-colloquio': 'First Interview',
+        'secondo-colloquio': 'Second Interview',
+        'colloquio-tecnico': 'Technical Interview',
+        'colloquio-finale': 'Final Interview',
+        'offerta-ricevuta': 'Offer Received'
+      };
+
       return {
         company: app.companyName,
         role: app.roleDescription,
-        stage: app.status,
+        stage: stageLabels[app.status as keyof typeof stageLabels] || app.status,
         stageScore,
-        displayName: `${app.companyName} - ${app.roleDescription.substring(0, 20)}${app.roleDescription.length > 20 ? '...' : ''}`
+        applicationDate: app.applicationDate
       };
     })
     .sort((a, b) => b.stageScore - a.stageScore)
-    .slice(0, 5);
+    .slice(0, 10);
 
   // Data for companies with advanced stages (pie chart)
   const advancedStatusData = applications
@@ -144,30 +152,44 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Advanced interview stages chart */}
+        {/* Most advanced interview stages list */}
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white">Most Advanced Interview Stages</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
+              <Award className="w-5 h-5" />
+              Most Advanced Interview Stages
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {advancedInterviewsData.length > 0 ? (
-              <ChartContainer config={chartConfig} className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={advancedInterviewsData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="displayName" 
-                      tick={{ fontSize: 10 }}
-                      angle={-45}
-                      textAnchor="end"
-                      height={100}
-                    />
-                    <YAxis domain={[0, 5]} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="stageScore" fill="var(--color-stageScore)" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </ChartContainer>
+              <div className="space-y-3">
+                {advancedInterviewsData.map((item, index) => (
+                  <div 
+                    key={`${item.company}-${item.role}-${index}`}
+                    className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-white truncate">
+                        {item.company}
+                      </div>
+                      <div className="text-sm text-white/70 truncate">
+                        {item.role}
+                      </div>
+                      <div className="text-xs text-white/50">
+                        Applied: {new Date(item.applicationDate).toLocaleDateString()}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 ml-4">
+                      <span className="text-xs font-medium text-white bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 rounded-full">
+                        #{index + 1}
+                      </span>
+                      <span className="text-sm font-medium text-white/90 text-right min-w-0">
+                        {item.stage}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
               <div className="h-[300px] flex items-center justify-center text-muted-foreground dark:text-gray-200">
                 No data available
