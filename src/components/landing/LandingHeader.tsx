@@ -26,13 +26,13 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({ onLogin, onSignup 
             <Button 
               onClick={onLogin}
               variant="ghost"
-              className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+              className="text-gray-700 hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400 rounded-full"
             >
               Sign In
             </Button>
             <Button 
               onClick={onSignup}
-              className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
+              className="bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 rounded-full"
             >
               Get Started
             </Button>

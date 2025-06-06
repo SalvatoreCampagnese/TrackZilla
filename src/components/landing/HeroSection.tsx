@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
@@ -40,7 +41,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Profile section */}
             <div className="flex justify-center mb-8">
               <div className="w-full h-96 animate-[scale-in_0.8s_ease-out] rounded-xl overflow-hidden">
-                <img alt="TrackZilla User" src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" className="w-full h-full object-contain" />
+                <img alt="TrackZilla User" src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" className="w-full h-full object-contain" style={{minHeight: '384px'}} />
               </div>
             </div>
             

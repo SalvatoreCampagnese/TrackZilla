@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
@@ -27,7 +28,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
                   <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
                 </li>)}
             </ul>
-            <Button onClick={onGetStarted} size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
+            <Button onClick={onGetStarted} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full">
               Start free analysis
             </Button>
           </div>

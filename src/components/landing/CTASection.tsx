@@ -20,7 +20,7 @@ export const CTASection: React.FC<CTASectionProps> = ({ onGetStarted }) => {
           <Button 
             onClick={onGetStarted}
             size="lg"
-            className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg"
+            className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg rounded-full"
           >
             Start hunting for free
           </Button>
