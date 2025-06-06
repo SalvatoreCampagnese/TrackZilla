@@ -16,7 +16,7 @@ export const MagicLinkButton: React.FC<MagicLinkButtonProps> = ({ onClick, loadi
           <span className="w-full border-t border-white/20" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-gradient-to-br from-gray-900 to-gray-800 px-2 text-white/70">
+          <span className="bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 px-3 text-white/70">
             or
           </span>
         </div>
