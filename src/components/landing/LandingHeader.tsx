@@ -13,7 +13,7 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
 }) => {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/5 border-b border-white/10">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">

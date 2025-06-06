@@ -4,7 +4,7 @@ import { Github } from 'lucide-react';
 
 export const LandingFooter: React.FC = () => {
   return (
-    <footer className="relative py-12 border-t border-white/10 bg-black/20 backdrop-blur-md">
+    <footer className="relative py-6 border-t border-white/10 bg-black/20 backdrop-blur-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="text-center sm:text-left">
