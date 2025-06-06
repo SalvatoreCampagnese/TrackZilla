@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
@@ -33,13 +34,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
 
         {/* Right side - Visual elements */}
-        <div className="relative">
-          {/* Main dashboard mockup */}
-          <div className="relative  rounded-3xl p-8 min-h-[500px]">
-            {/* Profile section */}
-            <div className="flex justify-center mb-8">
-              <img src="/lovable-uploads/1cfab0e7-65a8-4956-b798-4ac8733c8283.png" alt="TrackZilla User" className="w-32 h-32 rounded-xl border-4 border-white/20 animate-pulse hover:scale-110 transition-transform duration-300 cursor-pointer" />
-            </div>
+        <div className="relative h-full">
+          {/* Main image covering the whole column */}
+          <div className="relative h-[600px] w-full">
+            <img 
+              src="/lovable-uploads/1cfab0e7-65a8-4956-b798-4ac8733c8283.png" 
+              alt="TrackZilla User" 
+              className="w-full h-full object-cover rounded-xl animate-scale-in" 
+            />
             
             {/* Floating cards */}
             <div className="absolute top-4 right-4 bg-white rounded-xl p-4 shadow-lg">
@@ -102,3 +104,4 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
     </section>;
 };
+
