@@ -27,9 +27,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
                   <span className="text-zinc-50">{benefit}</span>
                 </li>)}
             </ul>
-            <Button onClick={onGetStarted} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full">
-              Start free analysis
-            </Button>
+            <Button onClick={onGetStarted} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full">Hunt now with TrackZilla</Button>
           </div>
         </div>
       </div>
