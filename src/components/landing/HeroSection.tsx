@@ -36,7 +36,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Right side - Visual elements */}
         <div className="relative">
           {/* Main dashboard mockup */}
-          <div className="relative bg-gradient-to-br from-red-500 to-red-700 rounded-3xl p-8 min-h-[500px]">
+          <div className="">
             {/* Profile section */}
             <div className="flex justify-center mb-8">
               <img alt="TrackZilla User" src="/lovable-uploads/0d29e982-15eb-486e-9997-62ec1f3dfc68.png" className="object-contain" />
