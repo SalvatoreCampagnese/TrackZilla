@@ -63,72 +63,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Right side - Visual elements */}
         <div className="relative">
           {/* Main dashboard mockup */}
-          <div className="relative bg-gradient-to-br from-red-500 to-red-700 rounded-3xl p-8 min-h-[500px]">
-            {/* Profile section */}
-            <div className="flex justify-center mb-8">
-              <img 
-                src="/lovable-uploads/1cfab0e7-65a8-4956-b798-4ac8733c8283.png" 
-                alt="TrackZilla User" 
-                className="w-32 h-32 rounded-full border-4 border-white/20"
-              />
-            </div>
-            
-            {/* Floating cards */}
-            <div className="absolute top-4 right-4 bg-white rounded-xl p-4 shadow-lg">
-              <p className="text-sm text-gray-500 mb-1">Enter amount</p>
-              <p className="text-xl font-bold text-gray-800">$450.00</p>
-              <div className="mt-2">
-                <Button className="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-full">
-                  Send
-                </Button>
-              </div>
-            </div>
-            
-            <div className="absolute bottom-4 left-4 bg-white rounded-xl p-4 shadow-lg">
-              <p className="text-sm text-gray-500 mb-1">Total Applications</p>
-              <p className="text-xl font-bold text-gray-800">$245.00</p>
-              <div className="flex items-center mt-2">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-6 bg-red-600 rounded"></div>
-                  <div className="w-2 h-4 bg-red-400 rounded"></div>
-                  <div className="w-2 h-8 bg-red-700 rounded"></div>
-                  <div className="w-2 h-3 bg-red-500 rounded"></div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="absolute top-1/3 left-1/4 bg-purple-600 rounded-xl p-3 shadow-lg">
-              <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-                <div className="w-3 h-3 bg-purple-600 rounded"></div>
-              </div>
-            </div>
-            
-            {/* Credit card mockup */}
-            <div className="absolute bottom-8 right-8 bg-gray-900 rounded-xl p-4 w-48 shadow-lg transform rotate-12">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-8 h-6 bg-yellow-400 rounded"></div>
-                <div className="flex space-x-1">
-                  <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
-                  <div className="w-6 h-6 bg-gray-600 rounded-full"></div>
-                </div>
-              </div>
-              <p className="text-white text-xs mb-1">Credit Card</p>
-              <p className="text-white text-sm font-mono">•••• 1234</p>
-              <p className="text-gray-400 text-xs mt-2">09/25</p>
-            </div>
-            
-            {/* Floating notification */}
-            <div className="absolute top-1/2 right-0 transform translate-x-4 bg-orange-400 rounded-full p-3 shadow-lg">
-              <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-                <div className="w-3 h-3 bg-orange-400 rounded"></div>
-              </div>
-            </div>
-            
-            <div className="absolute bottom-0 right-1/4 transform translate-y-4 bg-pink-400 rounded-full p-3 shadow-lg">
-              <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-                <div className="w-3 h-3 bg-pink-400 rounded"></div>
-              </div>
-            </div>
+          <div className="relative bg-gradient-to-br from-red-500 to-red-700 rounded-3xl p-8 min-h-[500px] flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/1ab36f2f-6f8d-4074-933d-ccee257dd3b2.png" 
+              alt="TrackZilla Dashboard" 
+              className="w-full h-full object-contain rounded-2xl"
+            />
           </div>
         </div>
       </div>
