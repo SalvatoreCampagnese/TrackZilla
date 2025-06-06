@@ -168,7 +168,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
 
       {/* Scrollable form content */}
       <div className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full pr-4 overflow-scroll">
+        <ScrollArea className="h-full pr-4  w-full">
           {step === 'extract' && <div className="space-y-4 sm:space-y-6">
               <div>
                 <Label htmlFor="jobDescription" className="text-foreground font-medium">Job Description *</Label>
@@ -191,8 +191,8 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
             </div>}
 
           {step === 'details' && <ScrollArea className="h-full">
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 pr-4">
-                <div className="space-y-4 p-3 sm:p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 pr-4 w-full h-full overflow-scroll">
+                <div className="space-y-4 p-3 sm:p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800 w-full">
                   <h3 className="font-medium text-green-900 dark:text-green-100 flex items-center gap-2 text-sm sm:text-base">
                     <Wand2 className="w-4 h-4" />
                     Extracted Data (editable)
