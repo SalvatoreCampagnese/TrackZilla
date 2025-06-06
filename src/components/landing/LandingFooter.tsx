@@ -35,7 +35,7 @@ export const LandingFooter: React.FC = () => {
           <div className="flex items-center gap-2 text-sm text-gray-400">
             <span>This is an Open Source Project, come and contribute</span>
             <a 
-              href="https://github.com/your-repo-url" 
+              href="https://github.com/SalvatoreCampagnese/TrackZilla" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-red-500 hover:text-red-400"
