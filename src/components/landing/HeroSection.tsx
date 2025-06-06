@@ -20,9 +20,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <p className="text-2xl sm:text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6 tracking-wide">TAME THE JOB HUNT
 Grrrrawwwwwwww!</p>
         
-        <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto">Job hunt got you feeling like you’re fighting a Gila monster with a spoon?
-Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.
-Grrrrrrowl less, track more.</p>
+        <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto">Job hunt got you feeling like you’re fighting a Gila monster with a spoon? Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick. Grrrrrrowl less, track more.
+
+
+Built with brain, nerd fuel, and a deep hatred for chaos.</p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg dark:bg-blue-500 dark:hover:bg-blue-600" onClick={onGetStarted}>
