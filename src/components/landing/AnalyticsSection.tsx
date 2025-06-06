@@ -9,9 +9,9 @@ interface AnalyticsSectionProps {
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ onGetStarted }) => {
   const benefits = [
-    "Tracciamento automatico dei tempi di risposta",
-    "Identificazione delle aziende più reattive",
-    "Suggerimenti per migliorare il tuo approccio"
+    "Automatic response time tracking (because who has time to count days?)",
+    "Identify the most responsive companies (find the keepers!)",
+    "Smart suggestions to level up your approach (like having a job hunt mentor)"
   ];
 
   return (
@@ -21,16 +21,16 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ onGetStarted
           <div className="order-2 lg:order-1">
             <img 
               src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-              alt="Analisi delle candidature"
+              alt="Job application analytics dashboard"
               className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl"
             />
           </div>
           <div className="order-1 lg:order-2">
             <h3 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              Analizza e migliora le tue performance
+              Analyze & optimize like a data scientist
             </h3>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-              Con Flow Guru puoi visualizzare statistiche dettagliate sui tuoi tassi di risposta, identificare i pattern di successo e ottimizzare la tua strategia di ricerca lavoro.
+              TrackZilla gives you detailed insights into your response rates, helps you spot success patterns, and optimizes your job hunting strategy. It's like having analytics superpowers for your career! 📊
             </p>
             <ul className="space-y-4 mb-8">
               {benefits.map((benefit, index) => (
@@ -47,7 +47,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ onGetStarted
               size="lg"
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
             >
-              Inizia l'analisi gratuita
+              Start free analysis
             </Button>
           </div>
         </div>

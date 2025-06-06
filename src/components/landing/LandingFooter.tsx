@@ -11,10 +11,10 @@ export const LandingFooter: React.FC = () => {
             <div className="p-1 bg-blue-600 rounded-lg">
               <Briefcase className="w-4 h-4 text-white" />
             </div>
-            <span className="font-semibold">Flow Guru</span>
+            <span className="font-semibold">TrackZilla</span>
           </div>
           <p className="text-sm text-gray-400">
-            © 2024 Flow Guru. Ottimizza la tua ricerca di lavoro.
+            © 2024 TrackZilla. Supercharge your job hunt like a boss! 🚀
           </p>
         </div>
       </div>

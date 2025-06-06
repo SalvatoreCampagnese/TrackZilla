@@ -18,13 +18,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
         </div>
         
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-          Ottimizza la tua ricerca di lavoro con{' '}
+          Crush your job hunt with{' '}
           <span className="text-blue-600 dark:text-blue-400">TrackZilla</span>
         </h1>
         
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto">
-          Traccia le tue candidature, monitora i progressi e ottimizza la tua strategia di ricerca del lavoro. 
-          Non perdere mai più di vista una candidatura importante.
+          Track applications, monitor progress, and optimize your job hunting strategy like a pro. 
+          Never lose sight of an important opportunity again - because job hunting is hard enough without the chaos! 🎯
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -33,7 +33,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg dark:bg-blue-500 dark:hover:bg-blue-600"
             onClick={onGetStarted}
           >
-            Inizia Subito
+            Start Hunting Now
           </Button>
         </div>
         
@@ -44,9 +44,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
                 <Target className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Organizzazione Totale</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Total Organization</h3>
             <p className="text-gray-600 dark:text-gray-300">
-              Mantieni tutte le tue candidature organizzate in un unico posto
+              Keep all your applications organized in one awesome place
             </p>
           </div>
           
@@ -56,9 +56,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
                 <TrendingUp className="w-8 h-8 text-purple-600 dark:text-purple-400" />
               </div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Analisi Dettagliate</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Detailed Analytics</h3>
             <p className="text-gray-600 dark:text-gray-300">
-              Scopri pattern e tendenze per migliorare il tuo tasso di successo
+              Discover patterns and trends to boost your success rate
             </p>
           </div>
           
@@ -68,9 +68,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
                 <Briefcase className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Tracciamento Intelligente</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Smart Tracking</h3>
             <p className="text-gray-600 dark:text-gray-300">
-              Monitora automaticamente lo stato delle tue candidature
+              Automatically monitor your application status like magic
             </p>
           </div>
         </div>

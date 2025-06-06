@@ -7,38 +7,38 @@ export const FeaturesSection: React.FC = () => {
   const features = [
     {
       icon: Target,
-      title: "Traccia ogni candidatura",
-      description: "Organizza tutte le tue candidature in un unico posto. Monitora lo stato, le date e i dettagli di ogni opportunità.",
+      title: "Track every application",
+      description: "Organize all your job applications in one place. Monitor status, dates, and details of every opportunity like a boss.",
       color: "blue"
     },
     {
       icon: TrendingUp,
-      title: "Analytics avanzate",
-      description: "Visualizza statistiche dettagliate sul tuo tasso di risposta, tempi di feedback e performance generale.",
+      title: "Advanced analytics",
+      description: "View detailed stats on your response rates, feedback times, and overall performance. Data-driven job hunting FTW!",
       color: "green"
     },
     {
       icon: Clock,
-      title: "Follow-up automatici",
-      description: "Non perdere mai un'opportunità. Il sistema rileva automaticamente le candidature in ghosting.",
+      title: "Automatic follow-ups",
+      description: "Never miss an opportunity. The system automatically detects ghosted applications so you can follow up like a pro.",
       color: "purple"
     },
     {
       icon: BarChart3,
-      title: "Dashboard intuitiva",
-      description: "Visualizza rapidamente i tuoi progressi con metriche chiare e grafici informativi.",
+      title: "Intuitive dashboard",
+      description: "See your progress at a glance with clear metrics and informative charts. Beautiful data visualization included!",
       color: "orange"
     },
     {
       icon: CheckCircle,
-      title: "Stati personalizzabili",
-      description: "Traccia ogni fase del processo: candidatura, colloqui, feedback e offerte ricevute.",
+      title: "Customizable statuses",
+      description: "Track every phase of the process: applications, interviews, feedback, and job offers. Your workflow, your rules.",
       color: "red"
     },
     {
       icon: Zap,
-      title: "Setup rapido",
-      description: "Inizia in pochi secondi. Interfaccia semplice e intuitiva per massimizzare la produttività.",
+      title: "Lightning-fast setup",
+      description: "Get started in seconds. Simple and intuitive interface designed to maximize your productivity. No PhD required!",
       color: "indigo"
     }
   ];
@@ -60,10 +60,10 @@ export const FeaturesSection: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h3 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Tutto quello che ti serve per il job hunting
+            Everything you need for epic job hunting
           </h3>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Strumenti potenti per organizzare, tracciare e ottimizzare la tua ricerca di lavoro
+            Powerful tools to organize, track, and optimize your job search like a seasoned pro
           </p>
         </div>
 
