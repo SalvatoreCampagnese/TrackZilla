@@ -27,11 +27,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             TAME THE JOB HUNT{' '}
             <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
+              <span className="text-white">
                 Grrrawww!
               </span>
               <svg className="absolute -bottom-2 left-0 w-full h-3" viewBox="0 0 400 20" fill="none">
-                <path d="M10 15 Q200 5 390 15" stroke="#dc2626" strokeWidth="4" fill="none" strokeLinecap="round" />
+                <path d="M10 15 Q200 5 390 15" stroke="#ffffff" strokeWidth="4" fill="none" strokeLinecap="round" />
               </svg>
             </span>
           </h1>
@@ -54,12 +54,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* Right side - Visual elements */}
         <div className="relative animate-slide-up">
-          <div className="w-full">
-            <img 
-              alt="TrackZilla Dashboard" 
-              src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" 
-              className="w-full h-auto rounded-xl hover:scale-105 transition-transform duration-500" 
-            />
+          <div className="card-modern p-8 max-w-md mx-auto">
+            <div className="flex justify-center">
+              <div className="w-full h-80 rounded-xl overflow-hidden shadow-2xl">
+                <img 
+                  alt="TrackZilla Dashboard" 
+                  src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
