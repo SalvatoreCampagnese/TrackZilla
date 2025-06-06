@@ -14,7 +14,7 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({ onLogin, onSignup 
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl overflow-hidden">
             <img 
-              src="/lovable-uploads/9220c273-bc96-45f3-9a49-e598c00750a0.png" 
+              src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" 
               alt="TrackZilla Logo" 
               className="w-full h-full object-cover"
             />
