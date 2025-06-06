@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Target, TrendingUp, Clock, BarChart3, CheckCircle, Zap } from 'lucide-react';
@@ -6,7 +7,7 @@ export const FeaturesSection: React.FC = () => {
     icon: Target,
     title: "Track every application",
     description: "Organize all your job applications in one place. Monitor status, dates, and details of every opportunity like a boss.",
-    color: "blue"
+    color: "red"
   }, {
     icon: TrendingUp,
     title: "Advanced analytics",
@@ -35,34 +36,33 @@ export const FeaturesSection: React.FC = () => {
   }];
   const getColorClasses = (color: string) => {
     const colors = {
-      blue: "bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-400",
-      green: "bg-green-100 dark:bg-green-800 text-green-600 dark:text-green-400",
-      purple: "bg-purple-100 dark:bg-purple-800 text-purple-600 dark:text-purple-400",
-      orange: "bg-orange-100 dark:bg-orange-800 text-orange-600 dark:text-orange-400",
-      red: "bg-red-100 dark:bg-red-800 text-red-600 dark:text-red-400",
-      indigo: "bg-indigo-100 dark:bg-indigo-800 text-indigo-600 dark:text-indigo-400"
+      red: "bg-red-500/20 border-red-500/30 text-red-400",
+      green: "bg-green-500/20 border-green-500/30 text-green-400",
+      purple: "bg-purple-500/20 border-purple-500/30 text-purple-400",
+      orange: "bg-orange-500/20 border-orange-500/30 text-orange-400",
+      indigo: "bg-indigo-500/20 border-indigo-500/30 text-indigo-400"
     };
-    return colors[color as keyof typeof colors] || colors.blue;
+    return colors[color as keyof typeof colors] || colors.red;
   };
-  return <section className="bg-white dark:bg-blue-900/30 py-16 sm:py-24">
+  return <section className="bg-background py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
-          <h3 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h3 className="text-2xl sm:text-4xl font-bold text-foreground mb-4">
             Everything you need for epic job hunting
           </h3>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Because job hunting is a multi-headed hydra and your memory is not a database.</p>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Because job hunting is a multi-headed hydra and your memory is not a database.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {features.map(feature => <Card key={feature.title} className="border-gray-200 dark:border-blue-800 bg-white dark:bg-blue-900/50">
+          {features.map(feature => <Card key={feature.title} className="bg-gradient-to-br from-card to-gray-800/50 border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
-                <div className={`w-12 h-12 ${getColorClasses(feature.color)} rounded-lg flex items-center justify-center mb-4`}>
+                <div className={`w-12 h-12 ${getColorClasses(feature.color)} border rounded-lg flex items-center justify-center mb-4`}>
                   <feature.icon className="w-6 h-6" />
                 </div>
-                <CardTitle className="text-gray-900 dark:text-white">{feature.title}</CardTitle>
+                <CardTitle className="text-foreground">{feature.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-muted-foreground">
                   {feature.description}
                 </p>
               </CardContent>

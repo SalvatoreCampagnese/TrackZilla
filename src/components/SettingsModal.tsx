@@ -4,9 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Moon, Sun } from 'lucide-react';
 
 interface SettingsModalProps {
   open: boolean;
@@ -15,70 +13,41 @@ interface SettingsModalProps {
 
 export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
   const [ghostingDays, setGhostingDays] = useState(14);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const handleSave = () => {
-    // Salva le impostazioni nel localStorage
+    // Save settings to localStorage
     localStorage.setItem('ghostingDays', ghostingDays.toString());
-    localStorage.setItem('darkMode', isDarkMode.toString());
-    
-    // Applica il dark mode con transizione fluida
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    
     onOpenChange(false);
   };
 
-  const handleDarkModeToggle = (checked: boolean) => {
-    setIsDarkMode(checked);
-    // Applica immediatamente per preview
-    if (checked) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
-
-  // Carica le impostazioni salvate
+  // Load saved settings
   React.useEffect(() => {
     const savedGhostingDays = localStorage.getItem('ghostingDays');
-    const savedDarkMode = localStorage.getItem('darkMode');
     
     if (savedGhostingDays) {
       setGhostingDays(parseInt(savedGhostingDays));
-    }
-    
-    if (savedDarkMode) {
-      const darkMode = savedDarkMode === 'true';
-      setIsDarkMode(darkMode);
-      if (darkMode) {
-        document.documentElement.classList.add('dark');
-      }
     }
   }, []);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-card border-gray-700">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            Impostazioni
+          <DialogTitle className="flex items-center gap-2 text-foreground">
+            Settings
           </DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
-          {/* Impostazione giorni ghosting */}
-          <Card>
+          {/* Ghosting days setting */}
+          <Card className="bg-gradient-to-br from-card to-gray-800/50 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-base">Candidature Ghosted</CardTitle>
+              <CardTitle className="text-base text-foreground">Ghosted Applications</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Label htmlFor="ghosting-days">
-                  Giorni dopo cui una candidatura è considerata "ghosted"
+                <Label htmlFor="ghosting-days" className="text-foreground">
+                  Days after which an application is considered "ghosted"
                 </Label>
                 <Input
                   id="ghosting-days"
@@ -87,51 +56,29 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                   max="365"
                   value={ghostingDays}
                   onChange={(e) => setGhostingDays(parseInt(e.target.value) || 14)}
-                  className="w-full"
+                  className="w-full bg-background border-gray-600 text-foreground"
                 />
                 <p className="text-sm text-muted-foreground">
-                  Attualmente: {ghostingDays} giorni
+                  Currently: {ghostingDays} days
                 </p>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Impostazione dark mode */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Aspetto</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {isDarkMode ? (
-                    <Moon className="w-4 h-4 text-blue-400" />
-                  ) : (
-                    <Sun className="w-4 h-4 text-yellow-500" />
-                  )}
-                  <Label htmlFor="dark-mode">
-                    Modalità scura
-                  </Label>
-                </div>
-                <Switch
-                  id="dark-mode"
-                  checked={isDarkMode}
-                  onCheckedChange={handleDarkModeToggle}
-                />
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                {isDarkMode ? 'Tema scuro attivo - perfetto contrasto' : 'Tema chiaro attivo'}
-              </p>
             </CardContent>
           </Card>
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Annulla
+          <Button 
+            variant="outline" 
+            onClick={() => onOpenChange(false)}
+            className="border-gray-600 hover:bg-accent"
+          >
+            Cancel
           </Button>
-          <Button onClick={handleSave}>
-            Salva Impostazioni
+          <Button 
+            onClick={handleSave}
+            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
+          >
+            Save Settings
           </Button>
         </div>
       </DialogContent>
