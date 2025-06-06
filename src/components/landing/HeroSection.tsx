@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
@@ -27,7 +28,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           
           <div className="flex flex-col sm:flex-row gap-4">
             <Button onClick={onGetStarted} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg rounded-full">
-              Try free trial
+              Start the hunt now
             </Button>
             
           </div>
@@ -39,7 +40,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="">
             {/* Profile section */}
             <div className="flex justify-center mb-8">
-              <img alt="TrackZilla User" src="/lovable-uploads/0d29e982-15eb-486e-9997-62ec1f3dfc68.png" className="object-contain" />
+              <div className="w-full h-96 animate-[scale-in_0.8s_ease-out] rounded-xl overflow-hidden">
+                <img 
+                  alt="TrackZilla User" 
+                  src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
             
             
