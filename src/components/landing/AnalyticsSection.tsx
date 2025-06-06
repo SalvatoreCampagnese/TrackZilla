@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Punch } from 'lucide-react';
+import { Zap } from 'lucide-react';
 interface AnalyticsSectionProps {
   onGetStarted: () => void;
 }
@@ -23,7 +23,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
             <ul className="space-y-4 mb-8">
               {benefits.map((benefit, index) => <li key={index} className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
-                    <Punch className="w-4 h-4 text-white" />
+                    <Zap className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-zinc-50">{benefit}</span>
                 </li>)}
