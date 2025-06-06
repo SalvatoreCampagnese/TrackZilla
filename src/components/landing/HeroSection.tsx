@@ -39,14 +39,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="relative bg-gradient-to-br from-red-500 to-red-700 rounded-3xl p-8 min-h-[500px]">
             {/* Profile section */}
             <div className="flex justify-center mb-8">
-              <img src="/lovable-uploads/1cfab0e7-65a8-4956-b798-4ac8733c8283.png" alt="TrackZilla User" className="w-32 h-32 rounded-full border-4 border-white/20" />
+              <img alt="TrackZilla User" src="/lovable-uploads/0d29e982-15eb-486e-9997-62ec1f3dfc68.png" className="object-contain" />
             </div>
             
-            <div className="absolute bottom-0 right-1/4 transform translate-y-4 bg-pink-400 rounded-full p-3 shadow-lg">
-              <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-                <div className="w-3 h-3 bg-pink-400 rounded"></div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
