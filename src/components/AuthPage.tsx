@@ -106,36 +106,36 @@ export const AuthPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-background dark:to-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Button
           variant="ghost"
           onClick={() => setShowAuth(false)}
-          className="mb-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full"
+          className="mb-4 text-white/70 hover:text-white hover:bg-white/10 rounded-xl"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Torna alla home
         </Button>
 
-        <Card className="bg-white dark:bg-card border-gray-200 dark:border-border">
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <div className="w-12 h-12 rounded-xl overflow-hidden">
                 <img src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" alt="TrackZilla Logo" className="w-full h-full object-cover" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-900 dark:text-foreground">TrackZilla</CardTitle>
-            <CardDescription className="text-gray-600 dark:text-muted-foreground">
+            <CardTitle className="text-2xl font-bold text-white">TrackZilla</CardTitle>
+            <CardDescription className="text-white/70">
               Accedi al tuo account per iniziare a tracciare le tue candidature
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-gray-100 dark:bg-muted">
-                <TabsTrigger value="signin" className="dark:text-muted-foreground dark:data-[state=active]:bg-background dark:data-[state=active]:text-foreground">
+              <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-md border border-white/20">
+                <TabsTrigger value="signin" className="text-white/70 data-[state=active]:bg-white/20 data-[state=active]:text-white">
                   Accedi
                 </TabsTrigger>
-                <TabsTrigger value="signup" className="dark:text-muted-foreground dark:data-[state=active]:bg-background dark:data-[state=active]:text-foreground">
+                <TabsTrigger value="signup" className="text-white/70 data-[state=active]:bg-white/20 data-[state=active]:text-white">
                   Registrati
                 </TabsTrigger>
               </TabsList>
@@ -143,30 +143,30 @@ export const AuthPage = () => {
               <TabsContent value="signin" className="space-y-4 mt-4">
                 <form onSubmit={handleFormSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signin-email" className="text-gray-700 dark:text-foreground">Email</Label>
+                    <Label htmlFor="signin-email" className="text-white">Email</Label>
                     <Input
                       id="signin-email"
                       type="email"
                       placeholder="inserisci la tua email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="dark:bg-background dark:border-border dark:text-foreground"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signin-password" className="text-gray-700 dark:text-foreground">Password</Label>
+                    <Label htmlFor="signin-password" className="text-white">Password</Label>
                     <Input
                       id="signin-password"
                       type="password"
                       placeholder="inserisci la tua password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="dark:bg-background dark:border-border dark:text-foreground"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
                     />
                   </div>
                   <Button 
                     type="submit"
-                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full" 
+                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl" 
                     disabled={loading}
                   >
                     {loading ? 'Accesso in corso...' : 'Accedi'}
@@ -175,10 +175,10 @@ export const AuthPage = () => {
 
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-gray-300 dark:border-border" />
+                    <span className="w-full border-t border-white/20" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white dark:bg-card px-2 text-gray-500 dark:text-muted-foreground">
+                    <span className="bg-gradient-to-br from-gray-900 to-gray-800 px-2 text-white/70">
                       oppure
                     </span>
                   </div>
@@ -186,7 +186,7 @@ export const AuthPage = () => {
 
                 <Button 
                   variant="outline"
-                  className="w-full border-red-600 text-red-600 hover:bg-red-50 dark:border-red-400 dark:text-red-400 dark:hover:bg-background dark:hover:text-red-400 rounded-full" 
+                  className="w-full border-red-600 text-red-400 hover:bg-red-600/20 hover:text-red-300 rounded-xl" 
                   onClick={handleMagicLink}
                   disabled={magicLinkLoading}
                 >
@@ -198,30 +198,30 @@ export const AuthPage = () => {
               <TabsContent value="signup" className="space-y-4 mt-4">
                 <form onSubmit={handleFormSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-gray-700 dark:text-foreground">Email</Label>
+                    <Label htmlFor="signup-email" className="text-white">Email</Label>
                     <Input
                       id="signup-email"
                       type="email"
                       placeholder="inserisci la tua email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="dark:bg-background dark:border-border dark:text-foreground"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-gray-700 dark:text-foreground">Password</Label>
+                    <Label htmlFor="signup-password" className="text-white">Password</Label>
                     <Input
                       id="signup-password"
                       type="password"
                       placeholder="crea una password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="dark:bg-background dark:border-border dark:text-foreground"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
                     />
                   </div>
                   <Button 
                     type="submit"
-                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full" 
+                    className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl" 
                     disabled={loading}
                   >
                     {loading ? 'Registrazione in corso...' : 'Registrati'}
