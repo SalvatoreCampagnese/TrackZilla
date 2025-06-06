@@ -61,9 +61,7 @@ Built with brain, nerd fuel, and a deep hatred for chaos.</p>
               </div>
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Smart Tracking</h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              Automatically monitor your application status like magic
-            </p>
+            <p className="text-gray-600 dark:text-gray-300">Let Trackzilla grrrrrrrowl at you when it’s time to act</p>
           </div>
         </div>
       </div>
