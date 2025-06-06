@@ -7,6 +7,6 @@ import type { Database } from "./types";
 // import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY!
+  "https://uaejwbglfmvdetvevygn.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhZWp3YmdsZm12ZGV0dmV2eWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMTQ4NzYsImV4cCI6MjA2NDY5MDg3Nn0.gxk4Py0KRLhbvk1DVJKIz7m6HrdKrYqRy8Hgo3TogEo"
 );
