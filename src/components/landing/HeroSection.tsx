@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
@@ -22,9 +21,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </span>
           </h1>
           
-          <p className="text-lg mb-8 max-w-lg leading-relaxed text-zinc-50">
-            Job hunt got you feeling like you're fighting a Gila monster with a spoon? Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick. Grrrrrrowl less, track more. Built with brain, nerd fuel, and a deep hatred for chaos.
-          </p>
+          <p className="text-lg mb-8 max-w-lg leading-relaxed text-zinc-50">Job hunt got you feeling like you're fighting a Gila monster with a spoon? 
+Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick. Grrrrrrowl less, track more. 
+
+
+Built with brain, nerd fuel, and a deep hatred for chaos.</p>
           
           <div className="flex flex-col sm:flex-row gap-4">
             <Button onClick={onGetStarted} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg rounded-full">
@@ -41,7 +42,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Profile section */}
             <div className="flex justify-center mb-8">
               <div className="w-full h-96 animate-[scale-in_0.8s_ease-out] rounded-xl overflow-hidden">
-                <img alt="TrackZilla User" src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" className="w-full h-full object-contain" style={{minHeight: '384px'}} />
+                <img alt="TrackZilla User" src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" className="w-full h-full object-contain" style={{
+                minHeight: '384px'
+              }} />
               </div>
             </div>
             
