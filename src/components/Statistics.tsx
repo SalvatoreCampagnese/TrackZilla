@@ -89,7 +89,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     <div className="space-y-6">
       {/* Metriche principali */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-white dark:bg-gray-900/50 border-gray-200 dark:border-gray-800">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Candidature Totali</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
@@ -99,7 +99,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-gray-900/50 border-gray-200 dark:border-gray-800">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Tasso di Risposta</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
@@ -112,7 +112,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-gray-900/50 border-gray-200 dark:border-gray-800">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Tempo Medio Feedback</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
@@ -123,7 +123,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-gray-900/50 border-gray-200 dark:border-gray-800">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Colloqui Ottenuti</CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
@@ -140,7 +140,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
       {/* Grafici */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Grafico aziende più veloci */}
-        <Card className="bg-white dark:bg-gray-900/50 border-gray-200 dark:border-gray-800">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader>
             <CardTitle className="text-gray-900 dark:text-white">Aziende Più Veloci a Rispondere</CardTitle>
           </CardHeader>
@@ -172,7 +172,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         </Card>
 
         {/* Grafico stati avanzati */}
-        <Card className="bg-white dark:bg-gray-900/50 border-gray-200 dark:border-gray-800">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader>
             <CardTitle className="text-gray-900 dark:text-white">Aziende con Stati Avanzati</CardTitle>
           </CardHeader>
