@@ -43,7 +43,7 @@ export const FeaturesSection: React.FC = () => {
     };
     return colors[color as keyof typeof colors] || colors.red;
   };
-  return <section className="bg-red-900 py-16 sm:py-24">
+  return <section className="bg-gray-900 py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h3 className="text-2xl sm:text-4xl font-bold text-foreground mb-4">
