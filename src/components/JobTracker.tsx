@@ -63,6 +63,11 @@ export const JobTracker = () => {
       }, 0) / applications.length)
     : 0;
 
+  // Calculate applications in progress (excluding ghosting, retired, and refused)
+  const inProgressApplications = applications.filter(app => 
+    !['ghosting', 'ritirato', 'rifiutato'].includes(app.status)
+  ).length;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
@@ -112,7 +117,7 @@ export const JobTracker = () => {
               <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                 <span className="text-sm text-white/70">
-                  {applications.filter(app => app.status === 'in-corso').length} in progress
+                  {inProgressApplications} in progress
                 </span>
               </div>
             </div>
