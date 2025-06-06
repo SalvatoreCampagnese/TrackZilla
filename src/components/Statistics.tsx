@@ -1,10 +1,8 @@
+
 import React from 'react';
 import { JobApplication } from '@/types/job';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Clock, TrendingUp, Users, CheckCircle, Award } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface StatisticsProps {
   applications: JobApplication[];
@@ -62,42 +60,6 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     .sort((a, b) => b.stageScore - a.stageScore)
     .slice(0, 10);
 
-  // Data for companies with advanced stages (pie chart)
-  const advancedStatusData = applications
-    .filter(app => ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status))
-    .reduce((acc: any[], app) => {
-      const existing = acc.find(item => item.company === app.companyName);
-      if (existing) {
-        existing.count += 1;
-      } else {
-        acc.push({
-          company: app.companyName,
-          count: 1,
-          status: app.status
-        });
-      }
-      return acc;
-    }, [])
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
-
-  // Chart configuration
-  const chartConfig = {
-    company: {
-      label: "Company",
-    },
-    stageScore: {
-      label: "Interview Stage",
-      color: "hsl(var(--chart-1))",
-    },
-    count: {
-      label: "Interviews",
-      color: "hsl(var(--chart-2))",
-    },
-  };
-
-  const pieColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
-
   return (
     <div className="space-y-6">
       {/* Main metrics */}
@@ -150,90 +112,51 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         </Card>
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Most advanced interview stages list */}
-        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
-          <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-              <Award className="w-5 h-5" />
-              Most Advanced Interview Stages
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {advancedInterviewsData.length > 0 ? (
-              <div className="space-y-3">
-                {advancedInterviewsData.map((item, index) => (
-                  <div 
-                    key={`${item.company}-${item.role}-${index}`}
-                    className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-white truncate">
-                        {item.company}
-                      </div>
-                      <div className="text-sm text-white/70 truncate">
-                        {item.role}
-                      </div>
-                      <div className="text-xs text-white/50">
-                        Applied: {new Date(item.applicationDate).toLocaleDateString()}
-                      </div>
+      {/* Most advanced interview stages list */}
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
+        <CardHeader>
+          <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
+            <Award className="w-5 h-5" />
+            Most Advanced Interview Stages
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {advancedInterviewsData.length > 0 ? (
+            <div className="space-y-3">
+              {advancedInterviewsData.map((item, index) => (
+                <div 
+                  key={`${item.company}-${item.role}-${index}`}
+                  className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-white truncate">
+                      {item.company}
                     </div>
-                    <div className="flex items-center gap-2 ml-4">
-                      <span className="text-xs font-medium text-white bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 rounded-full">
-                        #{index + 1}
-                      </span>
-                      <span className="text-sm font-medium text-white/90 text-right min-w-0">
-                        {item.stage}
-                      </span>
+                    <div className="text-sm text-white/70 truncate">
+                      {item.role}
+                    </div>
+                    <div className="text-xs text-white/50">
+                      Applied: {new Date(item.applicationDate).toLocaleDateString()}
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="h-[300px] flex items-center justify-center text-muted-foreground dark:text-gray-200">
-                No data available
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Companies with advanced stages */}
-        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
-          <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white">Companies with Advanced Stages</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {advancedStatusData.length > 0 ? (
-              <ChartContainer config={chartConfig} className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={advancedStatusData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ company, count }) => `${company}: ${count}`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="count"
-                    >
-                      {advancedStatusData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </ChartContainer>
-            ) : (
-              <div className="h-[300px] flex items-center justify-center text-muted-foreground dark:text-gray-200">
-                No data available
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                  <div className="flex items-center gap-2 ml-4">
+                    <span className="text-xs font-medium text-white bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 rounded-full">
+                      #{index + 1}
+                    </span>
+                    <span className="text-sm font-medium text-white/90 text-right min-w-0">
+                      {item.stage}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="h-[300px] flex items-center justify-center text-muted-foreground dark:text-gray-200">
+              No data available
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
