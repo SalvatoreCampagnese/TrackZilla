@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Zap } from 'lucide-react';
+import { Circle } from 'lucide-react';
 
 interface AnalyticsSectionProps {
   onGetStarted: () => void;
@@ -31,8 +31,8 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
             <ul className="space-y-4 mb-8">
               {benefits.map((benefit, index) => (
                 <li key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
-                    <Zap className="w-4 h-4 text-white" />
+                  <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
+                    <Circle className="w-4 h-4 text-white fill-white stroke-2" />
                   </div>
                   <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
                 </li>
