@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Briefcase } from 'lucide-react';
 
 interface LandingHeaderProps {
   onLogin: () => void;
@@ -13,8 +12,12 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({ onLogin, onSignup 
     <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-blue-600 dark:bg-blue-500 rounded-xl">
-            <Briefcase className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 rounded-xl overflow-hidden">
+            <img 
+              src="/lovable-uploads/9220c273-bc96-45f3-9a49-e598c00750a0.png" 
+              alt="TrackZilla Logo" 
+              className="w-full h-full object-cover"
+            />
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">TrackZilla</h1>
         </div>
