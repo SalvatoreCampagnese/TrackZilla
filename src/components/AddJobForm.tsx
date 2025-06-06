@@ -191,7 +191,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
             </div>}
 
           {step === 'details' && <ScrollArea className="h-full">
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 w-full h-[500px] overflow-scroll sm:h-[300px] pb-40">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 w-full h-[500px] overflow-scroll sm:h-[300px]">
                 <div className="space-y-4 p-3 sm:p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800 w-full overflow-scroll">
                   <h3 className="font-medium text-green-900 dark:text-green-100 flex items-center gap-2 text-sm sm:text-base">
                     <Wand2 className="w-4 h-4" />
