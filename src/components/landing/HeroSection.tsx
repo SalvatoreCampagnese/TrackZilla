@@ -1,31 +1,24 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Target, TrendingUp, Briefcase } from 'lucide-react';
-
 interface HeroSectionProps {
   onGetStarted: () => void;
 }
-
-export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
-  return (
-    <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  onGetStarted
+}) => {
+  return <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-center mb-8">
-          <img 
-            src="/lovable-uploads/1cfab0e7-65a8-4956-b798-4ac8733c8283.png" 
-            alt="TrackZilla Logo" 
-            className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
-          />
+          <img src="/lovable-uploads/1cfab0e7-65a8-4956-b798-4ac8733c8283.png" alt="TrackZilla Logo" className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48" />
         </div>
         
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
           <span className="text-blue-600 dark:text-blue-400">TrackZilla</span>
         </h1>
         
-        <p className="text-2xl sm:text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6 tracking-wide">
-          TAME THE JOB HUNT
-        </p>
+        <p className="text-2xl sm:text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6 tracking-wide">TAME THE JOB HUNT
+Grrrrawwwwwwww!</p>
         
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto">
           Track applications, monitor progress, and optimize your job hunting strategy like a pro. 
@@ -33,11 +26,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Button 
-            size="lg" 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg dark:bg-blue-500 dark:hover:bg-blue-600"
-            onClick={onGetStarted}
-          >
+          <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg dark:bg-blue-500 dark:hover:bg-blue-600" onClick={onGetStarted}>
             Start Hunting Now
           </Button>
         </div>
@@ -80,6 +69,5 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
