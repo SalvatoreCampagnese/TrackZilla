@@ -12,28 +12,35 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
   onSignup
 }) => {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/5 border-b border-white/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden">
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
               <img src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" alt="TrackZilla Logo" className="w-full h-full object-cover" />
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">TrackZilla</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6">
             <a
               href="https://github.com/SalvatoreCampagnese/TrackZilla"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400 text-sm font-medium transition-colors"
+              className="text-white/70 hover:text-white text-sm font-medium transition-colors duration-300"
             >
               Contribute
             </a>
-            <Button onClick={onLogin} variant="ghost" className="text-gray-700 hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400 rounded-full">
+            <Button 
+              onClick={onLogin} 
+              variant="ghost" 
+              className="text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300"
+            >
               Sign In
             </Button>
-            <Button onClick={onSignup} className="bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 rounded-full">
+            <Button 
+              onClick={onSignup} 
+              className="bg-white text-gray-900 hover:bg-white/90 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105"
+            >
               Hunt now!
             </Button>
           </div>

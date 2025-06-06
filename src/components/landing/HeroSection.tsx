@@ -1,56 +1,83 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Play } from 'lucide-react';
+
 interface HeroSectionProps {
   onGetStarted: () => void;
 }
+
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onGetStarted
 }) => {
-  return <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+  return (
+    <section className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+      {/* Background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-red-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-500/20 rounded-full blur-3xl"></div>
+      </div>
+      
+      <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         {/* Left side - Text content */}
-        <div className="max-w-2xl">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
+        <div className="max-w-2xl animate-fade-in">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium text-white/90 mb-8">
+            🚀 Now in Beta - Start tracking for free
+          </div>
+          
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             TAME THE JOB HUNT{' '}
-            <span className="relative">
-              Grrrawww!
+            <span className="relative inline-block">
+              <span className="bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
+                Grrrawww!
+              </span>
               <svg className="absolute -bottom-2 left-0 w-full h-3" viewBox="0 0 400 20" fill="none">
                 <path d="M10 15 Q200 5 390 15" stroke="#dc2626" strokeWidth="4" fill="none" strokeLinecap="round" />
               </svg>
             </span>
           </h1>
           
-          <p className="text-lg mb-8 max-w-lg leading-relaxed text-zinc-50">Job hunt got you feeling like you're fighting a Gila monster with a spoon? 
-Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick. Grrrrrrowl less, track more. 
-
-
-Built with brain, nerd fuel, and a deep hatred for chaos.</p>
+          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">
+            Job hunt got you feeling like you're fighting a Gila monster with a spoon? 
+            Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.
+          </p>
           
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button onClick={onGetStarted} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg rounded-full">
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <Button 
+              onClick={onGetStarted} 
+              size="lg" 
+              className="bg-white text-gray-900 hover:bg-white/90 px-8 py-4 text-lg rounded-2xl font-semibold shadow-2xl transition-all duration-300 hover:scale-105"
+            >
               Start the hunt now
             </Button>
-            
+          </div>
+
+          <div className="flex items-center gap-8 text-sm text-white/60">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>Free to start</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>No credit card</span>
+            </div>
           </div>
         </div>
 
         {/* Right side - Visual elements */}
-        <div className="relative">
-          {/* Main dashboard mockup */}
-          <div className="">
-            {/* Profile section */}
+        <div className="relative animate-slide-up">
+          <div className="card-modern p-8 max-w-md mx-auto">
             <div className="flex justify-center mb-8">
-              <div className="w-full h-96 animate-[scale-in_0.8s_ease-out] rounded-xl overflow-hidden">
-                <img alt="TrackZilla User" src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" className="w-full h-full object-contain" style={{
-                minHeight: '384px'
-              }} />
+              <div className="w-full h-80 rounded-xl overflow-hidden shadow-2xl">
+                <img 
+                  alt="TrackZilla Dashboard" 
+                  src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                />
               </div>
             </div>
-            
-            
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
