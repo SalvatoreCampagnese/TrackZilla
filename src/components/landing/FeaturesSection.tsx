@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Target, TrendingUp, Clock, BarChart3, CheckCircle, Zap } from 'lucide-react';
@@ -44,7 +43,7 @@ export const FeaturesSection: React.FC = () => {
     };
     return colors[color as keyof typeof colors] || colors.red;
   };
-  return <section className="bg-background py-16 sm:py-24">
+  return <section className="bg-red-900 py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h3 className="text-2xl sm:text-4xl font-bold text-foreground mb-4">
@@ -54,7 +53,7 @@ export const FeaturesSection: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {features.map(feature => <Card key={feature.title} className="bg-gradient-to-br from-card to-gray-800/50 border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
+          {features.map(feature => <Card key={feature.title} className="bg-gradient-to-br from-red-800 to-red-700 border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
                 <div className={`w-12 h-12 ${getColorClasses(feature.color)} border rounded-lg flex items-center justify-center mb-4`}>
                   <feature.icon className="w-6 h-6" />
