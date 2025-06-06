@@ -66,22 +66,22 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Total Applications</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
+            <CardTitle className="text-sm font-medium text-white">Total Applications</CardTitle>
+            <Users className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{totalApplications}</div>
+            <div className="text-2xl font-bold text-white">{totalApplications}</div>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Response Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
+            <CardTitle className="text-sm font-medium text-white">Response Rate</CardTitle>
+            <TrendingUp className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{responseRate.toFixed(1)}%</div>
-            <p className="text-xs text-muted-foreground dark:text-gray-200">
+            <div className="text-2xl font-bold text-white">{responseRate.toFixed(1)}%</div>
+            <p className="text-xs text-white/70">
               {responsesReceived} out of {totalApplications}
             </p>
           </CardContent>
@@ -89,23 +89,23 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Average Feedback Time</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
+            <CardTitle className="text-sm font-medium text-white">Average Feedback Time</CardTitle>
+            <Clock className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{avgFeedbackTime}</div>
-            <p className="text-xs text-muted-foreground dark:text-gray-200">days</p>
+            <div className="text-2xl font-bold text-white">{avgFeedbackTime}</div>
+            <p className="text-xs text-white/70">days</p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Interviews Obtained</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
+            <CardTitle className="text-sm font-medium text-white">Interviews Obtained</CardTitle>
+            <CheckCircle className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{interviewsObtained}</div>
-            <p className="text-xs text-muted-foreground dark:text-gray-200">
+            <div className="text-2xl font-bold text-white">{interviewsObtained}</div>
+            <p className="text-xs text-white/70">
               {totalApplications > 0 ? ((interviewsObtained / totalApplications) * 100).toFixed(1) : 0}% of total
             </p>
           </CardContent>
@@ -115,7 +115,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
       {/* Most advanced interview stages list */}
       <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
+          <CardTitle className="text-white flex items-center gap-2">
             <Award className="w-5 h-5" />
             Most Advanced Interview Stages
           </CardTitle>
@@ -151,7 +151,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
               ))}
             </div>
           ) : (
-            <div className="h-[300px] flex items-center justify-center text-muted-foreground dark:text-gray-200">
+            <div className="h-[300px] flex items-center justify-center text-white/70">
               No data available
             </div>
           )}

@@ -33,13 +33,37 @@ export const AuthPage = () => {
     setLoading(true);
     try {
       if (type === 'signin') {
-        await signIn(email, password);
+        const { error } = await signIn(email, password);
+        if (error) {
+          // Check if it's an invalid credentials error
+          if (error.message.includes('Invalid login credentials') || error.message.includes('Email not confirmed')) {
+            toast({
+              title: "Login Failed",
+              description: "Account not found. Please sign up first or check your credentials.",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Error",
+              description: error.message || "An error occurred during login",
+              variant: "destructive",
+            });
+          }
+        }
       } else {
-        await signUp(email, password);
-        toast({
-          title: "Registration completed",
-          description: "Check your email to confirm your account",
-        });
+        const { error } = await signUp(email, password);
+        if (error) {
+          toast({
+            title: "Error",
+            description: error.message || "An error occurred during registration",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Registration completed",
+            description: "Check your email to confirm your account",
+          });
+        }
       }
     } catch (error: any) {
       toast({
