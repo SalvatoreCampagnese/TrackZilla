@@ -53,14 +53,14 @@ export const FeaturesSection: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {features.map(feature => <Card key={feature.title} className="bg-gradient-to-br from-gray-800 to-black border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
+          {features.map(feature => <Card key={feature.title} className="bg-gradient-to-br from-gray-800 to-black border-red-900 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
                 <div className={`w-12 h-12 ${getColorClasses(feature.color)} border rounded-lg flex items-center justify-center mb-4`}>
                   <feature.icon className="w-6 h-6" />
                 </div>
                 <CardTitle className="text-foreground">{feature.title}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="text-base text-zinc-100">
                 <p className="text-muted-foreground">
                   {feature.description}
                 </p>
