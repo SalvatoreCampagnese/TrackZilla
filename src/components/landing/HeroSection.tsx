@@ -6,7 +6,7 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onGetStarted
 }) => {
-  return <section className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+  return <section className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-12">
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-red-500/20 rounded-full blur-3xl"></div>
