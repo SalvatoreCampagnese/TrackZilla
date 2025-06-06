@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { JobApplication } from '@/types/job';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,7 +11,7 @@ interface StatisticsProps {
 }
 
 export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
-  // Calcoli delle metriche
+  // Calculations for metrics
   const totalApplications = applications.length;
   const responsesReceived = applications.filter(app => 
     !['in-corso', 'ghosting'].includes(app.status)
@@ -21,7 +22,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status)
   ).length;
 
-  // Tempo medio di feedback (simulato basato sulla data di candidatura)
+  // Average feedback time (simulated based on application date)
   const avgFeedbackTime = applications.length > 0 
     ? Math.round(applications.reduce((acc, app) => {
         const daysSinceApplication = Math.floor((new Date().getTime() - new Date(app.applicationDate).getTime()) / (1000 * 60 * 60 * 24));
@@ -29,27 +30,31 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
       }, 0) / applications.length)
     : 0;
 
-  // Dati per il grafico delle aziende più veloci
-  const companyResponseData = applications
-    .filter(app => app.status !== 'in-corso' && app.status !== 'ghosting')
-    .reduce((acc: any[], app) => {
-      const existing = acc.find(item => item.company === app.companyName);
-      const daysSinceApplication = Math.floor((new Date().getTime() - new Date(app.applicationDate).getTime()) / (1000 * 60 * 60 * 24));
-      
-      if (existing) {
-        existing.avgDays = Math.round((existing.avgDays + daysSinceApplication) / 2);
-      } else {
-        acc.push({
-          company: app.companyName,
-          avgDays: daysSinceApplication
-        });
-      }
-      return acc;
-    }, [])
-    .sort((a, b) => a.avgDays - b.avgDays)
+  // Data for advanced interview stages chart - showing jobs with most advanced stages
+  const advancedInterviewsData = applications
+    .filter(app => ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status))
+    .map(app => {
+      // Assign a score based on how advanced the stage is
+      const stageScore = {
+        'primo-colloquio': 1,
+        'secondo-colloquio': 2,
+        'colloquio-tecnico': 3,
+        'colloquio-finale': 4,
+        'offerta-ricevuta': 5
+      }[app.status] || 0;
+
+      return {
+        company: app.companyName,
+        role: app.roleDescription,
+        stage: app.status,
+        stageScore,
+        displayName: `${app.companyName} - ${app.roleDescription.substring(0, 20)}${app.roleDescription.length > 20 ? '...' : ''}`
+      };
+    })
+    .sort((a, b) => b.stageScore - a.stageScore)
     .slice(0, 5);
 
-  // Dati per il grafico degli stati avanzati
+  // Data for companies with advanced stages (pie chart)
   const advancedStatusData = applications
     .filter(app => ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status))
     .reduce((acc: any[], app) => {
@@ -68,17 +73,17 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
 
-  // Configurazione dei colori per i grafici
+  // Chart configuration
   const chartConfig = {
     company: {
-      label: "Azienda",
+      label: "Company",
     },
-    avgDays: {
-      label: "Giorni medi",
+    stageScore: {
+      label: "Interview Stage",
       color: "hsl(var(--chart-1))",
     },
     count: {
-      label: "Colloqui",
+      label: "Interviews",
       color: "hsl(var(--chart-2))",
     },
   };
@@ -87,11 +92,11 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
 
   return (
     <div className="space-y-6">
-      {/* Metriche principali */}
+      {/* Main metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Candidature Totali</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Total Applications</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
           </CardHeader>
           <CardContent>
@@ -101,80 +106,80 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Tasso di Risposta</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Response Rate</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">{responseRate.toFixed(1)}%</div>
             <p className="text-xs text-muted-foreground dark:text-gray-200">
-              {responsesReceived} su {totalApplications}
+              {responsesReceived} out of {totalApplications}
             </p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Tempo Medio Feedback</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Average Feedback Time</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">{avgFeedbackTime}</div>
-            <p className="text-xs text-muted-foreground dark:text-gray-200">giorni</p>
+            <p className="text-xs text-muted-foreground dark:text-gray-200">days</p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Colloqui Ottenuti</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">Interviews Obtained</CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground dark:text-gray-300" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">{interviewsObtained}</div>
             <p className="text-xs text-muted-foreground dark:text-gray-200">
-              {totalApplications > 0 ? ((interviewsObtained / totalApplications) * 100).toFixed(1) : 0}% del totale
+              {totalApplications > 0 ? ((interviewsObtained / totalApplications) * 100).toFixed(1) : 0}% of total
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Grafici */}
+      {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Grafico aziende più veloci */}
+        {/* Advanced interview stages chart */}
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white">Aziende Più Veloci a Rispondere</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-white">Most Advanced Interview Stages</CardTitle>
           </CardHeader>
           <CardContent>
-            {companyResponseData.length > 0 ? (
+            {advancedInterviewsData.length > 0 ? (
               <ChartContainer config={chartConfig} className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={companyResponseData}>
+                  <BarChart data={advancedInterviewsData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
-                      dataKey="company" 
-                      tick={{ fontSize: 12 }}
+                      dataKey="displayName" 
+                      tick={{ fontSize: 10 }}
                       angle={-45}
                       textAnchor="end"
-                      height={80}
+                      height={100}
                     />
-                    <YAxis />
+                    <YAxis domain={[0, 5]} />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="avgDays" fill="var(--color-avgDays)" />
+                    <Bar dataKey="stageScore" fill="var(--color-stageScore)" />
                   </BarChart>
                 </ResponsiveContainer>
               </ChartContainer>
             ) : (
               <div className="h-[300px] flex items-center justify-center text-muted-foreground dark:text-gray-200">
-                Nessun dato disponibile
+                No data available
               </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Grafico stati avanzati */}
+        {/* Companies with advanced stages */}
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white">Aziende con Stati Avanzati</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-white">Companies with Advanced Stages</CardTitle>
           </CardHeader>
           <CardContent>
             {advancedStatusData.length > 0 ? (
@@ -201,7 +206,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
               </ChartContainer>
             ) : (
               <div className="h-[300px] flex items-center justify-center text-muted-foreground dark:text-gray-200">
-                Nessun dato disponibile
+                No data available
               </div>
             )}
           </CardContent>
