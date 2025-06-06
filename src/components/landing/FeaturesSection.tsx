@@ -77,19 +77,19 @@ export const FeaturesSection: React.FC = () => {
           {features.map((feature, index) => (
             <Card 
               key={feature.title} 
-              className="card-modern hover:scale-105 transition-all duration-300 group cursor-pointer animate-slide-up"
+              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:scale-105 transition-all duration-300 group cursor-pointer animate-slide-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <CardHeader className="pb-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-4 group-hover:bg-white/20 transition-all duration-300">
+              <CardHeader className="pb-4 p-0">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm border border-white/20 flex items-center justify-center mb-4 group-hover:from-white/30 group-hover:to-white/10 transition-all duration-300">
                   <feature.icon className={`w-6 h-6 ${getIconClasses(feature.color)}`} />
                 </div>
-                <CardTitle className="text-white text-xl font-semibold">
+                <CardTitle className="text-white text-xl font-semibold leading-tight">
                   {feature.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-white/70 leading-relaxed">
+              <CardContent className="p-0">
+                <p className="text-white/70 leading-relaxed text-sm">
                   {feature.description}
                 </p>
               </CardContent>

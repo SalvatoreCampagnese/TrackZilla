@@ -50,31 +50,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               Start the hunt now
             </Button>
           </div>
-
-          <div className="flex items-center gap-8 text-sm text-white/60">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>Free to start</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>No credit card</span>
-            </div>
-          </div>
         </div>
 
         {/* Right side - Visual elements */}
         <div className="relative animate-slide-up">
-          <div className="card-modern p-8 max-w-md mx-auto">
-            <div className="flex justify-center mb-8">
-              <div className="w-full h-80 rounded-xl overflow-hidden shadow-2xl">
-                <img 
-                  alt="TrackZilla Dashboard" 
-                  src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
-                />
-              </div>
-            </div>
+          <div className="w-full">
+            <img 
+              alt="TrackZilla Dashboard" 
+              src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" 
+              className="w-full h-auto rounded-xl hover:scale-105 transition-transform duration-500" 
+            />
           </div>
         </div>
       </div>
