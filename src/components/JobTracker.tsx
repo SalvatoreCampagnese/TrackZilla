@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
@@ -71,7 +70,9 @@ export const JobTracker = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-4">
               <div className="p-3 sm:p-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-lg border border-gray-700">
-                <Briefcase className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden">
+                  <img src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" alt="TrackZilla Logo" className="w-full h-full object-cover" />
+                </div>
               </div>
               <div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-1">TrackZilla</h1>
