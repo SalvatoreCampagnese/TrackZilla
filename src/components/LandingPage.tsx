@@ -15,7 +15,7 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin, onSignup }) => {
   return (
-    <div className="min-h-screen bg-gradient-red-gray">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
       <LandingHeader 
         onLogin={onLogin || onGetStarted} 
         onSignup={onSignup || onGetStarted} 
