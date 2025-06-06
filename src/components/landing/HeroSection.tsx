@@ -18,7 +18,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
             TAME THE JOB HUNT{' '}
             <span className="relative">
-              Grrrrawwwwwwww!
+              Grrrawww!
               <svg 
                 className="absolute -bottom-2 left-0 w-full h-3" 
                 viewBox="0 0 400 20" 
