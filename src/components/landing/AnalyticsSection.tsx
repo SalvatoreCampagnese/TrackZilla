@@ -12,7 +12,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">
-            <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Job application analytics dashboard" className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl" />
+            <img alt="Job application analytics dashboard" className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl" src="/lovable-uploads/df62053e-b5a6-405f-9c75-b973cfe27a5c.jpg" />
           </div>
           <div className="order-1 lg:order-2">
             <h3 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">Monster-Slaying 101</h3>
