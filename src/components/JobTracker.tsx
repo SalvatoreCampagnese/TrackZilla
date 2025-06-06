@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
@@ -6,7 +7,7 @@ import { AddJobForm } from './AddJobForm';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
 import { SettingsModal } from './SettingsModal';
-import { Briefcase, Plus, Target, TrendingUp, Clock, CheckCircle, LogOut, Settings } from 'lucide-react';
+import { Plus, Target, TrendingUp, Clock, CheckCircle, LogOut, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
@@ -69,10 +70,8 @@ export const JobTracker = () => {
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 sm:p-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-lg border border-gray-700">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden">
-                  <img src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" alt="TrackZilla Logo" className="w-full h-full object-cover" />
-                </div>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl overflow-hidden shadow-lg">
+                <img src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" alt="TrackZilla Logo" className="w-full h-full object-cover" />
               </div>
               <div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-1">TrackZilla</h1>

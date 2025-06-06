@@ -66,7 +66,7 @@ export const JobList: React.FC<JobListProps> = ({
       {/* Filter */}
       <div className="mb-4 sm:mb-6">
         <Select value={filter} onValueChange={(value) => setFilter(value as JobStatus | 'all')}>
-          <SelectTrigger className="w-full sm:w-48 dark:bg-red-800/50 dark:border-red-700 dark:text-white">
+          <SelectTrigger className="w-full sm:w-48 bg-gray-800 border-gray-700 text-white">
             <SelectValue placeholder="Filtra per stato" />
           </SelectTrigger>
           <SelectContent className="dark:bg-red-800 dark:border-red-700">
@@ -83,7 +83,7 @@ export const JobList: React.FC<JobListProps> = ({
       {/* Applications Grid */}
       <div className="grid gap-4 sm:gap-6">
         {filteredApplications.map((application) => (
-          <Card key={application.id} className="hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-red-900/50 border-gray-200 dark:border-red-800">
+          <Card key={application.id} className="hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
@@ -134,7 +134,7 @@ export const JobList: React.FC<JobListProps> = ({
                     value={application.status} 
                     onValueChange={(value) => onUpdateStatus(application.id, value as JobStatus)}
                   >
-                    <SelectTrigger className="h-8 text-xs w-full sm:w-auto dark:bg-red-800/30 dark:border-red-700 dark:text-white">
+                    <SelectTrigger className="h-8 text-xs w-full sm:w-auto bg-gray-800 border-gray-700 text-white">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="dark:bg-red-800 dark:border-red-700">
