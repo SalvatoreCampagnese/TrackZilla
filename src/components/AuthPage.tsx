@@ -23,8 +23,8 @@ export const AuthPage = () => {
   const handleAuth = async (type: 'signin' | 'signup') => {
     if (!email || !password) {
       toast({
-        title: "Errore",
-        description: "Inserisci email e password",
+        title: "Error",
+        description: "Please enter email and password",
         variant: "destructive",
       });
       return;
@@ -37,14 +37,14 @@ export const AuthPage = () => {
       } else {
         await signUp(email, password);
         toast({
-          title: "Registrazione completata",
-          description: "Controlla la tua email per confermare l'account",
+          title: "Registration completed",
+          description: "Check your email to confirm your account",
         });
       }
     } catch (error: any) {
       toast({
-        title: "Errore",
-        description: error.message || "Si è verificato un errore",
+        title: "Error",
+        description: error.message || "An error occurred",
         variant: "destructive",
       });
     } finally {
@@ -55,8 +55,8 @@ export const AuthPage = () => {
   const handleMagicLink = async () => {
     if (!email) {
       toast({
-        title: "Errore",
-        description: "Inserisci la tua email nel campo sopra",
+        title: "Error",
+        description: "Please enter your email in the field above",
         variant: "destructive",
       });
       return;
@@ -66,13 +66,13 @@ export const AuthPage = () => {
     try {
       await signInWithMagicLink(email);
       toast({
-        title: "Magic Link inviato",
-        description: "Controlla la tua email per il link di accesso",
+        title: "Magic Link sent",
+        description: "Check your email for the login link",
       });
     } catch (error: any) {
       toast({
-        title: "Errore",
-        description: error.message || "Si è verificato un errore",
+        title: "Error",
+        description: error.message || "An error occurred",
         variant: "destructive",
       });
     } finally {
@@ -114,7 +114,7 @@ export const AuthPage = () => {
           className="mb-4 text-white/70 hover:text-white hover:bg-white/10 rounded-xl"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Torna alla home
+          Back to home
         </Button>
 
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
@@ -126,17 +126,17 @@ export const AuthPage = () => {
             </div>
             <CardTitle className="text-2xl font-bold text-white">TrackZilla</CardTitle>
             <CardDescription className="text-white/70">
-              Accedi al tuo account per iniziare a tracciare le tue candidature
+              Sign in to your account to start tracking your job applications
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-md border border-white/20">
                 <TabsTrigger value="signin" className="text-white/70 data-[state=active]:bg-white/20 data-[state=active]:text-white">
-                  Accedi
+                  Sign In
                 </TabsTrigger>
                 <TabsTrigger value="signup" className="text-white/70 data-[state=active]:bg-white/20 data-[state=active]:text-white">
-                  Registrati
+                  Sign Up
                 </TabsTrigger>
               </TabsList>
               
@@ -147,7 +147,7 @@ export const AuthPage = () => {
                     <Input
                       id="signin-email"
                       type="email"
-                      placeholder="inserisci la tua email"
+                      placeholder="enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
@@ -158,7 +158,7 @@ export const AuthPage = () => {
                     <Input
                       id="signin-password"
                       type="password"
-                      placeholder="inserisci la tua password"
+                      placeholder="enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
@@ -169,7 +169,7 @@ export const AuthPage = () => {
                     className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl" 
                     disabled={loading}
                   >
-                    {loading ? 'Accesso in corso...' : 'Accedi'}
+                    {loading ? 'Signing in...' : 'Sign In'}
                   </Button>
                 </form>
 
@@ -179,19 +179,19 @@ export const AuthPage = () => {
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
                     <span className="bg-gradient-to-br from-gray-900 to-gray-800 px-2 text-white/70">
-                      oppure
+                      or
                     </span>
                   </div>
                 </div>
 
                 <Button 
-                  variant="outline"
-                  className="w-full border-red-600 text-red-400 hover:bg-red-600/20 hover:text-red-300 rounded-xl" 
+                  variant="ghost"
+                  className="w-full border border-red-600/50 text-red-400 hover:bg-transparent hover:border-red-600 hover:text-red-300 rounded-xl bg-transparent" 
                   onClick={handleMagicLink}
                   disabled={magicLinkLoading}
                 >
                   <Wand2 className="w-4 h-4 mr-2" />
-                  {magicLinkLoading ? 'Invio Magic Link...' : 'Accedi con Magic Link'}
+                  {magicLinkLoading ? 'Sending Magic Link...' : 'Sign in with Magic Link'}
                 </Button>
               </TabsContent>
               
@@ -202,7 +202,7 @@ export const AuthPage = () => {
                     <Input
                       id="signup-email"
                       type="email"
-                      placeholder="inserisci la tua email"
+                      placeholder="enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
@@ -213,7 +213,7 @@ export const AuthPage = () => {
                     <Input
                       id="signup-password"
                       type="password"
-                      placeholder="crea una password"
+                      placeholder="create a password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
@@ -224,7 +224,7 @@ export const AuthPage = () => {
                     className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl" 
                     disabled={loading}
                   >
-                    {loading ? 'Registrazione in corso...' : 'Registrati'}
+                    {loading ? 'Creating account...' : 'Sign Up'}
                   </Button>
                 </form>
               </TabsContent>
