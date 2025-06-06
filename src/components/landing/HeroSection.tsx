@@ -21,7 +21,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </span>
           </h1>
           
-          <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
+          <p className="text-lg mb-8 max-w-lg leading-relaxed text-zinc-50">
             Job hunt got you feeling like you're fighting a Gila monster with a spoon? Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick. Grrrrrrowl less, track more. Built with brain, nerd fuel, and a deep hatred for chaos.
           </p>
           
