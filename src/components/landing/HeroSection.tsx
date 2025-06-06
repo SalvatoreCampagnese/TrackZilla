@@ -16,9 +16,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Left side - Text content */}
         <div className="max-w-2xl">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
-            We're here to{' '}
+            TAME THE JOB HUNT{' '}
             <span className="relative">
-              Increase your
+              Grrrrawwwwwwww!
               <svg 
                 className="absolute -bottom-2 left-0 w-full h-3" 
                 viewBox="0 0 400 20" 
@@ -26,7 +26,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               >
                 <path 
                   d="M10 15 Q200 5 390 15" 
-                  stroke="#10b981" 
+                  stroke="#dc2626" 
                   strokeWidth="4" 
                   fill="none"
                   strokeLinecap="round"
@@ -34,9 +34,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </svg>
             </span>
           </h1>
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-8 leading-tight">
-            Job Hunt Success
-          </h2>
           
           <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
             Let's make your job search more organized and efficient using TrackZilla with many of the latest features in managing applications every day.
@@ -46,7 +43,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <Button 
               onClick={onGetStarted}
               size="lg"
-              className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 text-lg rounded-full"
+              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg rounded-full"
             >
               Try free trial
             </Button>
@@ -66,7 +63,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Right side - Visual elements */}
         <div className="relative">
           {/* Main dashboard mockup */}
-          <div className="relative bg-gradient-to-br from-green-400 to-green-600 rounded-3xl p-8 min-h-[500px]">
+          <div className="relative bg-gradient-to-br from-red-500 to-red-700 rounded-3xl p-8 min-h-[500px]">
             {/* Profile section */}
             <div className="flex justify-center mb-8">
               <img 
@@ -81,7 +78,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <p className="text-sm text-gray-500 mb-1">Enter amount</p>
               <p className="text-xl font-bold text-gray-800">$450.00</p>
               <div className="mt-2">
-                <Button className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded-full">
+                <Button className="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-full">
                   Send
                 </Button>
               </div>
@@ -92,10 +89,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <p className="text-xl font-bold text-gray-800">$245.00</p>
               <div className="flex items-center mt-2">
                 <div className="flex space-x-1">
-                  <div className="w-2 h-6 bg-green-500 rounded"></div>
-                  <div className="w-2 h-4 bg-green-300 rounded"></div>
-                  <div className="w-2 h-8 bg-green-600 rounded"></div>
-                  <div className="w-2 h-3 bg-green-400 rounded"></div>
+                  <div className="w-2 h-6 bg-red-600 rounded"></div>
+                  <div className="w-2 h-4 bg-red-400 rounded"></div>
+                  <div className="w-2 h-8 bg-red-700 rounded"></div>
+                  <div className="w-2 h-3 bg-red-500 rounded"></div>
                 </div>
               </div>
             </div>
