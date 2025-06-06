@@ -7,6 +7,7 @@ import { JobTracker } from '@/components/JobTracker';
 const Index = () => {
   const { user, loading } = useAuth();
 
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
