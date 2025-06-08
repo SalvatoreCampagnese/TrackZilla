@@ -4,8 +4,19 @@ import { JobApplication, JOB_STATUS_LABELS, JobStatus } from '@/types/job';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { Building2, Calendar, Euro, MapPin, Trash2, ChevronDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface JobListProps {
   applications: JobApplication[];
@@ -19,6 +30,11 @@ export const JobList: React.FC<JobListProps> = ({
   onDelete 
 }) => {
   const [filter, setFilter] = useState<JobStatus | 'all'>('all');
+  const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; application: JobApplication | null }>({
+    isOpen: false,
+    application: null
+  });
+  const [confirmationInput, setConfirmationInput] = useState('');
 
   const filteredApplications = filter === 'all' 
     ? applications 
@@ -49,14 +65,32 @@ export const JobList: React.FC<JobListProps> = ({
     return icons[workMode];
   };
 
+  const handleDeleteClick = (application: JobApplication) => {
+    setDeleteModal({ isOpen: true, application });
+    setConfirmationInput('');
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteModal.application && confirmationInput === deleteModal.application.companyName) {
+      onDelete(deleteModal.application.id);
+      setDeleteModal({ isOpen: false, application: null });
+      setConfirmationInput('');
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModal({ isOpen: false, application: null });
+    setConfirmationInput('');
+  };
+
   if (applications.length === 0) {
     return (
       <div className="text-center py-8 sm:py-12 px-4">
         <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-4 bg-gray-100 dark:bg-red-800/50 rounded-full flex items-center justify-center">
           <Building2 className="w-8 h-8 sm:w-12 sm:h-12 text-gray-400 dark:text-red-300" />
         </div>
-        <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">Nessuna candidatura</h3>
-        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-300">Aggiungi la tua prima candidatura per iniziare il tracking</p>
+        <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">No applications</h3>
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-300">Add your first application to start tracking</p>
       </div>
     );
   }
@@ -67,12 +101,12 @@ export const JobList: React.FC<JobListProps> = ({
       <div className="mb-4 sm:mb-6">
         <Select value={filter} onValueChange={(value) => setFilter(value as JobStatus | 'all')}>
           <SelectTrigger className="w-full sm:w-48 bg-gray-800 border-gray-700 text-white">
-            <SelectValue placeholder="Filtra per stato" />
+            <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
-          <SelectContent className="dark:bg-red-800 dark:border-red-700">
-            <SelectItem value="all" className="dark:text-white dark:hover:bg-red-700">Tutte le candidature</SelectItem>
+          <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
+            <SelectItem value="all" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">All applications</SelectItem>
             {Object.entries(JOB_STATUS_LABELS).map(([key, label]) => (
-              <SelectItem key={key} value={key} className="dark:text-white dark:hover:bg-red-700">
+              <SelectItem key={key} value={key} className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 {label}
               </SelectItem>
             ))}
@@ -102,7 +136,7 @@ export const JobList: React.FC<JobListProps> = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onDelete(application.id)}
+                  onClick={() => handleDeleteClick(application)}
                   className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 flex-shrink-0"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -114,7 +148,7 @@ export const JobList: React.FC<JobListProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-200">
                   <Calendar className="w-4 h-4 flex-shrink-0" />
-                  <span className="truncate">{new Date(application.applicationDate).toLocaleDateString('it-IT')}</span>
+                  <span className="truncate">{new Date(application.applicationDate).toLocaleDateString('en-US')}</span>
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-200">
@@ -137,9 +171,9 @@ export const JobList: React.FC<JobListProps> = ({
                     <SelectTrigger className="h-8 text-xs w-full sm:w-auto bg-gray-800 border-gray-700 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="dark:bg-red-800 dark:border-red-700">
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
                       {Object.entries(JOB_STATUS_LABELS).map(([key, label]) => (
-                        <SelectItem key={key} value={key} className="dark:text-white dark:hover:bg-red-700 text-xs">
+                        <SelectItem key={key} value={key} className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-xs">
                           {label}
                         </SelectItem>
                       ))}
@@ -150,11 +184,11 @@ export const JobList: React.FC<JobListProps> = ({
               
               {/* Job Description Preview */}
               <details className="group">
-                <summary className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 cursor-pointer hover:text-red-700 dark:hover:text-red-300">
+                <summary className="flex items-center gap-2 text-sm text-white dark:text-white cursor-pointer hover:text-gray-200 dark:hover:text-gray-200">
                   <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180 flex-shrink-0" />
-                  <span className="truncate">Visualizza job description completa</span>
+                  <span className="truncate">View full job description</span>
                 </summary>
-                <div className="mt-3 p-3 bg-gray-50 dark:bg-red-800/30 rounded-lg text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap break-words">
+                <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap break-words">
                   {application.jobDescription}
                 </div>
               </details>
@@ -162,6 +196,41 @@ export const JobList: React.FC<JobListProps> = ({
           </Card>
         ))}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <AlertDialog open={deleteModal.isOpen} onOpenChange={(open) => !open && handleDeleteCancel()}>
+        <AlertDialogContent className="bg-card border-gray-700">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-foreground">Confirm Deletion</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
+              This action cannot be undone. To confirm deletion, please type the company name "{deleteModal.application?.companyName}" below.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="my-4">
+            <Input
+              value={confirmationInput}
+              onChange={(e) => setConfirmationInput(e.target.value)}
+              placeholder="Type company name to confirm"
+              className="bg-background border-gray-600 text-foreground"
+            />
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel 
+              onClick={handleDeleteCancel}
+              className="border-gray-600 hover:bg-accent"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteConfirm}
+              disabled={confirmationInput !== deleteModal.application?.companyName}
+              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Delete Application
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

@@ -13,10 +13,12 @@ interface SettingsModalProps {
 
 export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
   const [ghostingDays, setGhostingDays] = useState(14);
+  const [savedGhostingDays, setSavedGhostingDays] = useState(14);
 
   const handleSave = () => {
     // Save settings to localStorage
     localStorage.setItem('ghostingDays', ghostingDays.toString());
+    setSavedGhostingDays(ghostingDays);
     onOpenChange(false);
   };
 
@@ -25,7 +27,9 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
     const savedGhostingDays = localStorage.getItem('ghostingDays');
     
     if (savedGhostingDays) {
-      setGhostingDays(parseInt(savedGhostingDays));
+      const days = parseInt(savedGhostingDays);
+      setGhostingDays(days);
+      setSavedGhostingDays(days);
     }
   }, []);
 
@@ -59,7 +63,7 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                   className="w-full bg-background border-gray-600 text-foreground"
                 />
                 <p className="text-sm text-muted-foreground">
-                  Currently: {ghostingDays} days
+                  Currently: {savedGhostingDays} days
                 </p>
               </div>
             </CardContent>
