@@ -19,6 +19,20 @@ interface AuthTabsProps {
   onMagicLink: () => void;
 }
 
+const TermsNotice = () => (
+  <p className="text-xs text-white/70 text-center mt-4">
+    By continuing, you accept our{' '}
+    <a 
+      href="/terms_privacy.html" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="text-white underline hover:text-white/90"
+    >
+      Terms & Conditions and Privacy Policy
+    </a>
+  </p>
+);
+
 export const AuthTabs: React.FC<AuthTabsProps> = ({
   activeTab,
   setActiveTab,
@@ -76,6 +90,7 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
         </form>
 
         <MagicLinkButton onClick={onMagicLink} loading={magicLinkLoading} />
+        <TermsNotice />
       </TabsContent>
       
       <TabsContent value="signup" className="space-y-4 mt-4">
@@ -110,6 +125,7 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
             {loading ? 'Creating account...' : 'Sign Up'}
           </Button>
         </form>
+        <TermsNotice />
       </TabsContent>
     </Tabs>
   );
