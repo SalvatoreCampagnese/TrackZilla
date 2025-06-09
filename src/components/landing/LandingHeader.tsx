@@ -22,14 +22,6 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
             <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
           </div>
           <div className="flex items-center gap-6">
-            <a
-              href="https://github.com/SalvatoreCampagnese/TrackZilla"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/70 hover:text-white text-sm font-medium transition-colors duration-300"
-            >
-              Contribute
-            </a>
             <Button 
               onClick={onLogin} 
               variant="ghost" 
