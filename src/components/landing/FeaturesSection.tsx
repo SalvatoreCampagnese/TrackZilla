@@ -31,13 +31,13 @@ export const FeaturesSection: React.FC = () => {
     {
       icon: CheckCircle,
       title: "Customizable statuses",
-      description: "Track every phase of the process: applications, interviews, feedback, and job offers. Your workflow, your rules.",
+      description: "Application? Interview? Waiting in eternal silence? Customize your workflow like a true monster master. 🧌 You roll for control.",
       color: "green"
     },
     {
       icon: Zap,
-      title: "Lightning-fast setup",
-      description: "Get started in seconds. Simple and intuitive interface designed to maximize your productivity. No PhD required!",
+      title: "Summon in seconds",
+      description: "No tutorials. No rituals. Just click and boom, your job-hunting lair is live. ⚡️ Trackzilla has entered the chat.",
       color: "indigo"
     }
   ];
