@@ -55,6 +55,13 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
       title: "Data extracted!",
       description: "Data has been automatically extracted. Now complete the details."
     });
+    // Auto-dismiss toast faster for better UX
+    setTimeout(() => {
+      const toastElement = document.querySelector('[data-state="open"]');
+      if (toastElement) {
+        (toastElement as any).click?.();
+      }
+    }, 1500);
   }, [jobDescription]);
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
@@ -106,7 +113,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-xl">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 sm:p-6 shadow-xl">
         {/* Header with step indicator */}
         <div className="mb-6">
           <StepIndicator currentStep={step} />
@@ -145,38 +152,39 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
         {/* Footer buttons */}
         <div className="pt-6 border-t border-white/20 mt-6">
           {step === 'extract' ? (
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
-                className="flex-1 text-white border-white/20 hover:bg-white/20 h-11 rounded-full"
+                className="w-full sm:flex-1 text-white border-white/20 hover:bg-white/20 h-11 rounded-full order-2 sm:order-1"
               >
                 Cancel
               </Button>
               <Button
                 type="button"
                 onClick={handleParseJob}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white h-11 rounded-full"
+                className="w-full sm:flex-1 bg-red-600 hover:bg-red-700 text-white h-11 rounded-full order-1 sm:order-2"
                 disabled={!jobDescription.trim()}
               >
                 <Wand2 className="w-4 h-4 mr-2" />
-                Extract Data and Continue
+                <span className="hidden sm:inline">Extract Data and Continue</span>
+                <span className="sm:hidden">Extract Data</span>
               </Button>
             </div>
           ) : (
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setStep('extract')}
-                className="flex-1 text-white border-white/20 hover:bg-white/20 h-11 rounded-full"
+                className="w-full sm:flex-1 text-white border-white/20 hover:bg-white/20 h-11 rounded-full order-2 sm:order-1"
               >
                 Back
               </Button>
               <Button
                 onClick={handleSubmit}
-                className="bg-red-600 hover:bg-red-700 text-white flex-1 h-11 rounded-full"
+                className="bg-red-600 hover:bg-red-700 text-white w-full sm:flex-1 h-11 rounded-full order-1 sm:order-2"
               >
                 Add Application
               </Button>
