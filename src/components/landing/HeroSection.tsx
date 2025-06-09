@@ -31,8 +31,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </h1>
           
           <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">Job hunt got you feeling like you're fighting a Gila monster with a spoon? 
-
-
+<br/><br/>
 Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.</p>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
