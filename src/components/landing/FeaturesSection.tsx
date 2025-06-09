@@ -13,7 +13,7 @@ export const FeaturesSection: React.FC = () => {
     {
       icon: TrendingUp,
       title: "Advanced analytics",
-      description: "View detailed stats on your response rates, feedback times, and overall performance. Data-driven job hunting FTW!",
+      description: "Want to know which companies ghost you faster than a vampire in sunlight? We've got cold-blooded stats. Trackzilla sees all. Even your self-doubt. 👁️",
       color: "blue"
     },
     {
