@@ -1,23 +1,18 @@
 
-# Welcome to Flow Guru
+# Welcome to Trackzilla! 
 
-## Project info
+This is an Open Source project Made by Salvatore & Guido, born as an idea in the fullremote.it Telegram chat (https://t.me/fullremotechat)
 
-**URL**: https://lovable.dev/projects/8babf163-7b89-4788-b1a7-fec8313ceb19
+Contributions are more than welcome!
+
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/8babf163-7b89-4788-b1a7-fec8313ceb19) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+If you want to work locally using your own IDE, you can clone this repo and push changes.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -61,14 +56,3 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/8babf163-7b89-4788-b1a7-fec8313ceb19) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
