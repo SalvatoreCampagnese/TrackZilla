@@ -23,19 +23,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             TAME THE JOB HUNT{' '}
             <span className="relative inline-block">
-              <span className="text-white">
-                Grrrawww!
-              </span>
+              <span className="text-white">Grrrawww!</span>
               <svg className="absolute -bottom-2 left-0 w-full h-3" viewBox="0 0 400 20" fill="none">
                 <path d="M10 15 Q200 5 390 15" stroke="#ffffff" strokeWidth="4" fill="none" strokeLinecap="round" />
               </svg>
             </span>
           </h1>
           
-          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">
-            Job hunt got you feeling like you're fighting a Gila monster with a spoon? 
-            Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.
-          </p>
+          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">Job hunt got you feeling like you're fighting a Gila monster with a spoon? 
+
+
+Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.</p>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <Button onClick={onGetStarted} size="lg" className="bg-white text-gray-900 hover:bg-white/90 px-8 py-4 text-lg rounded-2xl font-semibold shadow-2xl transition-all duration-300 hover:scale-105">
