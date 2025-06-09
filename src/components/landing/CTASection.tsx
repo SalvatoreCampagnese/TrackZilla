@@ -27,7 +27,6 @@ export const CTASection: React.FC<CTASectionProps> = ({
           </h2>
           
           <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed font-light">
-            Join thousands of smart professionals who've already upgraded their job hunting process with TrackZilla. 
             Time to become the apex predator of the job market! 🦖
           </p>
           
