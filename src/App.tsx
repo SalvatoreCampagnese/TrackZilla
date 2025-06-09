@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
+import SitemapPage from "./components/SitemapPage";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,8 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/sitemap" element={<SitemapPage />} />
+            <Route path="/sitemap.xml" element={<SitemapPage />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
