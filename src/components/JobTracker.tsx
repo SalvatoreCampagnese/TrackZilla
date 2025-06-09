@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
 import { useGhostingUpdater } from '@/hooks/useGhostingUpdater';
-import { AddJobForm } from './AddJobForm';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
 import { SettingsModal } from './SettingsModal';
@@ -13,18 +12,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 
 export const JobTracker = () => {
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const { applications, loading, addApplication, updateApplicationStatus, deleteApplication, refetch } = useJobApplications();
-  const [showAddForm, setShowAddForm] = useState(false);
+  const { applications, loading, updateApplicationStatus, deleteApplication, refetch } = useJobApplications();
   const [showSettings, setShowSettings] = useState(false);
 
   // Initialize the ghosting updater
   useGhostingUpdater();
-
-  const handleAddApplication = async (applicationData: any) => {
-    await addApplication(applicationData);
-    setShowAddForm(false);
-  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -34,6 +28,10 @@ export const JobTracker = () => {
     await updateApplicationStatus(id, status);
     // Refetch applications to ensure UI is updated
     await refetch();
+  };
+
+  const handleAddApplication = () => {
+    navigate('/add-job');
   };
 
   if (loading) {
@@ -123,7 +121,7 @@ export const JobTracker = () => {
             </div>
             
             <Button 
-              onClick={() => setShowAddForm(true)}
+              onClick={handleAddApplication}
               className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white w-full sm:w-auto text-sm shadow-lg"
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -183,13 +181,6 @@ export const JobTracker = () => {
             </Card>
           </div>
         </div>
-
-        {/* Add Form Modal */}
-        <AddJobForm
-          open={showAddForm}
-          onAdd={handleAddApplication}
-          onCancel={() => setShowAddForm(false)}
-        />
 
         {/* Settings Modal */}
         <SettingsModal 

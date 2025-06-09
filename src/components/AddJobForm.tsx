@@ -5,12 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { X, Wand2, Plus, Tag, Calendar } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AddJobFormProps {
   onAdd: (application: JobApplication) => void;
@@ -23,7 +20,6 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
   onCancel,
   open
 }) => {
-  const isMobile = useIsMobile();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [step, setStep] = useState<'extract' | 'details'>('extract');
   const [jobDescription, setJobDescription] = useState('');
@@ -43,29 +39,10 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState('');
 
-  // Force focus on textarea when modal opens
+  // Force focus on textarea when component mounts
   useEffect(() => {
-    if (open && step === 'extract') {
-      // Multiple attempts to ensure focus
-      const focusTextarea = () => {
-        if (textareaRef.current) {
-          textareaRef.current.focus();
-          textareaRef.current.setSelectionRange(textareaRef.current.value.length, textareaRef.current.value.length);
-        }
-      };
-
-      // Immediate focus
-      focusTextarea();
-
-      // Delayed focus to override any modal focus management
-      const timer1 = setTimeout(focusTextarea, 50);
-      const timer2 = setTimeout(focusTextarea, 100);
-      const timer3 = setTimeout(focusTextarea, 200);
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-        clearTimeout(timer3);
-      };
+    if (open && step === 'extract' && textareaRef.current) {
+      textareaRef.current.focus();
     }
   }, [open, step]);
   
@@ -151,199 +128,79 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
     onCancel();
   }, [onCancel]);
 
-  if (isMobile) {
-    return (
-      <Sheet open={open} onOpenChange={handleClose}>
-        <SheetContent
-          side="bottom"
-          className="h-[90vh] flex flex-col p-4 bg-gradient-to-br from-gray-900 to-gray-800 border-white/20"
-          onOpenAutoFocus={(e) => e.preventDefault()}
-          onCloseAutoFocus={(e) => e.preventDefault()}
-          onPointerDownOutside={(e) => e.preventDefault()}
-          onInteractOutside={(e) => e.preventDefault()}
-          onEscapeKeyDown={(e) => e.preventDefault()}
-          tabIndex={-1}
-        >
-          <SheetHeader className="flex-shrink-0">
-            <SheetTitle className="sr-only">Add Application</SheetTitle>
-          </SheetHeader>
-          <FormContent 
-            step={step}
-            setStep={setStep}
-            jobDescription={jobDescription}
-            setJobDescription={setJobDescription}
-            applicationDate={applicationDate}
-            setApplicationDate={setApplicationDate}
-            parsedData={parsedData}
-            setParsedData={setParsedData}
-            status={status}
-            setStatus={setStatus}
-            tags={tags}
-            newTag={newTag}
-            setNewTag={setNewTag}
-            textareaRef={textareaRef}
-            predefinedTags={predefinedTags}
-            handleParseJob={handleParseJob}
-            handleAddTag={handleAddTag}
-            handleRemoveTag={handleRemoveTag}
-            handleAddCustomTag={handleAddCustomTag}
-            handleSubmit={handleSubmit}
-            handleClose={handleClose}
-            isMobile={isMobile}
-          />
-        </SheetContent>
-      </Sheet>
-    );
-  }
+  if (!open) return null;
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent
-        onOpenAutoFocus={(e) => e.preventDefault()}
-        onCloseAutoFocus={(e) => e.preventDefault()}
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onInteractOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
-        className="max-w-2xl w-full max-h-[90vh] flex flex-col p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-white/20"
-        tabIndex={-1}
-      >
-        <DialogHeader className="flex-shrink-0">
-          <DialogTitle className="sr-only">Add Application</DialogTitle>
-        </DialogHeader>
-        <FormContent 
-          step={step}
-          setStep={setStep}
-          jobDescription={jobDescription}
-          setJobDescription={setJobDescription}
-          applicationDate={applicationDate}
-          setApplicationDate={setApplicationDate}
-          parsedData={parsedData}
-          setParsedData={setParsedData}
-          status={status}
-          setStatus={setStatus}
-          tags={tags}
-          newTag={newTag}
-          setNewTag={setNewTag}
-          textareaRef={textareaRef}
-          predefinedTags={predefinedTags}
-          handleParseJob={handleParseJob}
-          handleAddTag={handleAddTag}
-          handleRemoveTag={handleRemoveTag}
-          handleAddCustomTag={handleAddCustomTag}
-          handleSubmit={handleSubmit}
-          handleClose={handleClose}
-          isMobile={isMobile}
-        />
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-// Move FormContent outside to prevent re-renders
-const FormContent = React.memo(({
-  step,
-  setStep,
-  jobDescription,
-  setJobDescription,
-  applicationDate,
-  setApplicationDate,
-  parsedData,
-  setParsedData,
-  status,
-  setStatus,
-  tags,
-  newTag,
-  setNewTag,
-  textareaRef,
-  predefinedTags,
-  handleParseJob,
-  handleAddTag,
-  handleRemoveTag,
-  handleAddCustomTag,
-  handleSubmit,
-  handleClose,
-  isMobile
-}: any) => (
-  <div className="flex flex-col h-full overflow-hidden" tabIndex={-1}>
-    {/* Header with step indicator */}
-    <div className="flex-shrink-0 mb-4 sm:mb-6">
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h2 className="text-lg sm:text-xl font-semibold text-white">Add Application</h2>
-          <div className="flex items-center gap-2 mt-2">
-            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${
+    <div className="w-full max-w-4xl mx-auto">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-xl">
+        {/* Header with step indicator */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
               step === 'extract' ? 'bg-red-600 text-white' : 'bg-green-600 text-white'
             }`}>
               1
             </div>
-            <span className={`text-xs sm:text-sm ${
+            <span className={`text-sm ${
               step === 'extract' ? 'text-red-600 font-medium' : 'text-green-600'
             }`}>
               Extraction
             </span>
-            <div className="w-4 sm:w-8 h-0.5 bg-white/20"></div>
-            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${
+            <div className="w-8 h-0.5 bg-white/20"></div>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
               step === 'details' ? 'bg-red-600 text-white' : 'bg-white/20 text-white/60'
             }`}>
               2
             </div>
-            <span className={`text-xs sm:text-sm ${
+            <span className={`text-sm ${
               step === 'details' ? 'text-red-600 font-medium' : 'text-white/60'
             }`}>
               Details
             </span>
           </div>
         </div>
-      </div>
-    </div>
 
-    {/* Scrollable form content */}
-    <div className="flex-1 overflow-hidden">
-      <ScrollArea className="" tabIndex={-1}>
-        {step === 'extract' && (
-          <div className="space-y-4 sm:space-y-6">
-            <div>
-              <Label htmlFor="jobDescription" className="text-white font-medium">Job Description *</Label>
-              <Textarea
-                ref={textareaRef}
-                id="jobDescription"
-                value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
-                placeholder="Paste the complete job description here..."
-                className="mt-2 min-h-[150px] sm:min-h-[200px] bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 resize-none focus-visible:ring-red-500 focus-visible:border-red-500"
-                required
-                autoFocus
-                onFocus={(e) => {
-                  // Ensure cursor is at the end when focused
-                  e.target.setSelectionRange(e.target.value.length, e.target.value.length);
-                }}
-              />
-              <p className="text-xs sm:text-sm text-white/70 mt-2">
-                Paste the entire job description to automatically extract the main data
-              </p>
-            </div>
-
-            <div>
-              <Label htmlFor="applicationDate" className="text-white font-medium">Application Date</Label>
-              <div className="relative w-fit mt-2">
-                <Input
-                  id="applicationDate"
-                  type="date"
-                  value={applicationDate}
-                  onChange={(e) => setApplicationDate(e.target.value)}
-                  className="bg-white/10 backdrop-blur-md border-white/20 text-white pr-10 w-auto [&::-webkit-calendar-picker-indicator]:opacity-0 focus-visible:ring-red-500 focus-visible:border-red-500"
+        {/* Form content - no ScrollArea needed since it's a page */}
+        <div className="space-y-6">
+          {step === 'extract' && (
+            <div className="space-y-6">
+              <div>
+                <Label htmlFor="jobDescription" className="text-white font-medium">Job Description *</Label>
+                <Textarea
+                  ref={textareaRef}
+                  id="jobDescription"
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
+                  placeholder="Paste the complete job description here..."
+                  className="mt-2 min-h-[300px] bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 resize-none focus-visible:ring-red-500 focus-visible:border-red-500"
                   required
+                  autoFocus
                 />
-                <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
+                <p className="text-sm text-white/70 mt-2">
+                  Paste the entire job description to automatically extract the main data
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="applicationDate" className="text-white font-medium">Application Date</Label>
+                <div className="relative w-fit mt-2">
+                  <Input
+                    id="applicationDate"
+                    type="date"
+                    value={applicationDate}
+                    onChange={(e) => setApplicationDate(e.target.value)}
+                    className="bg-white/10 backdrop-blur-md border-white/20 text-white pr-10 w-auto [&::-webkit-calendar-picker-indicator]:opacity-0 focus-visible:ring-red-500 focus-visible:border-red-500"
+                    required
+                  />
+                  <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {step === 'details' && (
-          <ScrollArea className="h-full" tabIndex={-1}>
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 w-full h-[500px] overflow-scroll sm:h-[300px]">
-              <div className="space-y-4 p-3 sm:p-4 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 w-full overflow-scroll">
+          {step === 'details' && (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-4 p-3 sm:p-4 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 w-full">
                 <h3 className="font-medium text-white flex items-center gap-2 text-sm sm:text-base">
                   <Wand2 className="w-4 h-4" />
                   Extracted Data (editable)
@@ -503,53 +360,51 @@ const FormContent = React.memo(({
                 </div>
               </div>
             </form>
-          </ScrollArea>
-        )}
-      </ScrollArea>
-    </div>
-
-    {/* Footer buttons */}
-    <div className="flex-shrink-0 pt-4 sm:pt-6 border-t border-white/20 mt-4 sm:mt-6">
-      {step === 'extract' ? (
-        <div className="space-y-3">
-          <Button
-            type="button"
-            onClick={handleParseJob}
-            className="w-full bg-red-600 hover:bg-red-700 text-white h-10 sm:h-11 rounded-full"
-            disabled={!jobDescription.trim()}
-          >
-            <Wand2 className="w-4 h-4 mr-2" />
-            Extract Data and Continue
-          </Button>
-          {isMobile && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              className="w-full text-white border-white/20 hover:bg-white/20 h-10 rounded-full"
-            >
-              Cancel
-            </Button>
           )}
         </div>
-      ) : (
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setStep('extract')}
-            className="flex-1 text-white border-white/20 hover:bg-white/20 h-10 sm:h-11 order-2 sm:order-1 rounded-full"
-          >
-            Back
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            className="bg-red-600 hover:bg-red-700 text-white flex-1 h-10 sm:h-11 order-1 sm:order-2 rounded-full"
-          >
-            Add Application
-          </Button>
+
+        {/* Footer buttons */}
+        <div className="pt-6 border-t border-white/20 mt-6">
+          {step === 'extract' ? (
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleClose}
+                className="flex-1 text-white border-white/20 hover:bg-white/20 h-11 rounded-full"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                onClick={handleParseJob}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white h-11 rounded-full"
+                disabled={!jobDescription.trim()}
+              >
+                <Wand2 className="w-4 h-4 mr-2" />
+                Extract Data and Continue
+              </Button>
+            </div>
+          ) : (
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setStep('extract')}
+                className="flex-1 text-white border-white/20 hover:bg-white/20 h-11 rounded-full"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleSubmit}
+                className="bg-red-600 hover:bg-red-700 text-white flex-1 h-11 rounded-full"
+              >
+                Add Application
+              </Button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
-  </div>
-));
+  );
+};
