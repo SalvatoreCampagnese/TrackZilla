@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Target, TrendingUp, Clock, BarChart3, CheckCircle, Zap } from 'lucide-react';
@@ -8,7 +7,7 @@ export const FeaturesSection: React.FC = () => {
     {
       icon: Target,
       title: "Track every application",
-      description: "Organize all your job applications in one place. Monitor status, dates, and details of every opportunity like a boss.",
+      description: "No job shall escape! Trackzilla logs every role you go after, complete with timestamps, notes, and juicy details. 🦖 RAWR! Application tracked!",
       color: "red"
     },
     {
