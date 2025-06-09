@@ -25,7 +25,7 @@ export const FeaturesSection: React.FC = () => {
     {
       icon: BarChart3,
       title: "Intuitive dashboard",
-      description: "See your progress at a glance with clear metrics and informative charts. Beautiful data visualization included!",
+      description: "See your quest progress with shiny charts and tasty metrics. So easy, even a cave troll could use it. ✨ Oooh, bars go up!",
       color: "orange"
     },
     {
