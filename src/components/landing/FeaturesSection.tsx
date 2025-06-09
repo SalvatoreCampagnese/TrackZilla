@@ -19,7 +19,7 @@ export const FeaturesSection: React.FC = () => {
     {
       icon: Clock,
       title: "Automatic follow-ups",
-      description: "Never miss an opportunity. The system automatically detects ghosted applications so you can follow up like a pro.",
+      description: "Never let a ghosted app get away. Trackzilla remembers what you forget and roars when it's time to ping. 💌 Grrrrrr... where's my interview?!",
       color: "purple"
     },
     {
