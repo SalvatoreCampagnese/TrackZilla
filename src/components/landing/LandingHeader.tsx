@@ -21,7 +21,7 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
             <Button 
               onClick={onLogin} 
               variant="ghost" 
