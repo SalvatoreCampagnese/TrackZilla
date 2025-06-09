@@ -30,10 +30,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </span>
           </h1>
           
-          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">Job hunt got you feeling like you're fighting a Gila monster with a spoon? 
-<br/><br/>
-Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.</p>
-          
+          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">Job hunt got you feeling like you're fighting a Gila monster with a spoon?</p>
+          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light mt-2">Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.</p>
+
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <Button onClick={onGetStarted} size="lg" className="bg-white text-gray-900 hover:bg-white/90 px-8 py-4 text-lg rounded-2xl font-semibold shadow-2xl transition-all duration-300 hover:scale-105">
               Start the hunt now
