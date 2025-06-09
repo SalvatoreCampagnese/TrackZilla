@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import AddJobPage from "./pages/AddJobPage";
 import SitemapPage from "./components/SitemapPage";
+import TermsPage from "./pages/TermsPage";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/add-job" element={<AddJobPage />} />
             <Route path="/sitemap" element={<SitemapPage />} />
             <Route path="/sitemap.xml" element={<SitemapPage />} />
+            <Route path="/terms" element={<TermsPage />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

@@ -23,7 +23,7 @@ const TermsNotice = () => (
   <p className="text-xs text-white/70 text-center mt-4">
     By continuing, you accept our{' '}
     <a 
-      href="/terms_privacy.html" 
+      href="/terms" 
       target="_blank" 
       rel="noopener noreferrer"
       className="text-white underline hover:text-white/90"
