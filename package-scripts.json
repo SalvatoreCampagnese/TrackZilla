@@ -1,0 +1,22 @@
+
+{
+  "scripts": {
+    "generate-sitemap": "node public/sitemap-generator.js",
+    "update-seo": "npm run generate-sitemap && echo 'SEO files updated! Remember to submit sitemap to Google Search Console.'"
+  },
+  "instructions": {
+    "usage": [
+      "Run 'node public/sitemap-generator.js' to generate sitemap.xml and sitemap.json",
+      "After deploying new pages, always run the sitemap generator",
+      "Submit the new sitemap to Google Search Console at https://search.google.com/search-console",
+      "The crawler frequency is set to weekly as requested"
+    ],
+    "deployment-checklist": [
+      "1. Run sitemap generator script",
+      "2. Deploy the application",
+      "3. Verify /sitemap endpoint returns JSON",
+      "4. Submit sitemap URL to Google Search Console",
+      "5. Set up weekly recrawl if needed"
+    ]
+  }
+}

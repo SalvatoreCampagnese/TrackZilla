@@ -1,14 +1,194 @@
+
+# Robots.txt for TrackZilla - Optimized SEO configuration
+# Allow legitimate search engines and block unwanted bots
+
+# Allow major search engines
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+# Allow social media crawlers for rich snippets
+User-agent: facebookexternalhit
 Allow: /
 
 User-agent: Twitterbot
 Allow: /
 
-User-agent: facebookexternalhit
+User-agent: LinkedInBot
 Allow: /
 
+User-agent: WhatsApp
+Allow: /
+
+# Block malicious and unwanted bots
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: SeznamBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+# Block scrapers and spam bots
+User-agent: ScrapeBot
+Disallow: /
+
+User-agent: ScrapingBee
+Disallow: /
+
+User-agent: WebReaper
+Disallow: /
+
+User-agent: WebCopier
+Disallow: /
+
+User-agent: Offline Explorer
+Disallow: /
+
+User-agent: HTTrack
+Disallow: /
+
+User-agent: Microsoft URL Control
+Disallow: /
+
+User-agent: EmailCollector
+Disallow: /
+
+User-agent: EmailSiphon
+Disallow: /
+
+User-agent: WebBandit
+Disallow: /
+
+User-agent: EmailWolf
+Disallow: /
+
+User-agent: ExtractorPro
+Disallow: /
+
+User-agent: CopyRightCheck
+Disallow: /
+
+User-agent: crescent
+Disallow: /
+
+User-agent: SiteSnagger
+Disallow: /
+
+User-agent: ProWebWalker
+Disallow: /
+
+User-agent: CheeseBot
+Disallow: /
+
+User-agent: LNSpiderguy
+Disallow: /
+
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: ia_archiver/1.6
+Disallow: /
+
+User-agent: Teleport
+Disallow: /
+
+User-agent: TeleportPro
+Disallow: /
+
+User-agent: MIIxpc
+Disallow: /
+
+User-agent: Telesoft
+Disallow: /
+
+User-agent: Website Quester
+Disallow: /
+
+User-agent: moget/2.1
+Disallow: /
+
+User-agent: WebZip/4.0
+Disallow: /
+
+User-agent: Stock Photo
+Disallow: /
+
+User-agent: NetMechanic
+Disallow: /
+
+User-agent: Zeus
+Disallow: /
+
+User-agent: RepoMonkey
+Disallow: /
+
+User-agent: Slackbot
+Disallow: /
+
+# Default rule for any other bots not explicitly mentioned
 User-agent: *
 Allow: /
+
+# Sitemap location
+Sitemap: https://trackzilla.cv/sitemap.xml
+
+# Additional directives
+Host: trackzilla.cv
