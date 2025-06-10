@@ -24,13 +24,13 @@ export type JobStatus =
   | 'ritirato';
 
 export const JOB_STATUS_LABELS: Record<JobStatus, string> = {
-  'in-corso': 'In corso',
+  'in-corso': 'In Progress',
   'ghosting': 'Ghosting',
-  'primo-colloquio': 'Primo colloquio',
-  'secondo-colloquio': 'Secondo colloquio',
-  'colloquio-tecnico': 'Colloquio tecnico',
-  'colloquio-finale': 'Colloquio finale',
-  'offerta-ricevuta': 'Offerta ricevuta',
-  'rifiutato': 'Rifiutato',
-  'ritirato': 'Ritirato'
+  'primo-colloquio': 'First Interview',
+  'secondo-colloquio': 'Second Interview',
+  'colloquio-tecnico': 'Technical Interview',
+  'colloquio-finale': 'Final Interview',
+  'offerta-ricevuta': 'Offer Received',
+  'rifiutato': 'Rejected',
+  'ritirato': 'Withdrawn'
 };
