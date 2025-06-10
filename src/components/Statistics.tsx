@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { JobApplication } from '@/types/job';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -133,6 +132,35 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     .sort((a, b) => b.stageScore - a.stageScore)
     .slice(0, 10);
 
+  // Chart configurations
+  const workModeChartConfig = {
+    value: {
+      label: "Applications",
+    },
+    remote: {
+      label: "Remote",
+      color: "#ef4444",
+    },
+    hybrid: {
+      label: "Hybrid", 
+      color: "#f97316",
+    },
+    onsite: {
+      label: "On-site",
+      color: "#eab308",
+    },
+    notSpecified: {
+      label: "Not Specified",
+      color: "#22c55e",
+    },
+  };
+
+  const statusChartConfig = {
+    value: {
+      label: "Count",
+    },
+  };
+
   const COLORS = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'];
 
   return (
@@ -247,42 +275,42 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
           </CardHeader>
           <CardContent>
             {workModeData.length > 0 ? (
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={workModeData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={100}
-                      dataKey="value"
-                    >
-                      {workModeData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="mt-4 space-y-2">
-                  {workModeData.map((item, index) => (
-                    <div key={item.name} className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div 
-                          className="w-3 h-3 rounded"
-                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                        />
-                        <span className="text-sm text-white/70">{item.name}</span>
-                      </div>
-                      <span className="text-sm text-white font-medium">{item.percentage}%</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <ChartContainer config={workModeChartConfig} className="h-[300px]">
+                <PieChart>
+                  <Pie
+                    data={workModeData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    dataKey="value"
+                  >
+                    {workModeData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                </PieChart>
+              </ChartContainer>
             ) : (
               <div className="h-[300px] flex items-center justify-center text-white/70">
                 No data available
+              </div>
+            )}
+            {workModeData.length > 0 && (
+              <div className="mt-4 space-y-2">
+                {workModeData.map((item, index) => (
+                  <div key={item.name} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div 
+                        className="w-3 h-3 rounded"
+                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                      />
+                      <span className="text-sm text-white/70">{item.name}</span>
+                    </div>
+                    <span className="text-sm text-white font-medium">{item.percentage}%</span>
+                  </div>
+                ))}
               </div>
             )}
           </CardContent>
@@ -297,21 +325,19 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
           </CardHeader>
           <CardContent>
             {statusData.length > 0 ? (
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={statusData} layout="horizontal">
-                    <XAxis type="number" hide />
-                    <YAxis 
-                      type="category" 
-                      dataKey="name" 
-                      tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12 }}
-                      width={80}
-                    />
-                    <Bar dataKey="value" fill="#ef4444" radius={[0, 4, 4, 0]} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+              <ChartContainer config={statusChartConfig} className="h-[300px]">
+                <BarChart data={statusData} layout="horizontal">
+                  <XAxis type="number" hide />
+                  <YAxis 
+                    type="category" 
+                    dataKey="name" 
+                    tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12 }}
+                    width={80}
+                  />
+                  <Bar dataKey="value" fill="#ef4444" radius={[0, 4, 4, 0]} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                </BarChart>
+              </ChartContainer>
             ) : (
               <div className="h-[300px] flex items-center justify-center text-white/70">
                 No data available
