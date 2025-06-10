@@ -2,14 +2,16 @@
 import React from 'react';
 import { JobApplication } from '@/types/job';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, TrendingUp, Users, CheckCircle, Award } from 'lucide-react';
+import { Clock, TrendingUp, Users, CheckCircle, Award, Target, Calendar, Building2 } from 'lucide-react';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
 interface StatisticsProps {
   applications: JobApplication[];
 }
 
 export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
-  // Calculations for metrics
+  // Basic calculations
   const totalApplications = applications.length;
   const responsesReceived = applications.filter(app => 
     !['in-corso', 'ghosting'].includes(app.status)
@@ -20,6 +22,29 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status)
   ).length;
 
+  // Success rate (offers received / total applications)
+  const offersReceived = applications.filter(app => app.status === 'offerta-ricevuta').length;
+  const successRate = totalApplications > 0 ? (offersReceived / totalApplications * 100) : 0;
+
+  // Applications per week (last 4 weeks)
+  const fourWeeksAgo = new Date();
+  fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
+  const recentApplications = applications.filter(app => 
+    new Date(app.applicationDate) >= fourWeeksAgo
+  );
+  const applicationsPerWeek = recentApplications.length / 4;
+
+  // Average time to first interview
+  const firstInterviewApps = applications.filter(app => 
+    ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status)
+  );
+  const avgTimeToInterview = firstInterviewApps.length > 0 
+    ? Math.round(firstInterviewApps.reduce((acc, app) => {
+        const daysSinceApplication = Math.floor((new Date().getTime() - new Date(app.applicationDate).getTime()) / (1000 * 60 * 60 * 24));
+        return acc + daysSinceApplication;
+      }, 0) / firstInterviewApps.length)
+    : 0;
+
   // Average feedback time (simulated based on application date)
   const avgFeedbackTime = applications.length > 0 
     ? Math.round(applications.reduce((acc, app) => {
@@ -27,6 +52,54 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         return acc + daysSinceApplication;
       }, 0) / applications.length)
     : 0;
+
+  // Work mode distribution
+  const workModeDistribution = applications.reduce((acc, app) => {
+    const mode = app.workMode || 'ND';
+    acc[mode] = (acc[mode] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const workModeData = Object.entries(workModeDistribution).map(([mode, count]) => ({
+    name: mode === 'ND' ? 'Not Specified' : 
+          mode === 'remoto' ? 'Remote' :
+          mode === 'ibrido' ? 'Hybrid' :
+          mode === 'in-presenza' ? 'On-site' : mode,
+    value: count,
+    percentage: totalApplications > 0 ? Math.round((count / totalApplications) * 100) : 0
+  }));
+
+  // Status distribution
+  const statusDistribution = applications.reduce((acc, app) => {
+    acc[app.status] = (acc[app.status] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const statusData = Object.entries(statusDistribution).map(([status, count]) => ({
+    name: status === 'in-corso' ? 'In Progress' :
+          status === 'primo-colloquio' ? 'First Interview' :
+          status === 'secondo-colloquio' ? 'Second Interview' :
+          status === 'colloquio-tecnico' ? 'Technical Interview' :
+          status === 'colloquio-finale' ? 'Final Interview' :
+          status === 'offerta-ricevuta' ? 'Offer Received' :
+          status === 'rifiutato' ? 'Rejected' :
+          status === 'ghosting' ? 'Ghosting' :
+          status === 'ritirato' ? 'Withdrawn' : status,
+    value: count,
+    percentage: totalApplications > 0 ? Math.round((count / totalApplications) * 100) : 0
+  }));
+
+  // Top companies by applications
+  const companyCount = applications.reduce((acc, app) => {
+    const company = app.companyName || 'Unknown';
+    acc[company] = (acc[company] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const topCompanies = Object.entries(companyCount)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 5)
+    .map(([company, count]) => ({ company, count }));
 
   // Data for advanced interview stages - showing jobs with most advanced stages
   const advancedInterviewsData = applications
@@ -60,6 +133,8 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     .sort((a, b) => b.stageScore - a.stageScore)
     .slice(0, 10);
 
+  const COLORS = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'];
+
   return (
     <div className="space-y-6">
       {/* Main metrics */}
@@ -89,7 +164,36 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Average Feedback Time</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">Interview Rate</CardTitle>
+            <CheckCircle className="h-4 w-4 text-white/70" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{interviewsObtained}</div>
+            <p className="text-xs text-white/70">
+              {totalApplications > 0 ? ((interviewsObtained / totalApplications) * 100).toFixed(1) : 0}% of total
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Success Rate</CardTitle>
+            <Target className="h-4 w-4 text-white/70" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{successRate.toFixed(1)}%</div>
+            <p className="text-xs text-white/70">
+              {offersReceived} offers received
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Additional metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Avg Feedback Time</CardTitle>
             <Clock className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
@@ -100,17 +204,158 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Interviews Obtained</CardTitle>
-            <CheckCircle className="h-4 w-4 text-white/70" />
+            <CardTitle className="text-sm font-medium text-white">Time to Interview</CardTitle>
+            <Calendar className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">{interviewsObtained}</div>
-            <p className="text-xs text-white/70">
-              {totalApplications > 0 ? ((interviewsObtained / totalApplications) * 100).toFixed(1) : 0}% of total
-            </p>
+            <div className="text-2xl font-bold text-white">{avgTimeToInterview}</div>
+            <p className="text-xs text-white/70">avg days</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Weekly Applications</CardTitle>
+            <TrendingUp className="h-4 w-4 text-white/70" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{applicationsPerWeek.toFixed(1)}</div>
+            <p className="text-xs text-white/70">last 4 weeks</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Active Companies</CardTitle>
+            <Building2 className="h-4 w-4 text-white/70" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{Object.keys(companyCount).length}</div>
+            <p className="text-xs text-white/70">companies applied to</p>
           </CardContent>
         </Card>
       </div>
+
+      {/* Charts section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Work Mode Distribution */}
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              Work Mode Distribution
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {workModeData.length > 0 ? (
+              <div className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={workModeData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      dataKey="value"
+                    >
+                      {workModeData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="mt-4 space-y-2">
+                  {workModeData.map((item, index) => (
+                    <div key={item.name} className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div 
+                          className="w-3 h-3 rounded"
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        />
+                        <span className="text-sm text-white/70">{item.name}</span>
+                      </div>
+                      <span className="text-sm text-white font-medium">{item.percentage}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="h-[300px] flex items-center justify-center text-white/70">
+                No data available
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Application Status Distribution */}
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              Application Status
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {statusData.length > 0 ? (
+              <div className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={statusData} layout="horizontal">
+                    <XAxis type="number" hide />
+                    <YAxis 
+                      type="category" 
+                      dataKey="name" 
+                      tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12 }}
+                      width={80}
+                    />
+                    <Bar dataKey="value" fill="#ef4444" radius={[0, 4, 4, 0]} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="h-[300px] flex items-center justify-center text-white/70">
+                No data available
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Top Companies */}
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Building2 className="w-5 h-5" />
+            Top Companies by Applications
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {topCompanies.length > 0 ? (
+            <div className="space-y-3">
+              {topCompanies.map((item, index) => (
+                <div 
+                  key={item.company}
+                  className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-medium text-white bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 rounded-full">
+                      #{index + 1}
+                    </span>
+                    <span className="font-medium text-white">{item.company}</span>
+                  </div>
+                  <span className="text-sm font-medium text-white/90">
+                    {item.count} application{item.count > 1 ? 's' : ''}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="h-[200px] flex items-center justify-center text-white/70">
+              No companies data available
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Most advanced interview stages list */}
       <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
@@ -152,7 +397,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
             </div>
           ) : (
             <div className="h-[300px] flex items-center justify-center text-white/70">
-              No data available
+              No interview data available
             </div>
           )}
         </CardContent>
