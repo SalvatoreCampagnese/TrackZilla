@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useJobApplications } from '@/hooks/useJobApplications';
 import { AddJobForm } from '@/components/AddJobForm';
 import { JobApplication } from '@/types/job';
@@ -9,7 +9,11 @@ import { Button } from '@/components/ui/button';
 
 const AddJobPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { addApplication } = useJobApplications();
+  
+  // Get description from URL params if available
+  const initialDescription = searchParams.get('description') || '';
 
   const handleAddApplication = async (applicationData: JobApplication) => {
     await addApplication(applicationData);
@@ -53,6 +57,7 @@ const AddJobPage = () => {
           open={true}
           onAdd={handleAddApplication}
           onCancel={handleCancel}
+          initialDescription={initialDescription}
         />
       </div>
     </div>

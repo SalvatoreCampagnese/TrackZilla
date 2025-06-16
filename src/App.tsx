@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import AddJobPage from "./pages/AddJobPage";
+import ImportPage from "./pages/ImportPage";
 import SitemapPage from "./components/SitemapPage";
 import TermsPage from "./pages/TermsPage";
 
@@ -22,6 +23,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/add-job" element={<AddJobPage />} />
+            <Route path="/import" element={<ImportPage />} />
             <Route path="/sitemap" element={<SitemapPage />} />
             <Route path="/sitemap.xml" element={<SitemapPage />} />
             <Route path="/terms" element={<TermsPage />} />

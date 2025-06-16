@@ -1,5 +1,4 @@
-
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { JobApplication, JobStatus } from '@/types/job';
 import { parseJobDescription } from '@/utils/jobParser';
 import { Button } from '@/components/ui/button';
@@ -14,12 +13,14 @@ interface AddJobFormProps {
   onAdd: (application: JobApplication) => void;
   onCancel: () => void;
   open: boolean;
+  initialDescription?: string;
 }
 
 export const AddJobForm: React.FC<AddJobFormProps> = ({
   onAdd,
   onCancel,
-  open
+  open,
+  initialDescription = ''
 }) => {
   const [step, setStep] = useState<'extract' | 'details'>('extract');
   const [jobDescription, setJobDescription] = useState('');
@@ -38,6 +39,13 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
   const [status, setStatus] = useState<JobStatus>('in-corso');
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState('');
+
+  // Set initial description when component mounts or initialDescription changes
+  useEffect(() => {
+    if (initialDescription) {
+      setJobDescription(initialDescription);
+    }
+  }, [initialDescription]);
 
   const handleParseJob = useCallback(() => {
     if (!jobDescription.trim()) {
