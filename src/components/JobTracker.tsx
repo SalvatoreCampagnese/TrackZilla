@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -5,6 +6,7 @@ import { useJobApplications } from '@/hooks/useJobApplications';
 import { useGhostingUpdater } from '@/hooks/useGhostingUpdater';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
+import { KanbanBoard } from './kanban/KanbanBoard';
 import { SettingsModal } from './SettingsModal';
 import { Plus, Target, TrendingUp, Clock, CheckCircle, LogOut, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -190,13 +192,20 @@ export const JobTracker = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="applications" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-md border border-white/20 h-12 rounded-xl shadow-lg">
+          <TabsList className="grid w-full grid-cols-3 bg-white/10 backdrop-blur-md border border-white/20 h-12 rounded-xl shadow-lg">
             <TabsTrigger 
               value="applications" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70 hover:text-white transition-all duration-200 text-sm font-medium rounded-lg"
             >
-              <span className="sm:hidden">Applications</span>
+              <span className="sm:hidden">List</span>
               <span className="hidden sm:inline">Applications</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="kanban" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70 hover:text-white transition-all duration-200 text-sm font-medium rounded-lg"
+            >
+              <span className="sm:hidden">Board</span>
+              <span className="hidden sm:inline">Kanban</span>
             </TabsTrigger>
             <TabsTrigger 
               value="statistics" 
@@ -209,6 +218,14 @@ export const JobTracker = () => {
           
           <TabsContent value="applications" className="mt-6">
             <JobList
+              applications={applications}
+              onUpdateStatus={handleUpdateStatus}
+              onDelete={deleteApplication}
+            />
+          </TabsContent>
+          
+          <TabsContent value="kanban" className="mt-6">
+            <KanbanBoard
               applications={applications}
               onUpdateStatus={handleUpdateStatus}
               onDelete={deleteApplication}
