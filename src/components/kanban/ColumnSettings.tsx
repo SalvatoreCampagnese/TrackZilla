@@ -239,8 +239,8 @@ export const ColumnSettings: React.FC<ColumnSettingsProps> = ({
                     {column.statusValues.map((status, statusIndex) => (
                       <div key={statusIndex} className="flex items-center gap-2">
                         {column.isDefault ? (
-                          // Default columns - show status but don't allow editing
-                          <div className="flex-1 p-2 bg-gray-50 rounded border text-sm">
+                          // Default columns - show status with better styling
+                          <div className="flex-1 p-2 bg-gray-100 border border-gray-200 rounded text-sm text-gray-800 font-medium">
                             {JOB_STATUS_LABELS[status as JobStatus] || status}
                           </div>
                         ) : (

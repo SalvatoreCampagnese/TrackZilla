@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { JobApplication } from '@/types/job';
 import { KanbanColumn } from './KanbanColumn';
 import { KanbanCard } from './KanbanCard';
 import { ColumnSettings } from './ColumnSettings';
+import { AddColumnModal } from './AddColumnModal';
 import { Settings, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -81,6 +81,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 }) => {
   const [columns, setColumns] = useState<KanbanColumnType[]>(DEFAULT_COLUMNS);
   const [showSettings, setShowSettings] = useState(false);
+  const [showAddColumn, setShowAddColumn] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
   // Load saved columns from localStorage
@@ -132,15 +133,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     onUpdateStatus(draggableId, newStatus);
   };
 
-  const addNewColumn = () => {
-    const newColumn: KanbanColumnType = {
-      id: `column-${Date.now()}`,
-      title: 'New Column',
-      statusValues: ['in-corso'], // Default status
-      color: 'bg-gray-500',
-      isDefault: false,
-      enabled: true
-    };
+  const addNewColumn = (newColumn: KanbanColumnType) => {
     saveColumns([...columns, newColumn]);
   };
 
@@ -151,7 +144,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         <h2 className="text-lg md:text-xl font-semibold text-white">Kanban Board</h2>
         <div className="flex gap-2">
           <Button
-            onClick={addNewColumn}
+            onClick={() => setShowAddColumn(true)}
             variant="outline"
             size="sm"
             className="border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/30 text-white text-xs md:text-sm"
@@ -234,6 +227,13 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         onOpenChange={setShowSettings}
         columns={columns}
         onSave={saveColumns}
+      />
+
+      {/* Add Column Modal */}
+      <AddColumnModal
+        open={showAddColumn}
+        onOpenChange={setShowAddColumn}
+        onSave={addNewColumn}
       />
     </div>
   );
