@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { KanbanColumnType } from './KanbanBoard';
 import { JobStatus, JOB_STATUS_LABELS } from '@/types/job';
@@ -86,7 +85,7 @@ const SortableColumnItem: React.FC<SortableColumnItemProps> = ({
     <div
       ref={setNodeRef}
       style={style}
-      className="border rounded-lg p-4 space-y-4 bg-white"
+      className="border border-border rounded-lg p-4 space-y-4 bg-card"
     >
       <div className="flex items-center gap-4">
         <div
@@ -94,15 +93,15 @@ const SortableColumnItem: React.FC<SortableColumnItemProps> = ({
           {...listeners}
           className="cursor-grab active:cursor-grabbing touch-none"
         >
-          <GripVertical className="w-5 h-5 text-gray-400" />
+          <GripVertical className="w-5 h-5 text-muted-foreground" />
         </div>
         
         {column.isDefault ? (
           // Default columns - only show enable/disable toggle
           <div className="flex-1 grid grid-cols-3 gap-4">
             <div>
-              <Label className="text-sm font-medium">{column.title}</Label>
-              <p className="text-xs text-gray-500 mt-1">Default column</p>
+              <Label className="text-sm font-medium text-foreground">{column.title}</Label>
+              <p className="text-xs text-muted-foreground mt-1">Default column</p>
             </div>
             
             <div className="flex items-center space-x-2">
@@ -110,35 +109,36 @@ const SortableColumnItem: React.FC<SortableColumnItemProps> = ({
                 checked={column.enabled}
                 onCheckedChange={(checked) => onUpdateColumn(columnIndex, { enabled: checked })}
               />
-              <Label className="text-sm">
+              <Label className="text-sm text-foreground">
                 {column.enabled ? 'Enabled' : 'Disabled'}
               </Label>
             </div>
             
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${column.color}`}></div>
-              <span className="text-sm text-gray-600">{column.color.replace('bg-', '').replace('-500', '')}</span>
+              <span className="text-sm text-muted-foreground">{column.color.replace('bg-', '').replace('-500', '')}</span>
             </div>
           </div>
         ) : (
           // Custom columns - full editing
           <div className="flex-1 grid grid-cols-3 gap-4">
             <div>
-              <Label htmlFor={`title-${columnIndex}`}>Column Title</Label>
+              <Label htmlFor={`title-${columnIndex}`} className="text-foreground">Column Title</Label>
               <Input
                 id={`title-${columnIndex}`}
                 value={column.title}
                 onChange={(e) => onUpdateColumn(columnIndex, { title: e.target.value })}
+                className="bg-background border-border text-foreground"
               />
             </div>
             
             <div>
-              <Label htmlFor={`color-${columnIndex}`}>Color</Label>
+              <Label htmlFor={`color-${columnIndex}`} className="text-foreground">Color</Label>
               <Select
                 value={column.color}
                 onValueChange={(value) => onUpdateColumn(columnIndex, { color: value })}
               >
-                <SelectTrigger>
+                <SelectTrigger className="bg-background border-border text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -171,7 +171,7 @@ const SortableColumnItem: React.FC<SortableColumnItemProps> = ({
       {(column.enabled || !column.isDefault) && (
         <div>
           <div className="flex items-center justify-between mb-2">
-            <Label>Status Values</Label>
+            <Label className="text-foreground">Status Values</Label>
             {!column.isDefault && (
               <Button
                 onClick={() => onAddStatus(columnIndex)}
@@ -188,8 +188,8 @@ const SortableColumnItem: React.FC<SortableColumnItemProps> = ({
             {column.statusValues.map((status, statusIndex) => (
               <div key={statusIndex} className="flex items-center gap-2">
                 {column.isDefault ? (
-                  // Default columns - show status with better styling
-                  <div className="flex-1 p-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-800 font-medium">
+                  // Default columns - show status with better styling for dark theme
+                  <div className="flex-1 p-2 bg-muted border border-border rounded text-sm text-foreground font-medium">
                     {JOB_STATUS_LABELS[status as JobStatus] || status}
                   </div>
                 ) : (
@@ -199,7 +199,7 @@ const SortableColumnItem: React.FC<SortableColumnItemProps> = ({
                       value={status}
                       onValueChange={(value) => onUpdateStatus(columnIndex, statusIndex, value as JobStatus)}
                     >
-                      <SelectTrigger className="flex-1">
+                      <SelectTrigger className="flex-1 bg-background border-border text-foreground">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
