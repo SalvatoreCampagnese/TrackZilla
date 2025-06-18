@@ -13,6 +13,8 @@ export interface KanbanColumnType {
   title: string;
   statusValues: string[];
   color: string;
+  isDefault: boolean;
+  enabled: boolean;
 }
 
 interface KanbanBoardProps {
@@ -26,37 +28,49 @@ const DEFAULT_COLUMNS: KanbanColumnType[] = [
     id: 'sent',
     title: 'Sent',
     statusValues: ['in-corso'],
-    color: 'bg-blue-500'
+    color: 'bg-blue-500',
+    isDefault: true,
+    enabled: true
   },
   {
     id: 'first-interview',
     title: '1st Interview',
     statusValues: ['primo-colloquio'],
-    color: 'bg-yellow-500'
+    color: 'bg-yellow-500',
+    isDefault: true,
+    enabled: true
   },
   {
     id: 'second-interview',
     title: '2nd Interview',
     statusValues: ['secondo-colloquio'],
-    color: 'bg-orange-500'
+    color: 'bg-orange-500',
+    isDefault: true,
+    enabled: true
   },
   {
     id: 'third-interview',
     title: '3rd Interview',
     statusValues: ['colloquio-tecnico', 'colloquio-finale'],
-    color: 'bg-purple-500'
+    color: 'bg-purple-500',
+    isDefault: true,
+    enabled: true
   },
   {
     id: 'offer',
     title: 'Offer',
     statusValues: ['offerta-ricevuta'],
-    color: 'bg-green-500'
+    color: 'bg-green-500',
+    isDefault: true,
+    enabled: true
   },
   {
     id: 'closed',
     title: 'Closed',
     statusValues: ['rifiutato', 'ritirato', 'ghosting'],
-    color: 'bg-gray-500'
+    color: 'bg-gray-500',
+    isDefault: true,
+    enabled: true
   }
 ];
 
@@ -67,12 +81,20 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 }) => {
   const [columns, setColumns] = useState<KanbanColumnType[]>(DEFAULT_COLUMNS);
   const [showSettings, setShowSettings] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Load saved columns from localStorage
   useEffect(() => {
     const savedColumns = localStorage.getItem('kanban-columns');
     if (savedColumns) {
-      setColumns(JSON.parse(savedColumns));
+      const parsed = JSON.parse(savedColumns);
+      // Merge with defaults to ensure isDefault and enabled properties exist
+      const mergedColumns = parsed.map((col: any) => ({
+        ...col,
+        isDefault: DEFAULT_COLUMNS.find(def => def.id === col.id)?.isDefault || false,
+        enabled: col.enabled !== undefined ? col.enabled : true
+      }));
+      setColumns(mergedColumns);
     }
   }, []);
 
@@ -86,7 +108,14 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     return applications.filter(app => column.statusValues.includes(app.status));
   };
 
+  const enabledColumns = columns.filter(col => col.enabled);
+
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
   const handleDragEnd = (result: DropResult) => {
+    setIsDragging(false);
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
@@ -95,7 +124,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       return;
     }
 
-    const destinationColumn = columns.find(col => col.id === destination.droppableId);
+    const destinationColumn = enabledColumns.find(col => col.id === destination.droppableId);
     if (!destinationColumn) return;
 
     // Get the first status value from the destination column
@@ -108,7 +137,9 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       id: `column-${Date.now()}`,
       title: 'New Column',
       statusValues: ['in-corso'], // Default status
-      color: 'bg-gray-500'
+      color: 'bg-gray-500',
+      isDefault: false,
+      enabled: true
     };
     saveColumns([...columns, newColumn]);
   };
@@ -116,38 +147,38 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   return (
     <div className="h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-white">Kanban Board</h2>
+      <div className="flex items-center justify-between mb-4 md:mb-6 px-2 md:px-0">
+        <h2 className="text-lg md:text-xl font-semibold text-white">Kanban Board</h2>
         <div className="flex gap-2">
           <Button
             onClick={addNewColumn}
             variant="outline"
             size="sm"
-            className="border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/30 text-white"
+            className="border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/30 text-white text-xs md:text-sm"
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Column
+            <Plus className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
+            <span className="hidden md:inline">Add Column</span>
           </Button>
           <Button
             onClick={() => setShowSettings(true)}
             variant="outline"
             size="sm"
-            className="border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/30 text-white"
+            className="border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/30 text-white text-xs md:text-sm"
           >
-            <Settings className="w-4 h-4 mr-2" />
-            Settings
+            <Settings className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
+            <span className="hidden md:inline">Settings</span>
           </Button>
         </div>
       </div>
 
       {/* Kanban Board */}
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex gap-4 overflow-x-auto pb-4">
-          {columns.map((column) => {
+      <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+        <div className="flex gap-2 md:gap-4 overflow-x-auto pb-4 px-2 md:px-0">
+          {enabledColumns.map((column) => {
             const columnApplications = getApplicationsForColumn(column);
             
             return (
-              <div key={column.id} className="flex-shrink-0 w-80">
+              <div key={column.id} className="flex-shrink-0 w-72 md:w-80">
                 <KanbanColumn column={column} applicationCount={columnApplications.length}>
                   <Droppable droppableId={column.id}>
                     {(provided, snapshot) => (
@@ -170,6 +201,12 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 className={`mb-3 ${snapshot.isDragging ? 'opacity-50' : ''}`}
+                                style={{
+                                  ...provided.draggableProps.style,
+                                  transform: snapshot.isDragging 
+                                    ? `${provided.draggableProps.style?.transform} rotate(2deg)`
+                                    : provided.draggableProps.style?.transform,
+                                }}
                               >
                                 <KanbanCard
                                   application={application}
