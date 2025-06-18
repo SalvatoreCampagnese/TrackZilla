@@ -1,13 +1,9 @@
+
 import React, { useState } from 'react';
 import { KanbanColumnType } from './KanbanBoard';
 import { JobStatus, JOB_STATUS_LABELS } from '@/types/job';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Trash2, Plus, GripVertical } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -23,10 +19,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {
-  useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { SortableColumnItem } from './settings/SortableColumnItem';
 
 interface ColumnSettingsProps {
   open: boolean;
@@ -34,201 +27,6 @@ interface ColumnSettingsProps {
   columns: KanbanColumnType[];
   onSave: (columns: KanbanColumnType[]) => void;
 }
-
-const AVAILABLE_COLORS = [
-  { name: 'Blue', value: 'bg-blue-500' },
-  { name: 'Green', value: 'bg-green-500' },
-  { name: 'Yellow', value: 'bg-yellow-500' },
-  { name: 'Orange', value: 'bg-orange-500' },
-  { name: 'Red', value: 'bg-red-500' },
-  { name: 'Purple', value: 'bg-purple-500' },
-  { name: 'Pink', value: 'bg-pink-500' },
-  { name: 'Indigo', value: 'bg-indigo-500' },
-  { name: 'Gray', value: 'bg-gray-500' },
-];
-
-interface SortableColumnItemProps {
-  column: KanbanColumnType;
-  columnIndex: number;
-  onUpdateColumn: (index: number, updates: Partial<KanbanColumnType>) => void;
-  onDeleteColumn: (index: number) => void;
-  onAddStatus: (columnIndex: number) => void;
-  onRemoveStatus: (columnIndex: number, statusIndex: number) => void;
-  onUpdateStatus: (columnIndex: number, statusIndex: number, newStatus: JobStatus) => void;
-}
-
-const SortableColumnItem: React.FC<SortableColumnItemProps> = ({
-  column,
-  columnIndex,
-  onUpdateColumn,
-  onDeleteColumn,
-  onAddStatus,
-  onRemoveStatus,
-  onUpdateStatus,
-}) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: column.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className="border border-border rounded-lg p-4 space-y-4 bg-card"
-    >
-      <div className="flex items-center gap-4">
-        <div
-          {...attributes}
-          {...listeners}
-          className="cursor-grab active:cursor-grabbing touch-none"
-        >
-          <GripVertical className="w-5 h-5 text-muted-foreground" />
-        </div>
-        
-        {column.isDefault ? (
-          // Default columns - only show enable/disable toggle
-          <div className="flex-1 grid grid-cols-3 gap-4">
-            <div>
-              <Label className="text-sm font-medium text-foreground">{column.title}</Label>
-              <p className="text-xs text-muted-foreground mt-1">Default column</p>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Switch
-                checked={column.enabled}
-                onCheckedChange={(checked) => onUpdateColumn(columnIndex, { enabled: checked })}
-              />
-              <Label className="text-sm text-foreground">
-                {column.enabled ? 'Enabled' : 'Disabled'}
-              </Label>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded-full ${column.color}`}></div>
-              <span className="text-sm text-muted-foreground">{column.color.replace('bg-', '').replace('-500', '')}</span>
-            </div>
-          </div>
-        ) : (
-          // Custom columns - full editing
-          <div className="flex-1 grid grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor={`title-${columnIndex}`} className="text-foreground">Column Title</Label>
-              <Input
-                id={`title-${columnIndex}`}
-                value={column.title}
-                onChange={(e) => onUpdateColumn(columnIndex, { title: e.target.value })}
-                className="bg-background border-border text-foreground"
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor={`color-${columnIndex}`} className="text-foreground">Color</Label>
-              <Select
-                value={column.color}
-                onValueChange={(value) => onUpdateColumn(columnIndex, { color: value })}
-              >
-                <SelectTrigger className="bg-background border-border text-foreground">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {AVAILABLE_COLORS.map((color) => (
-                    <SelectItem key={color.value} value={color.value}>
-                      <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${color.value}`}></div>
-                        {color.name}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="flex items-end">
-              <Button
-                onClick={() => onDeleteColumn(columnIndex)}
-                variant="destructive"
-                size="sm"
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Status Values - only for enabled columns or custom columns */}
-      {(column.enabled || !column.isDefault) && (
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <Label className="text-foreground">Status Values</Label>
-            {!column.isDefault && (
-              <Button
-                onClick={() => onAddStatus(columnIndex)}
-                variant="outline"
-                size="sm"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Status
-              </Button>
-            )}
-          </div>
-          
-          <div className="grid grid-cols-2 gap-2">
-            {column.statusValues.map((status, statusIndex) => (
-              <div key={statusIndex} className="flex items-center gap-2">
-                {column.isDefault ? (
-                  // Default columns - show status with better styling for dark theme
-                  <div className="flex-1 p-2 bg-muted border border-border rounded text-sm text-foreground font-medium">
-                    {JOB_STATUS_LABELS[status as JobStatus] || status}
-                  </div>
-                ) : (
-                  // Custom columns - allow full editing
-                  <>
-                    <Select
-                      value={status}
-                      onValueChange={(value) => onUpdateStatus(columnIndex, statusIndex, value as JobStatus)}
-                    >
-                      <SelectTrigger className="flex-1 bg-background border-border text-foreground">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(JOB_STATUS_LABELS).map(([key, label]) => (
-                          <SelectItem key={key} value={key}>
-                            {label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    
-                    <Button
-                      onClick={() => onRemoveStatus(columnIndex, statusIndex)}
-                      variant="ghost"
-                      size="sm"
-                      disabled={column.statusValues.length <= 1}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
 
 export const ColumnSettings: React.FC<ColumnSettingsProps> = ({
   open,
@@ -272,7 +70,6 @@ export const ColumnSettings: React.FC<ColumnSettingsProps> = ({
 
   const addStatus = (columnIndex: number) => {
     const newColumns = [...editedColumns];
-    // Add a default status if available
     const availableStatuses = Object.keys(JOB_STATUS_LABELS) as JobStatus[];
     const usedStatuses = newColumns[columnIndex].statusValues;
     const availableStatus = availableStatuses.find(status => !usedStatuses.includes(status));
@@ -356,9 +153,9 @@ export const ColumnSettings: React.FC<ColumnSettingsProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-background border-border">
         <DialogHeader>
-          <DialogTitle>Customize Kanban Columns</DialogTitle>
+          <DialogTitle className="text-foreground">Customize Kanban Columns</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">

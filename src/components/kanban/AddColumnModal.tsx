@@ -8,24 +8,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Trash2 } from 'lucide-react';
+import { ColorSelector } from './settings/ColorSelector';
 
 interface AddColumnModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSave: (column: KanbanColumnType) => void;
 }
-
-const AVAILABLE_COLORS = [
-  { name: 'Blue', value: 'bg-blue-500' },
-  { name: 'Green', value: 'bg-green-500' },
-  { name: 'Yellow', value: 'bg-yellow-500' },
-  { name: 'Orange', value: 'bg-orange-500' },
-  { name: 'Red', value: 'bg-red-500' },
-  { name: 'Purple', value: 'bg-purple-500' },
-  { name: 'Pink', value: 'bg-pink-500' },
-  { name: 'Indigo', value: 'bg-indigo-500' },
-  { name: 'Gray', value: 'bg-gray-500' },
-];
 
 export const AddColumnModal: React.FC<AddColumnModalProps> = ({
   open,
@@ -80,44 +69,32 @@ export const AddColumnModal: React.FC<AddColumnModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md bg-background border-border">
         <DialogHeader>
-          <DialogTitle>Add New Column</DialogTitle>
+          <DialogTitle className="text-foreground">Add New Column</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="column-title">Column Title</Label>
+            <Label htmlFor="column-title" className="text-foreground">Column Title</Label>
             <Input
               id="column-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter column title"
+              className="bg-background border-border text-foreground"
             />
           </div>
 
-          <div>
-            <Label htmlFor="column-color">Color</Label>
-            <Select value={color} onValueChange={setColor}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {AVAILABLE_COLORS.map((colorOption) => (
-                  <SelectItem key={colorOption.value} value={colorOption.value}>
-                    <div className="flex items-center gap-2">
-                      <div className={`w-3 h-3 rounded-full ${colorOption.value}`}></div>
-                      {colorOption.name}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <ColorSelector
+            value={color}
+            onChange={setColor}
+            id="column-color"
+          />
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Label>Status Values</Label>
+              <Label className="text-foreground">Status Values</Label>
               <Button
                 onClick={addStatus}
                 variant="outline"
@@ -136,10 +113,10 @@ export const AddColumnModal: React.FC<AddColumnModalProps> = ({
                     value={status}
                     onValueChange={(value) => updateStatus(index, value)}
                   >
-                    <SelectTrigger className="flex-1">
+                    <SelectTrigger className="flex-1 bg-background border-border text-foreground">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-background border-border">
                       {Object.entries(JOB_STATUS_LABELS).map(([key, label]) => (
                         <SelectItem key={key} value={key}>
                           {label}
