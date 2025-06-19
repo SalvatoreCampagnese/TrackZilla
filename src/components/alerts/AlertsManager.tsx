@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { JobApplication, JobAlert } from '@/types/job';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -196,7 +197,9 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
                           checked={alert.recurring}
                           onCheckedChange={(checked) => updateAlert(alert.id, { recurring: checked })}
                         />
-                        <Label>Recurring</Label>
+                        <Label>
+                          {alert.type === 'interview' ? 'Repeat After' : 'Recurring'}
+                        </Label>
                       </div>
                       <div className="flex items-center gap-2">
                         <Switch

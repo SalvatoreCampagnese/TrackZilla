@@ -1,22 +1,11 @@
-
 import React, { useState } from 'react';
 import { JobApplication, JOB_STATUS_LABELS, JobStatus } from '@/types/job';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Building2, Calendar, Euro, MapPin, Trash2, ChevronDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { DeleteConfirmationModal } from '@/components/common/DeleteConfirmationModal';
 
 interface JobListProps {
   applications: JobApplication[];
@@ -34,7 +23,6 @@ export const JobList: React.FC<JobListProps> = ({
     isOpen: false,
     application: null
   });
-  const [confirmationInput, setConfirmationInput] = useState('');
 
   const filteredApplications = filter === 'all' 
     ? applications 
@@ -67,20 +55,17 @@ export const JobList: React.FC<JobListProps> = ({
 
   const handleDeleteClick = (application: JobApplication) => {
     setDeleteModal({ isOpen: true, application });
-    setConfirmationInput('');
   };
 
   const handleDeleteConfirm = () => {
-    if (deleteModal.application && confirmationInput === deleteModal.application.companyName) {
+    if (deleteModal.application) {
       onDelete(deleteModal.application.id);
       setDeleteModal({ isOpen: false, application: null });
-      setConfirmationInput('');
     }
   };
 
   const handleDeleteCancel = () => {
     setDeleteModal({ isOpen: false, application: null });
-    setConfirmationInput('');
   };
 
   if (applications.length === 0) {
@@ -198,39 +183,13 @@ export const JobList: React.FC<JobListProps> = ({
       </div>
 
       {/* Delete Confirmation Modal */}
-      <AlertDialog open={deleteModal.isOpen} onOpenChange={(open) => !open && handleDeleteCancel()}>
-        <AlertDialogContent className="bg-card border-gray-700">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-foreground">Confirm Deletion</AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground">
-              This action cannot be undone. To confirm deletion, please type the company name "{deleteModal.application?.companyName}" below.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <div className="my-4">
-            <Input
-              value={confirmationInput}
-              onChange={(e) => setConfirmationInput(e.target.value)}
-              placeholder="Type company name to confirm"
-              className="bg-background border-gray-600 text-foreground"
-            />
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel 
-              onClick={handleDeleteCancel}
-              className="border-gray-600 hover:bg-accent"
-            >
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleDeleteConfirm}
-              disabled={confirmationInput !== deleteModal.application?.companyName}
-              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Delete Application
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteConfirmationModal
+        open={deleteModal.isOpen}
+        onOpenChange={(open) => !open && handleDeleteCancel()}
+        onConfirm={handleDeleteConfirm}
+        itemName={deleteModal.application?.companyName || ''}
+        itemType="application"
+      />
     </div>
   );
 };

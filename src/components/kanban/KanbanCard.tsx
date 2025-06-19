@@ -4,6 +4,7 @@ import { JOB_STATUS_LABELS } from '@/types/job';
 import { Calendar, DollarSign, MapPin, Trash2, Bell, Settings, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AlertsManager } from '@/components/alerts/AlertsManager';
+import { DeleteConfirmationModal } from '@/components/common/DeleteConfirmationModal';
 
 interface KanbanCardProps {
   application: JobApplication;
@@ -19,10 +20,16 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   isDragging
 }) => {
   const [showAlerts, setShowAlerts] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = () => {
     onDelete(application.id);
+    setShowDeleteModal(false);
   };
 
   const handleAlertsClick = (e: React.MouseEvent) => {
@@ -171,6 +178,15 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         onOpenChange={setShowAlerts}
         application={application}
         onSave={handleSaveAlerts}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        open={showDeleteModal}
+        onOpenChange={setShowDeleteModal}
+        onConfirm={handleConfirmDelete}
+        itemName={application.companyName}
+        itemType="application"
       />
     </>
   );
