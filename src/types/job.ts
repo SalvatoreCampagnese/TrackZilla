@@ -10,6 +10,19 @@ export interface JobApplication {
   status: JobStatus;
   tags: string[];
   createdAt: string;
+  interviewDate?: string;
+  deadline?: string;
+  alerts?: JobAlert[];
+}
+
+export interface JobAlert {
+  id: string;
+  type: 'interview' | 'deadline';
+  alertTime: string; // ISO date string when alert should trigger
+  beforeAmount: number; // e.g., 1 for "1 day before"
+  beforeUnit: 'minutes' | 'hours' | 'days';
+  recurring: boolean;
+  isActive: boolean;
 }
 
 export type JobStatus = 
