@@ -8,6 +8,7 @@ import { JobList } from './JobList';
 import { Statistics } from './Statistics';
 import { KanbanBoard } from './kanban/KanbanBoard';
 import { SettingsModal } from './SettingsModal';
+import { DateTimeDisplay } from './dashboard/DateTimeDisplay';
 import { Plus, Target, TrendingUp, Clock, CheckCircle, LogOut, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -21,6 +22,22 @@ export const JobTracker = () => {
 
   // Initialize the ghosting updater
   useGhostingUpdater();
+
+  // Get user's first name from localStorage
+  const getUserDisplayName = () => {
+    try {
+      const userProfile = localStorage.getItem('userProfile');
+      if (userProfile) {
+        const profile = JSON.parse(userProfile);
+        if (profile.firstName) {
+          return profile.firstName;
+        }
+      }
+    } catch (error) {
+      console.error('Error getting user profile:', error);
+    }
+    return user?.email;
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -80,7 +97,7 @@ export const JobTracker = () => {
               </div>
               <div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-white mb-1">TrackZilla</h1>
-                <p className="text-sm sm:text-base text-white/70">Welcome back, {user?.email}</p>
+                <p className="text-sm sm:text-base text-white/70">Welcome back, {getUserDisplayName()}</p>
               </div>
             </div>
             
@@ -104,6 +121,11 @@ export const JobTracker = () => {
                 <span className="hidden xs:inline">Sign Out</span>
               </Button>
             </div>
+          </div>
+
+          {/* Date and Time Display */}
+          <div className="mb-6">
+            <DateTimeDisplay />
           </div>
           
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
