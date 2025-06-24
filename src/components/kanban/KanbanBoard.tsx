@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { JobApplication } from '@/types/job';
@@ -115,10 +116,17 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 
   const handleDragStart = () => {
     setIsDragging(true);
+    // Add styles to improve drag performance
+    document.body.style.userSelect = 'none';
+    document.body.style.cursor = 'grabbing';
   };
 
   const handleDragEnd = (result: DropResult) => {
     setIsDragging(false);
+    // Reset body styles
+    document.body.style.userSelect = '';
+    document.body.style.cursor = '';
+    
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
@@ -195,12 +203,16 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                className={`mb-3 ${snapshot.isDragging ? 'z-50' : ''}`}
+                                className="mb-3"
                                 style={{
                                   ...provided.draggableProps.style,
+                                  // Ensure proper positioning during drag
+                                  position: snapshot.isDragging ? 'fixed' : 'relative',
+                                  zIndex: snapshot.isDragging ? 9999 : 'auto',
+                                  // Prevent transform issues
                                   transform: snapshot.isDragging 
-                                    ? provided.draggableProps.style?.transform?.replace(/translate\(([^,]+),([^)]+)\)/, 'translate($1,$2)')
-                                    : provided.draggableProps.style?.transform,
+                                    ? provided.draggableProps.style?.transform 
+                                    : 'none',
                                 }}
                               >
                                 <KanbanCard

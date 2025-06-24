@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { JobApplication } from '@/types/job';
 import { JOB_STATUS_LABELS } from '@/types/job';
@@ -66,10 +67,10 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   return (
     <>
       <div 
-        className={`bg-white/90 backdrop-blur-md border border-white/30 shadow-lg transition-all duration-200 hover:shadow-xl rounded-lg p-3 md:p-4 touch-manipulation select-none ${
+        className={`bg-white/90 backdrop-blur-md border border-white/30 shadow-lg transition-all duration-200 rounded-lg p-3 md:p-4 touch-manipulation select-none ${
           isDragging 
-            ? 'shadow-2xl cursor-grabbing rotate-2 z-50' 
-            : 'cursor-grab hover:cursor-grab'
+            ? 'shadow-2xl transform rotate-3 scale-105 opacity-95 z-[9999] pointer-events-none' 
+            : 'cursor-grab hover:cursor-grab hover:shadow-xl'
         }`}
         style={{
           transformOrigin: 'center center',
