@@ -9,7 +9,7 @@ import { Statistics } from './Statistics';
 import { KanbanBoard } from './kanban/KanbanBoard';
 import { SettingsModal } from './SettingsModal';
 import { DateTimeDisplay } from './dashboard/DateTimeDisplay';
-import { Plus, Target, TrendingUp, Clock, CheckCircle, LogOut, Settings } from 'lucide-react';
+import { Plus, Target, TrendingUp, Clock, CheckCircle, LogOut, Settings, List, Columns } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,6 +19,7 @@ export const JobTracker = () => {
   const { user, signOut } = useAuth();
   const { applications, loading, updateApplicationStatus, deleteApplication, refetch } = useJobApplications();
   const [showSettings, setShowSettings] = useState(false);
+  const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
 
   // Initialize the ghosting updater
   useGhostingUpdater();
@@ -214,20 +215,13 @@ export const JobTracker = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="applications" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-white/10 backdrop-blur-md border border-white/20 h-12 rounded-xl shadow-lg">
+          <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-md border border-white/20 h-12 rounded-xl shadow-lg">
             <TabsTrigger 
               value="applications" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70 hover:text-white transition-all duration-200 text-sm font-medium rounded-lg"
             >
-              <span className="sm:hidden">List</span>
+              <span className="sm:hidden">Apps</span>
               <span className="hidden sm:inline">Applications</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="kanban" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70 hover:text-white transition-all duration-200 text-sm font-medium rounded-lg"
-            >
-              <span className="sm:hidden">Board</span>
-              <span className="hidden sm:inline">Kanban</span>
             </TabsTrigger>
             <TabsTrigger 
               value="statistics" 
@@ -239,19 +233,50 @@ export const JobTracker = () => {
           </TabsList>
           
           <TabsContent value="applications" className="mt-6">
-            <JobList
-              applications={applications}
-              onUpdateStatus={handleUpdateStatus}
-              onDelete={deleteApplication}
-            />
-          </TabsContent>
-          
-          <TabsContent value="kanban" className="mt-6">
-            <KanbanBoard
-              applications={applications}
-              onUpdateStatus={handleUpdateStatus}
-              onDelete={deleteApplication}
-            />
+            {/* View Mode Switcher */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => setViewMode('list')}
+                  variant={viewMode === 'list' ? 'default' : 'outline'}
+                  size="sm"
+                  className={viewMode === 'list' 
+                    ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                    : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                  }
+                >
+                  <List className="w-4 h-4 mr-2" />
+                  List
+                </Button>
+                <Button
+                  onClick={() => setViewMode('kanban')}
+                  variant={viewMode === 'kanban' ? 'default' : 'outline'}
+                  size="sm"
+                  className={viewMode === 'kanban' 
+                    ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                    : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                  }
+                >
+                  <Columns className="w-4 h-4 mr-2" />
+                  Kanban
+                </Button>
+              </div>
+            </div>
+
+            {/* Conditional View Rendering */}
+            {viewMode === 'list' ? (
+              <JobList
+                applications={applications}
+                onUpdateStatus={handleUpdateStatus}
+                onDelete={deleteApplication}
+              />
+            ) : (
+              <KanbanBoard
+                applications={applications}
+                onUpdateStatus={handleUpdateStatus}
+                onDelete={deleteApplication}
+              />
+            )}
           </TabsContent>
           
           <TabsContent value="statistics" className="mt-6">
