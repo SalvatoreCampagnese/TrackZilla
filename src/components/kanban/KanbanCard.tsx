@@ -74,8 +74,11 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         }`}
         style={{
           transformOrigin: 'center center',
-          zIndex: isDragging ? 99999 : 1,
-          position: isDragging ? 'fixed' : 'relative'
+          ...(isDragging && {
+            zIndex: 9999,
+            position: 'fixed',
+            width: '288px' // Fixed width (w-72 = 288px)
+          })
         }}
       >
         {/* Header */}
