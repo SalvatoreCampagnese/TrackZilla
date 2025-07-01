@@ -9,6 +9,77 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      company_reviews: {
+        Row: {
+          comment: string | null
+          company_name: string
+          created_at: string
+          id: string
+          rating: number
+          role_applied: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          company_name: string
+          created_at?: string
+          id?: string
+          rating: number
+          role_applied?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          company_name?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          role_applied?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      interview_questions: {
+        Row: {
+          application_id: string
+          created_at: string
+          id: string
+          interview_round: string | null
+          question: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          id?: string
+          interview_round?: string | null
+          question: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          id?: string
+          interview_round?: string | null
+          question?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_questions_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "job_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_applications: {
         Row: {
           application_date: string

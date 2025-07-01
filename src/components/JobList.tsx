@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { JobApplication, JOB_STATUS_LABELS, JobStatus } from '@/types/job';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Building2, Calendar, Euro, MapPin, Trash2, ChevronDown } from 'lucide-react';
+import { Building2, Calendar, Euro, MapPin, Trash2, ChevronDown, Eye } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DeleteConfirmationModal } from '@/components/common/DeleteConfirmationModal';
 
@@ -18,6 +19,7 @@ export const JobList: React.FC<JobListProps> = ({
   onUpdateStatus, 
   onDelete 
 }) => {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<JobStatus | 'all'>('all');
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; application: JobApplication | null }>({
     isOpen: false,
@@ -27,6 +29,21 @@ export const JobList: React.FC<JobListProps> = ({
   const filteredApplications = filter === 'all' 
     ? applications 
     : applications.filter(app => app.status === filter);
+
+  const handleDeleteClick = (application: JobApplication) => {
+    setDeleteModal({ isOpen: true, application });
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteModal.application) {
+      onDelete(deleteModal.application.id);
+      setDeleteModal({ isOpen: false, application: null });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModal({ isOpen: false, application: null });
+  };
 
   const getStatusColor = (status: JobStatus) => {
     const colors = {
@@ -51,21 +68,6 @@ export const JobList: React.FC<JobListProps> = ({
       'ND': '❓'
     };
     return icons[workMode];
-  };
-
-  const handleDeleteClick = (application: JobApplication) => {
-    setDeleteModal({ isOpen: true, application });
-  };
-
-  const handleDeleteConfirm = () => {
-    if (deleteModal.application) {
-      onDelete(deleteModal.application.id);
-      setDeleteModal({ isOpen: false, application: null });
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setDeleteModal({ isOpen: false, application: null });
   };
 
   if (applications.length === 0) {
@@ -118,14 +120,24 @@ export const JobList: React.FC<JobListProps> = ({
                     {application.roleDescription}
                   </p>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleDeleteClick(application)}
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 flex-shrink-0"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+                <div className="flex gap-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => navigate(`/application/${application.id}`)}
+                    className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/20 flex-shrink-0"
+                  >
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleDeleteClick(application)}
+                    className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 flex-shrink-0"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             

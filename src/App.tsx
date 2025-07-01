@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import AddJobPage from "./pages/AddJobPage";
 import ImportPage from "./pages/ImportPage";
+import ApplicationDetailPage from "./pages/ApplicationDetailPage";
 import SitemapPage from "./components/SitemapPage";
 import TermsPage from "./pages/TermsPage";
 
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/add-job" element={<AddJobPage />} />
             <Route path="/import" element={<ImportPage />} />
+            <Route path="/application/:id" element={<ApplicationDetailPage />} />
             <Route path="/sitemap" element={<SitemapPage />} />
             <Route path="/sitemap.xml" element={<SitemapPage />} />
             <Route path="/terms" element={<TermsPage />} />
