@@ -49,6 +49,8 @@ export type Database = {
           id: string
           interview_round: string | null
           question: string
+          role: string | null
+          technologies: string | null
           updated_at: string
           user_id: string
         }
@@ -58,6 +60,8 @@ export type Database = {
           id?: string
           interview_round?: string | null
           question: string
+          role?: string | null
+          technologies?: string | null
           updated_at?: string
           user_id: string
         }
@@ -67,6 +71,8 @@ export type Database = {
           id?: string
           interview_round?: string | null
           question?: string
+          role?: string | null
+          technologies?: string | null
           updated_at?: string
           user_id?: string
         }
