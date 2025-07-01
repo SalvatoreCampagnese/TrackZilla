@@ -8,10 +8,11 @@ import { JobApplication } from '@/types/job';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Building2, Calendar, Euro, MapPin } from 'lucide-react';
+import { ArrowLeft, Building2, Calendar, Euro, MapPin, Edit, ChevronDown, ChevronUp } from 'lucide-react';
 import { InterviewQuestions } from '@/components/application-detail/InterviewQuestions';
 import { CompanyReviews } from '@/components/application-detail/CompanyReviews';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { JOB_STATUS_LABELS } from '@/types/job';
 import { toast } from '@/hooks/use-toast';
 
@@ -21,6 +22,7 @@ export default function ApplicationDetailPage() {
   const { user } = useAuth();
   const [application, setApplication] = useState<JobApplication | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   useEffect(() => {
     if (!id || !user) return;
@@ -94,6 +96,15 @@ export default function ApplicationDetailPage() {
     return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
 
+  const handleEditApplication = () => {
+    navigate(`/add-job?edit=${id}`);
+  };
+
+  const truncateText = (text: string, maxLength: number = 300) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
@@ -119,7 +130,7 @@ export default function ApplicationDetailPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
       <div className="container mx-auto px-4 py-6 max-w-6xl">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center justify-between gap-4 mb-6">
           <Button
             onClick={() => navigate('/')}
             variant="outline"
@@ -128,6 +139,14 @@ export default function ApplicationDetailPage() {
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
+          </Button>
+          
+          <Button
+            onClick={handleEditApplication}
+            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
+          >
+            <Edit className="w-4 h-4 mr-2" />
+            Edit Application
           </Button>
         </div>
 
@@ -175,9 +194,35 @@ export default function ApplicationDetailPage() {
 
             <div className="bg-white/5 rounded-lg p-4">
               <h3 className="text-white font-medium mb-2">Job Description:</h3>
-              <p className="text-white/80 whitespace-pre-wrap text-sm leading-relaxed">
-                {application.jobDescription}
-              </p>
+              <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
+                <div className="text-white/80 whitespace-pre-wrap text-sm leading-relaxed">
+                  {isDescriptionExpanded 
+                    ? application.jobDescription 
+                    : truncateText(application.jobDescription)
+                  }
+                </div>
+                {application.jobDescription.length > 300 && (
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="mt-2 text-white/60 hover:text-white hover:bg-white/10 p-0 h-auto"
+                    >
+                      {isDescriptionExpanded ? (
+                        <>
+                          <ChevronUp className="w-4 h-4 mr-1" />
+                          View less
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className="w-4 h-4 mr-1" />
+                          View more
+                        </>
+                      )}
+                    </Button>
+                  </CollapsibleTrigger>
+                )}
+              </Collapsible>
             </div>
           </CardContent>
         </Card>
