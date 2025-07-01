@@ -12,7 +12,6 @@ import { ArrowLeft, Building2, Calendar, Euro, MapPin, Edit, ChevronDown, Chevro
 import { InterviewQuestions } from '@/components/application-detail/InterviewQuestions';
 import { CompanyReviews } from '@/components/application-detail/CompanyReviews';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { JOB_STATUS_LABELS } from '@/types/job';
 import { toast } from '@/hooks/use-toast';
 
@@ -100,9 +99,26 @@ export default function ApplicationDetailPage() {
     navigate(`/add-job?edit=${id}`);
   };
 
-  const truncateText = (text: string, maxLength: number = 300) => {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
+  const shouldTruncateDescription = (text: string) => {
+    // Approximate 2 lines based on character count and line breaks
+    const maxChars = 120; // Roughly 60 characters per line
+    const lineBreaks = (text.match(/\n/g) || []).length;
+    return text.length > maxChars || lineBreaks > 1;
+  };
+
+  const truncateDescription = (text: string) => {
+    const maxChars = 120;
+    const lines = text.split('\n');
+    
+    if (lines.length > 2) {
+      return lines.slice(0, 2).join('\n') + '...';
+    }
+    
+    if (text.length > maxChars) {
+      return text.substring(0, maxChars) + '...';
+    }
+    
+    return text;
   };
 
   if (loading) {
@@ -194,35 +210,32 @@ export default function ApplicationDetailPage() {
 
             <div className="bg-white/5 rounded-lg p-4">
               <h3 className="text-white font-medium mb-2">Job Description:</h3>
-              <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
-                <div className="text-white/80 whitespace-pre-wrap text-sm leading-relaxed">
-                  {isDescriptionExpanded 
-                    ? application.jobDescription 
-                    : truncateText(application.jobDescription)
-                  }
-                </div>
-                {application.jobDescription.length > 300 && (
-                  <CollapsibleTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="mt-2 text-white/60 hover:text-white hover:bg-white/10 p-0 h-auto"
-                    >
-                      {isDescriptionExpanded ? (
-                        <>
-                          <ChevronUp className="w-4 h-4 mr-1" />
-                          View less
-                        </>
-                      ) : (
-                        <>
-                          <ChevronDown className="w-4 h-4 mr-1" />
-                          View more
-                        </>
-                      )}
-                    </Button>
-                  </CollapsibleTrigger>
-                )}
-              </Collapsible>
+              <div className="text-white/80 whitespace-pre-wrap text-sm leading-relaxed">
+                {isDescriptionExpanded 
+                  ? application.jobDescription 
+                  : truncateDescription(application.jobDescription)
+                }
+              </div>
+              {shouldTruncateDescription(application.jobDescription) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                  className="mt-2 text-white/60 hover:text-white hover:bg-white/10 p-0 h-auto"
+                >
+                  {isDescriptionExpanded ? (
+                    <>
+                      <ChevronUp className="w-4 h-4 mr-1" />
+                      View less
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="w-4 h-4 mr-1" />
+                      View more
+                    </>
+                  )}
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>

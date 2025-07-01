@@ -16,6 +16,8 @@ interface InterviewQuestion {
   id: string;
   question: string;
   interview_round: string | null;
+  role: string | null;
+  technologies: string | null;
   created_at: string;
   user_id: string;
 }
@@ -37,6 +39,8 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
   const [showAddForm, setShowAddForm] = useState(false);
   const [newQuestion, setNewQuestion] = useState('');
   const [interviewRound, setInterviewRound] = useState('');
+  const [role, setRole] = useState('');
+  const [technologies, setTechnologies] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -98,7 +102,9 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
           application_id: applicationId,
           user_id: user.id,
           question: newQuestion.trim(),
-          interview_round: interviewRound || null
+          interview_round: interviewRound || null,
+          role: role.trim() || null,
+          technologies: technologies.trim() || null
         });
 
       if (error) throw error;
@@ -110,6 +116,8 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
 
       setNewQuestion('');
       setInterviewRound('');
+      setRole('');
+      setTechnologies('');
       setShowAddForm(false);
       fetchQuestions();
     } catch (error) {
@@ -177,6 +185,28 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
                   rows={3}
                 />
               </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="role" className="text-white">Role (Optional)</Label>
+                  <Input
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    placeholder="e.g., Frontend Developer"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="technologies" className="text-white">Technologies (Optional)</Label>
+                  <Input
+                    id="technologies"
+                    value={technologies}
+                    onChange={(e) => setTechnologies(e.target.value)}
+                    placeholder="e.g., React, Node.js, Python"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                  />
+                </div>
+              </div>
               <div>
                 <Label htmlFor="round" className="text-white">Interview Round (Optional)</Label>
                 <Select value={interviewRound} onValueChange={setInterviewRound}>
@@ -205,6 +235,8 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
                     setShowAddForm(false);
                     setNewQuestion('');
                     setInterviewRound('');
+                    setRole('');
+                    setTechnologies('');
                   }}
                   variant="outline"
                   className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
@@ -233,14 +265,24 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
               <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <p className="text-white leading-relaxed">{question.question}</p>
-                    <div className="flex items-center gap-2 mt-2">
+                    <p className="text-white leading-relaxed mb-3">{question.question}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
                       {question.interview_round && (
                         <Badge className={getRoundColor(question.interview_round)}>
                           {question.interview_round} interview
                         </Badge>
                       )}
-                      <span className="text-white/50 text-xs">
+                      {question.role && (
+                        <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                          {question.role}
+                        </Badge>
+                      )}
+                      {question.technologies && (
+                        <Badge variant="secondary" className="bg-green-100 text-green-800">
+                          {question.technologies}
+                        </Badge>
+                      )}
+                      <span className="text-white/50 text-xs ml-auto">
                         {new Date(question.created_at).toLocaleDateString()}
                       </span>
                     </div>
