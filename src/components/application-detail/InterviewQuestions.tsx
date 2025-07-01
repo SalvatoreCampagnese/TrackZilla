@@ -72,10 +72,31 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
 
       if (otherError) throw otherError;
 
+      // Map the data to ensure all required fields are present
+      const mappedAppQuestions: InterviewQuestion[] = (appQuestions || []).map(q => ({
+        id: q.id,
+        question: q.question,
+        interview_round: q.interview_round,
+        role: q.role || null,
+        technologies: q.technologies || null,
+        created_at: q.created_at,
+        user_id: q.user_id
+      }));
+
+      const mappedOtherQuestions: InterviewQuestion[] = (otherQuestions || []).map(q => ({
+        id: q.id,
+        question: q.question,
+        interview_round: q.interview_round,
+        role: q.role || null,
+        technologies: q.technologies || null,
+        created_at: q.created_at,
+        user_id: q.user_id
+      }));
+
       // Combine and deduplicate questions
       const allQuestions = [
-        ...(appQuestions || []),
-        ...(otherQuestions || [])
+        ...mappedAppQuestions,
+        ...mappedOtherQuestions
       ];
 
       setQuestions(allQuestions);
