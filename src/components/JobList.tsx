@@ -1,22 +1,12 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { JobApplication, JOB_STATUS_LABELS, JobStatus } from '@/types/job';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Building2, Calendar, Euro, MapPin, Trash2, ChevronDown } from 'lucide-react';
+import { Building2, Calendar, Euro, MapPin, Trash2, ChevronDown, Eye } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { DeleteConfirmationModal } from '@/components/common/DeleteConfirmationModal';
 
 interface JobListProps {
   applications: JobApplication[];
@@ -29,16 +19,31 @@ export const JobList: React.FC<JobListProps> = ({
   onUpdateStatus, 
   onDelete 
 }) => {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<JobStatus | 'all'>('all');
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; application: JobApplication | null }>({
     isOpen: false,
     application: null
   });
-  const [confirmationInput, setConfirmationInput] = useState('');
 
   const filteredApplications = filter === 'all' 
     ? applications 
     : applications.filter(app => app.status === filter);
+
+  const handleDeleteClick = (application: JobApplication) => {
+    setDeleteModal({ isOpen: true, application });
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteModal.application) {
+      onDelete(deleteModal.application.id);
+      setDeleteModal({ isOpen: false, application: null });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModal({ isOpen: false, application: null });
+  };
 
   const getStatusColor = (status: JobStatus) => {
     const colors = {
@@ -63,24 +68,6 @@ export const JobList: React.FC<JobListProps> = ({
       'ND': '❓'
     };
     return icons[workMode];
-  };
-
-  const handleDeleteClick = (application: JobApplication) => {
-    setDeleteModal({ isOpen: true, application });
-    setConfirmationInput('');
-  };
-
-  const handleDeleteConfirm = () => {
-    if (deleteModal.application && confirmationInput === deleteModal.application.companyName) {
-      onDelete(deleteModal.application.id);
-      setDeleteModal({ isOpen: false, application: null });
-      setConfirmationInput('');
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setDeleteModal({ isOpen: false, application: null });
-    setConfirmationInput('');
   };
 
   if (applications.length === 0) {
@@ -133,14 +120,24 @@ export const JobList: React.FC<JobListProps> = ({
                     {application.roleDescription}
                   </p>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleDeleteClick(application)}
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 flex-shrink-0"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+                <div className="flex gap-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => navigate(`/application/${application.id}`)}
+                    className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/20 flex-shrink-0"
+                  >
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleDeleteClick(application)}
+                    className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 flex-shrink-0"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             
@@ -198,39 +195,13 @@ export const JobList: React.FC<JobListProps> = ({
       </div>
 
       {/* Delete Confirmation Modal */}
-      <AlertDialog open={deleteModal.isOpen} onOpenChange={(open) => !open && handleDeleteCancel()}>
-        <AlertDialogContent className="bg-card border-gray-700">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-foreground">Confirm Deletion</AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground">
-              This action cannot be undone. To confirm deletion, please type the company name "{deleteModal.application?.companyName}" below.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <div className="my-4">
-            <Input
-              value={confirmationInput}
-              onChange={(e) => setConfirmationInput(e.target.value)}
-              placeholder="Type company name to confirm"
-              className="bg-background border-gray-600 text-foreground"
-            />
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel 
-              onClick={handleDeleteCancel}
-              className="border-gray-600 hover:bg-accent"
-            >
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleDeleteConfirm}
-              disabled={confirmationInput !== deleteModal.application?.companyName}
-              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Delete Application
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteConfirmationModal
+        open={deleteModal.isOpen}
+        onOpenChange={(open) => !open && handleDeleteCancel()}
+        onConfirm={handleDeleteConfirm}
+        itemName={deleteModal.application?.companyName || ''}
+        itemType="application"
+      />
     </div>
   );
 };

@@ -21,6 +21,7 @@ interface KanbanBoardProps {
   applications: JobApplication[];
   onUpdateStatus: (id: string, status: any) => void;
   onDelete: (id: string) => void;
+  onUpdateAlerts?: (applicationId: string, alerts: any[]) => void;
 }
 
 const DEFAULT_COLUMNS: KanbanColumnType[] = [
@@ -77,7 +78,8 @@ const DEFAULT_COLUMNS: KanbanColumnType[] = [
 export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   applications,
   onUpdateStatus,
-  onDelete
+  onDelete,
+  onUpdateAlerts
 }) => {
   const [columns, setColumns] = useState<KanbanColumnType[]>(DEFAULT_COLUMNS);
   const [showSettings, setShowSettings] = useState(false);
@@ -113,10 +115,15 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 
   const handleDragStart = () => {
     setIsDragging(true);
+    // Improve drag performance
+    document.body.style.userSelect = 'none';
   };
 
   const handleDragEnd = (result: DropResult) => {
     setIsDragging(false);
+    // Reset body styles
+    document.body.style.userSelect = '';
+    
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
@@ -193,17 +200,21 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                className={`mb-3 ${snapshot.isDragging ? 'opacity-50' : ''}`}
+                                className="mb-3"
                                 style={{
                                   ...provided.draggableProps.style,
-                                  transform: snapshot.isDragging 
-                                    ? `${provided.draggableProps.style?.transform} rotate(2deg)`
-                                    : provided.draggableProps.style?.transform,
+                                  // Ensure proper positioning during drag
+                                  ...(snapshot.isDragging && {
+                                    position: 'fixed',
+                                    zIndex: 9999,
+                                    pointerEvents: 'auto'
+                                  })
                                 }}
                               >
                                 <KanbanCard
                                   application={application}
                                   onDelete={onDelete}
+                                  onUpdateAlerts={onUpdateAlerts}
                                   isDragging={snapshot.isDragging}
                                 />
                               </div>

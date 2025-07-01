@@ -1,19 +1,8 @@
 
-import { useEffect } from 'react';
+import { TermsRedirect } from '@/components/terms/TermsRedirect';
 
 const TermsPage = () => {
-  useEffect(() => {
-    // Redirect to the static HTML file
-    window.location.href = '/terms_privacy.html';
-  }, []);
-
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <p>Redirecting to Terms & Privacy Policy...</p>
-      </div>
-    </div>
-  );
+  return <TermsRedirect />;
 };
 
 export default TermsPage;
