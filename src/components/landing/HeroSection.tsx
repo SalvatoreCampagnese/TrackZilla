@@ -30,7 +30,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </span>
           </h1>
           
-          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">Job hunt got you feeling like you're fighting a Gila monster with a spoon?</p>
+          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">Job hunt got you feeling like you're fighting a <a className="text-red-500 underline" href="https://www.youtube.com/watch?v=YQX2CsMCB9M" target="_blank">Gila monster</a> with a spoon?</p>
           <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light mt-2">Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.</p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
