@@ -7,20 +7,16 @@ import { useGhostingUpdater } from '@/hooks/useGhostingUpdater';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
 import { KanbanBoard } from './kanban/KanbanBoard';
-import { SettingsModal } from './SettingsModal';
-import { DateTimeDisplay } from './dashboard/DateTimeDisplay';
 import { AppSidebar } from './AppSidebar';
 import { Plus, Target, TrendingUp, Clock, CheckCircle, List, Columns } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 export const JobTracker = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { applications, loading, updateApplicationStatus, deleteApplication, refetch } = useJobApplications();
-  const [showSettings, setShowSettings] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [activeTab, setActiveTab] = useState('applications');
 
@@ -45,12 +41,15 @@ export const JobTracker = () => {
 
   const handleUpdateStatus = async (id: string, status: any) => {
     await updateApplicationStatus(id, status);
-    // Refetch applications to ensure UI is updated
     await refetch();
   };
 
   const handleAddApplication = () => {
     navigate('/add-job');
+  };
+
+  const handleSettingsClick = () => {
+    // This will be handled by the sidebar navigation
   };
 
   if (loading) {
@@ -91,15 +90,19 @@ export const JobTracker = () => {
         <AppSidebar 
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          onSettingsClick={() => setShowSettings(true)}
+          onSettingsClick={handleSettingsClick}
         />
         
         <main className="flex-1 flex flex-col min-w-0">
           {/* Header */}
           <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 lg:p-6 border-b border-white/20 gap-4">
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
-              <p className="text-sm text-white/70">Welcome back, {getUserDisplayName()}</p>
+            <div className="flex items-center gap-4">
+              {/* Mobile sidebar trigger - visible only on mobile */}
+              <SidebarTrigger className="md:hidden text-white hover:bg-white/10 h-8 w-8" />
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
+                <p className="text-sm text-white/70">Welcome back, {getUserDisplayName()}</p>
+              </div>
             </div>
             
             <Button 
@@ -112,14 +115,9 @@ export const JobTracker = () => {
           </header>
 
           <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
-            {/* Date and Time Display */}
-            <div className="mb-6">
-              <DateTimeDisplay />
-            </div>
-            
             {/* Applications counter and status */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full sm:w-auto">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full lg:w-auto">
                 <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
                   <Target className="w-5 h-5 text-red-500" />
                   <span className="text-sm text-white/70">
@@ -136,7 +134,7 @@ export const JobTracker = () => {
 
               {/* View Mode Switcher - Only show on applications tab */}
               {activeTab === 'applications' && (
-                <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="flex items-center gap-2 w-full lg:w-auto">
                   <Button
                     onClick={() => setViewMode('list')}
                     variant={viewMode === 'list' ? 'default' : 'outline'}
@@ -216,16 +214,9 @@ export const JobTracker = () => {
               </Card>
             </div>
 
-            {/* Settings Modal */}
-            <SettingsModal 
-              open={showSettings} 
-              onOpenChange={setShowSettings} 
-            />
-
             {/* Content based on active tab */}
             {activeTab === 'applications' && (
               <div className="overflow-hidden">
-                {/* Conditional View Rendering */}
                 {viewMode === 'list' ? (
                   <JobList
                     applications={applications}

@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { BarChart3, FileText, Settings, LogOut, User } from 'lucide-react';
+import { BarChart3, FileText, Settings, LogOut, Calendar, Clock } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -39,6 +39,10 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     await signOut();
   };
 
+  const handleSettingsClick = () => {
+    navigate('/settings');
+  };
+
   const menuItems = [
     {
       title: 'Applications',
@@ -56,7 +60,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       title: 'Settings',
       icon: Settings,
       id: 'settings',
-      onClick: onSettingsClick,
+      onClick: handleSettingsClick,
     },
   ];
 
@@ -67,8 +71,62 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     return 'U';
   };
 
+  // Date and time display component
+  const DateTimeDisplay = () => {
+    const [currentDateTime, setCurrentDateTime] = React.useState(new Date());
+
+    React.useEffect(() => {
+      const timer = setInterval(() => {
+        setCurrentDateTime(new Date());
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }, []);
+
+    const formatDate = (date: Date) => {
+      return date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      });
+    };
+
+    const formatTime = (date: Date) => {
+      return date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    };
+
+    if (isCollapsed) {
+      return (
+        <div className="flex flex-col items-center gap-1 p-2">
+          <Calendar className="w-4 h-4 text-white/70" />
+          <Clock className="w-4 h-4 text-white/70" />
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2 p-3 bg-white/5 rounded-lg mx-2">
+        <div className="flex items-center gap-2">
+          <Calendar className="w-4 h-4 text-white/70" />
+          <span className="text-xs text-white/90 font-medium">
+            {formatDate(currentDateTime)}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Clock className="w-4 h-4 text-white/70" />
+          <span className="text-xs text-white/90 font-mono">
+            {formatTime(currentDateTime)}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <Sidebar className="border-r border-white/20 bg-gray-900/50 backdrop-blur-md">
+    <Sidebar className="border-r border-white/20 bg-gradient-to-b from-blue-900 to-blue-800 backdrop-blur-md">
       <SidebarHeader className="p-4 border-b border-white/10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -89,7 +147,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         {/* Profile Section */}
         <div className="flex items-center gap-3 mt-4 p-3 bg-white/5 rounded-lg">
           <Avatar className="w-8 h-8">
-            <AvatarFallback className="bg-red-500 text-white text-xs">
+            <AvatarFallback className="bg-blue-500 text-white text-xs">
               {getUserInitials()}
             </AvatarFallback>
           </Avatar>
@@ -110,7 +168,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   <SidebarMenuButton
                     onClick={item.onClick}
                     className={`w-full justify-start text-white/70 hover:text-white hover:bg-white/10 transition-colors ${
-                      activeTab === item.id ? 'bg-gradient-to-r from-red-500 to-red-600 text-white' : ''
+                      activeTab === item.id ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' : ''
                     }`}
                   >
                     <item.icon className="w-4 h-4" />
@@ -123,12 +181,16 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-white/10">
+      <SidebarFooter className="p-2 border-t border-white/10 space-y-2">
+        {/* Date and Time Display */}
+        <DateTimeDisplay />
+        
+        {/* Logout Button */}
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleSignOut}
-              className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 transition-colors"
+              className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 transition-colors mx-2"
             >
               <LogOut className="w-4 h-4" />
               {!isCollapsed && <span>Logout</span>}
