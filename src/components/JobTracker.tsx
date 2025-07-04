@@ -14,7 +14,7 @@ import { Plus, Target, TrendingUp, Clock, CheckCircle, List, Columns } from 'luc
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 
 export const JobTracker = () => {
   const navigate = useNavigate();
@@ -94,34 +94,32 @@ export const JobTracker = () => {
           onSettingsClick={() => setShowSettings(true)}
         />
         
-        <main className="flex-1 flex flex-col">
-          {/* Header with trigger */}
-          <header className="flex items-center justify-between p-4 border-b border-white/20">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger className="text-white hover:bg-white/10" />
-              <div>
-                <h1 className="text-2xl font-bold text-white">TrackZilla</h1>
-                <p className="text-sm text-white/70">Welcome back, {getUserDisplayName()}</p>
-              </div>
+        <main className="flex-1 flex flex-col min-w-0">
+          {/* Header */}
+          <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 lg:p-6 border-b border-white/20 gap-4">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
+              <p className="text-sm text-white/70">Welcome back, {getUserDisplayName()}</p>
             </div>
             
             <Button 
               onClick={handleAddApplication}
-              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white shadow-lg"
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white shadow-lg w-full sm:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Application
             </Button>
           </header>
 
-          <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+          <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
             {/* Date and Time Display */}
             <div className="mb-6">
               <DateTimeDisplay />
             </div>
             
+            {/* Applications counter and status */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full sm:w-auto">
                 <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
                   <Target className="w-5 h-5 text-red-500" />
                   <span className="text-sm text-white/70">
@@ -135,54 +133,84 @@ export const JobTracker = () => {
                   </span>
                 </div>
               </div>
+
+              {/* View Mode Switcher - Only show on applications tab */}
+              {activeTab === 'applications' && (
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <Button
+                    onClick={() => setViewMode('list')}
+                    variant={viewMode === 'list' ? 'default' : 'outline'}
+                    size="sm"
+                    className={viewMode === 'list' 
+                      ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                      : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                    }
+                  >
+                    <List className="w-4 h-4 mr-2" />
+                    List
+                  </Button>
+                  <Button
+                    onClick={() => setViewMode('kanban')}
+                    variant={viewMode === 'kanban' ? 'default' : 'outline'}
+                    size="sm"
+                    className={viewMode === 'kanban' 
+                      ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                      : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                    }
+                  >
+                    <Columns className="w-4 h-4 mr-2" />
+                    Kanban
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Quick counters */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
               <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                <CardContent className="flex items-center justify-between p-4 sm:p-6">
+                <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Total</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-white">{totalApplications}</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{totalApplications}</p>
                   </div>
-                  <div className="p-3 bg-white/10 rounded-xl">
-                    <Target className="w-6 h-6 sm:w-8 sm:h-8 text-red-500" />
+                  <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
+                    <Target className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-red-500" />
                   </div>
                 </CardContent>
               </Card>
 
               <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                <CardContent className="flex items-center justify-between p-4 sm:p-6">
+                <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Response Rate</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-green-400">{responseRate.toFixed(1)}%</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-400">{responseRate.toFixed(1)}%</p>
                   </div>
-                  <div className="p-3 bg-white/10 rounded-xl">
-                    <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-green-400" />
+                  <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
+                    <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-green-400" />
                   </div>
                 </CardContent>
               </Card>
 
               <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                <CardContent className="flex items-center justify-between p-4 sm:p-6">
+                <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Interviews</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-purple-400">{interviewsObtained}</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-purple-400">{interviewsObtained}</p>
                   </div>
-                  <div className="p-3 bg-white/10 rounded-xl">
-                    <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
+                  <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
+                    <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-purple-400" />
                   </div>
                 </CardContent>
               </Card>
 
               <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                <CardContent className="flex items-center justify-between p-4 sm:p-6">
+                <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Avg Time</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-orange-400">{avgFeedbackTime}d</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-orange-400">{avgFeedbackTime}d</p>
                   </div>
-                  <div className="p-3 bg-white/10 rounded-xl">
-                    <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-orange-400" />
+                  <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
+                    <Clock className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-orange-400" />
                   </div>
                 </CardContent>
               </Card>
@@ -196,37 +224,7 @@ export const JobTracker = () => {
 
             {/* Content based on active tab */}
             {activeTab === 'applications' && (
-              <div>
-                {/* View Mode Switcher */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2">
-                    <Button
-                      onClick={() => setViewMode('list')}
-                      variant={viewMode === 'list' ? 'default' : 'outline'}
-                      size="sm"
-                      className={viewMode === 'list' 
-                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
-                        : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                      }
-                    >
-                      <List className="w-4 h-4 mr-2" />
-                      List
-                    </Button>
-                    <Button
-                      onClick={() => setViewMode('kanban')}
-                      variant={viewMode === 'kanban' ? 'default' : 'outline'}
-                      size="sm"
-                      className={viewMode === 'kanban' 
-                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
-                        : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                      }
-                    >
-                      <Columns className="w-4 h-4 mr-2" />
-                      Kanban
-                    </Button>
-                  </div>
-                </div>
-
+              <div className="overflow-hidden">
                 {/* Conditional View Rendering */}
                 {viewMode === 'list' ? (
                   <JobList
