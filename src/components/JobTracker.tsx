@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -13,7 +12,7 @@ import ProPage from '@/pages/ProPage';
 import { Plus, Target, TrendingUp, Clock, CheckCircle, List, Columns, Sparkles, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export const JobTracker = () => {
@@ -110,11 +109,10 @@ export const JobTracker = () => {
         />
         
         <main className="flex-1 flex flex-col min-w-0 relative z-10">
-          {/* Enhanced Header */}
+          {/* Enhanced Header - removed SidebarTrigger */}
           <header className="sticky top-0 z-20 backdrop-blur-xl bg-black/20 border-b border-white/10">
             <div className="flex items-center justify-between p-4 lg:p-6">
               <div className="flex items-center gap-6">
-                <SidebarTrigger className="text-white hover:bg-white/10 h-10 w-10 rounded-xl transition-all duration-200" />
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
                     <Sparkles className="w-6 h-6 text-white" />

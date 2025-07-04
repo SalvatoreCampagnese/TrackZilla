@@ -1,15 +1,19 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { BarChart3, FileText, Settings, LogOut, Calendar, Clock, Crown, Zap } from 'lucide-react';
+import { BarChart3, FileText, Settings, LogOut, Calendar, Clock, Zap, Sparkles } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+
 interface AppSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   onSettingsClick: () => void;
   onProClick: () => void;
 }
+
 export const AppSidebar: React.FC<AppSidebarProps> = ({
   activeTab,
   onTabChange,
@@ -17,39 +21,43 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   onProClick
 }) => {
   const navigate = useNavigate();
-  const {
-    signOut,
-    user
-  } = useAuth();
-  const {
-    state
-  } = useSidebar();
+  const { signOut, user } = useAuth();
+  const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
+
   const handleSignOut = async () => {
     await signOut();
   };
+
   const handleSettingsClick = () => {
     onSettingsClick();
   };
+
   const handleProClick = () => {
     onProClick();
   };
-  const menuItems = [{
-    title: 'Applications',
-    icon: FileText,
-    id: 'applications',
-    onClick: () => onTabChange('applications')
-  }, {
-    title: 'Statistics',
-    icon: BarChart3,
-    id: 'statistics',
-    onClick: () => onTabChange('statistics')
-  }, {
-    title: 'Settings',
-    icon: Settings,
-    id: 'settings',
-    onClick: handleSettingsClick
-  }];
+
+  const menuItems = [
+    {
+      title: 'Applications',
+      icon: FileText,
+      id: 'applications',
+      onClick: () => onTabChange('applications')
+    },
+    {
+      title: 'Statistics',
+      icon: BarChart3,
+      id: 'statistics',
+      onClick: () => onTabChange('statistics')
+    },
+    {
+      title: 'Settings',
+      icon: Settings,
+      id: 'settings',
+      onClick: handleSettingsClick
+    }
+  ];
+
   const getUserInitials = () => {
     if (user?.email) {
       return user.email.substring(0, 2).toUpperCase();
@@ -60,12 +68,15 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   // Date and time display component
   const DateTimeDisplay = () => {
     const [currentDateTime, setCurrentDateTime] = React.useState(new Date());
+
     React.useEffect(() => {
       const timer = setInterval(() => {
         setCurrentDateTime(new Date());
       }, 1000);
+
       return () => clearInterval(timer);
     }, []);
+
     const formatDate = (date: Date) => {
       return date.toLocaleDateString('en-US', {
         weekday: 'short',
@@ -73,106 +84,163 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         day: 'numeric'
       });
     };
+
     const formatTime = (date: Date) => {
       return date.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit'
       });
     };
+
     if (isCollapsed) {
-      return <div className="flex flex-col items-center gap-1 p-2">
-          <Calendar className="w-4 h-4 text-white/70" />
-          <Clock className="w-4 h-4 text-white/70" />
-        </div>;
+      return (
+        <div className="flex flex-col items-center gap-2 p-3 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-purple-300/20 rounded-xl">
+          <Calendar className="w-4 h-4 text-purple-300" />
+          <Clock className="w-4 h-4 text-purple-300" />
+        </div>
+      );
     }
-    return <div className="space-y-2 p-3 bg-white/5 rounded-lg">
-        <div className="flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-white/70" />
-          <span className="text-xs text-white/90 font-medium">
+
+    return (
+      <div className="space-y-3 p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-purple-300/20 rounded-xl shadow-lg">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-purple-500/20 rounded-lg">
+            <Calendar className="w-4 h-4 text-purple-300" />
+          </div>
+          <span className="text-sm text-white/90 font-medium">
             {formatDate(currentDateTime)}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-white/70" />
-          <span className="text-xs text-white/90 font-mono">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-blue-500/20 rounded-lg">
+            <Clock className="w-4 h-4 text-blue-300" />
+          </div>
+          <span className="text-sm text-white/90 font-mono">
             {formatTime(currentDateTime)}
           </span>
         </div>
-      </div>;
+      </div>
+    );
   };
-  return <Sidebar className="border-r border-white/20 bg-gradient-to-b from-blue-900 to-blue-800 backdrop-blur-md">
-      <SidebarHeader className="p-4 border-b border-white/10">
+
+  return (
+    <Sidebar className="border-r border-white/10 bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 backdrop-blur-md shadow-2xl">
+      <SidebarHeader className="p-6 border-b border-white/10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg overflow-hidden shadow-lg">
-              <img src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" alt="TrackZilla Logo" className="w-full h-full object-cover" />
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 p-0.5">
+              <div className="w-full h-full bg-white rounded-lg flex items-center justify-center">
+                <img 
+                  src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" 
+                  alt="TrackZilla Logo" 
+                  className="w-6 h-6 object-cover" 
+                />
+              </div>
             </div>
-            {!isCollapsed && <h2 className="text-lg font-bold text-white">TrackZilla</h2>}
+            {!isCollapsed && (
+              <div>
+                <h2 className="text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                  TrackZilla
+                </h2>
+                <p className="text-xs text-purple-200/70">Career Dashboard</p>
+              </div>
+            )}
           </div>
-          <SidebarTrigger className="text-white hover:bg-white/10 h-8 w-8" />
+          <SidebarTrigger className="text-white hover:bg-white/10 h-8 w-8 rounded-xl transition-all duration-200 hover:scale-105" />
         </div>
         
-        {/* Profile Section */}
-        <div className="flex items-center gap-3 mt-4 p-3 bg-white/5 rounded-lg">
-          <Avatar className="w-8 h-8">
-            <AvatarFallback className="bg-blue-500 text-white text-xs">
+        {/* Enhanced Profile Section */}
+        <div className="flex items-center gap-4 mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-blue-300/20 rounded-xl shadow-lg">
+          <Avatar className="w-10 h-10 border-2 border-purple-300/30">
+            <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold">
               {getUserInitials()}
             </AvatarFallback>
           </Avatar>
-          {!isCollapsed && <div className="flex-1 min-w-0">
-              <p className="text-sm text-white/90 truncate">{user?.email}</p>
-            </div>}
+          {!isCollapsed && (
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-white/90 truncate font-medium">{user?.email}</p>
+              <p className="text-xs text-purple-200/70">Premium User</p>
+            </div>
+          )}
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="flex-1">
+      <SidebarContent className="flex-1 px-4 py-6">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map(item => <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton onClick={item.onClick} className={`w-full justify-start text-white/70 hover:text-white hover:bg-white/10 transition-colors ${activeTab === item.id ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' : ''}`}>
-                    <item.icon className="w-4 h-4" />
-                    {!isCollapsed && <span>{item.title}</span>}
+            <SidebarMenu className="space-y-2">
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.id}>
+                  <SidebarMenuButton 
+                    onClick={item.onClick} 
+                    className={`w-full justify-start text-white/80 hover:text-white hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-200 rounded-xl h-12 ${
+                      activeTab === item.id 
+                        ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-white border border-purple-300/30 shadow-lg' 
+                        : ''
+                    }`}
+                  >
+                    <div className={`p-2 rounded-lg ${
+                      activeTab === item.id 
+                        ? 'bg-purple-500/20' 
+                        : 'bg-white/10'
+                    }`}>
+                      <item.icon className="w-5 h-5" />
+                    </div>
+                    {!isCollapsed && <span className="font-medium">{item.title}</span>}
                   </SidebarMenuButton>
-                </SidebarMenuItem>)}
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        {/* ProZilla Upgrade Section - Highlighted */}
-        <div className="px-2 pb-4">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton onClick={handleProClick} className={`w-full justify-start bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold shadow-lg border-2 border-red-400/50 transition-all duration-200 hover:scale-105 ${activeTab === 'pro' ? 'scale-105 shadow-xl' : ''}`}>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <Crown className="w-4 h-4" />
-                    <Zap className="w-3 h-3" />
-                  </div>
-                  {!isCollapsed && <div className="flex flex-col items-start">
-                      <span className="text-sm font-bold">Diventa ProZilla</span>
-                      
-                    </div>}
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </div>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-white/10 space-y-3">
+      <SidebarFooter className="p-4 border-t border-white/10 space-y-4">
         {/* Date and Time Display */}
         <DateTimeDisplay />
+        
+        <Separator className="bg-white/10" />
+        
+        {/* ProZilla Upgrade Section - Now at bottom */}
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton 
+              onClick={handleProClick} 
+              className={`w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-xl border-2 border-purple-400/50 transition-all duration-300 hover:scale-105 rounded-xl h-14 ${
+                activeTab === 'pro' ? 'scale-105 shadow-2xl border-purple-300/70' : ''
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 p-2 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-lg">
+                  <Zap className="w-5 h-5 text-yellow-300" />
+                  <Sparkles className="w-4 h-4 text-orange-300" />
+                </div>
+                {!isCollapsed && (
+                  <div className="flex flex-col items-start">
+                    <span className="text-sm font-bold">Diventa ProZilla</span>
+                    <span className="text-xs text-purple-200/80">Unlock Premium</span>
+                  </div>
+                )}
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
         
         {/* Logout Button */}
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleSignOut} className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 transition-colors">
-              <LogOut className="w-4 h-4" />
-              {!isCollapsed && <span>Logout</span>}
+            <SidebarMenuButton 
+              onClick={handleSignOut} 
+              className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 transition-all duration-200 rounded-xl h-12 border border-transparent hover:border-red-400/30"
+            >
+              <div className="p-2 bg-red-500/20 rounded-lg">
+                <LogOut className="w-5 h-5 text-red-300" />
+              </div>
+              {!isCollapsed && <span className="font-medium">Logout</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-    </Sidebar>;
+    </Sidebar>
+  );
 };
