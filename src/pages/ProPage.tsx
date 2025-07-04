@@ -1,68 +1,52 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Crown, Check, X, Zap, Eye, Kanban, Infinity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-
 const ProPage = () => {
   const navigate = useNavigate();
-
   const handleUpgrade = () => {
     // Placeholder per l'integrazione con Stripe
     console.log('Avvio processo di upgrade...');
   };
-
   const features = {
-    pro: [
-      {
-        icon: <Infinity className="w-5 h-5" />,
-        title: "Candidature illimitate",
-        description: "Tieni traccia di tutte le tue application senza limiti"
-      },
-      {
-        icon: <Kanban className="w-5 h-5" />,
-        title: "Vista Kanban completa",
-        description: "Organizza le tue candidature con drag & drop"
-      },
-      {
-        icon: <Eye className="w-5 h-5" />,
-        title: "Domande interview in anticipo",
-        description: "Preparati al meglio per i colloqui"
-      },
-      {
-        icon: <Zap className="w-5 h-5" />,
-        title: "Risorse consigliate",
-        description: "Accesso esclusivo a contenuti premium"
-      }
-    ],
-    free: [
-      {
-        icon: <X className="w-5 h-5 text-red-500" />,
-        title: "Limite 50 candidature",
-        description: "Tracciamento limitato delle application"
-      },
-      {
-        icon: <X className="w-5 h-5 text-red-500" />,
-        title: "Vista Kanban bloccata",
-        description: "Solo vista lista disponibile"
-      },
-      {
-        icon: <X className="w-5 h-5 text-red-500" />,
-        title: "Domande nascoste",
-        description: "Nessuna preparazione anticipata"
-      },
-      {
-        icon: <X className="w-5 h-5 text-red-500" />,
-        title: "Nessuna risorsa premium",
-        description: "Contenuti base solamente"
-      }
-    ]
+    pro: [{
+      icon: <Infinity className="w-5 h-5" />,
+      title: "Candidature illimitate",
+      description: "Tieni traccia di tutte le tue application senza limiti"
+    }, {
+      icon: <Kanban className="w-5 h-5" />,
+      title: "Vista Kanban completa",
+      description: "Organizza le tue candidature con drag & drop"
+    }, {
+      icon: <Eye className="w-5 h-5" />,
+      title: "Domande interview in anticipo",
+      description: "Preparati al meglio per i colloqui"
+    }, {
+      icon: <Zap className="w-5 h-5" />,
+      title: "Risorse consigliate",
+      description: "Accesso esclusivo a contenuti premium"
+    }],
+    free: [{
+      icon: <X className="w-5 h-5 text-red-500" />,
+      title: "Limite 50 candidature",
+      description: "Tracciamento limitato delle application"
+    }, {
+      icon: <X className="w-5 h-5 text-red-500" />,
+      title: "Vista Kanban bloccata",
+      description: "Solo vista lista disponibile"
+    }, {
+      icon: <X className="w-5 h-5 text-red-500" />,
+      title: "Domande nascoste",
+      description: "Nessuna preparazione anticipata"
+    }, {
+      icon: <X className="w-5 h-5 text-red-500" />,
+      title: "Nessuna risorsa premium",
+      description: "Contenuti base solamente"
+    }]
   };
-
-  return (
-    <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
+  return <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
@@ -89,15 +73,13 @@ const ProPage = () => {
             <Badge variant="secondary" className="mt-2 bg-white/20 text-white">Attuale</Badge>
           </CardHeader>
           <CardContent className="space-y-4">
-            {features.free.map((feature, index) => (
-              <div key={index} className="flex items-start gap-3">
+            {features.free.map((feature, index) => <div key={index} className="flex items-start gap-3">
                 {feature.icon}
                 <div>
                   <h4 className="font-medium text-white">{feature.title}</h4>
                   <p className="text-sm text-white/70">{feature.description}</p>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </CardContent>
         </Card>
 
@@ -119,8 +101,7 @@ const ProPage = () => {
             <p className="text-red-100 mt-2">Tutto incluso</p>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
-            {features.pro.map((feature, index) => (
-              <div key={index} className="flex items-start gap-3">
+            {features.pro.map((feature, index) => <div key={index} className="flex items-start gap-3">
                 <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Check className="w-3 h-3 text-green-400" />
                 </div>
@@ -128,15 +109,10 @@ const ProPage = () => {
                   <h4 className="font-medium text-white">{feature.title}</h4>
                   <p className="text-sm text-white/70">{feature.description}</p>
                 </div>
-              </div>
-            ))}
+              </div>)}
             
             <div className="pt-6">
-              <Button 
-                onClick={handleUpgrade}
-                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 text-lg"
-                size="lg"
-              >
+              <Button onClick={handleUpgrade} className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 text-lg" size="lg">
                 <Crown className="w-5 h-5 mr-2" />
                 Diventa ProZilla Ora
               </Button>
@@ -205,25 +181,7 @@ const ProPage = () => {
       </Card>
 
       {/* CTA Section */}
-      <div className="text-center bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-8 text-white mb-6">
-        <h2 className="text-3xl font-bold mb-4">Pronto per il prossimo livello?</h2>
-        <p className="text-xl mb-6 opacity-90">
-          Unisciti a migliaia di professionisti che hanno potenziato il loro job search
-        </p>
-        <Button 
-          onClick={handleUpgrade}
-          size="lg"
-          className="bg-white text-red-600 hover:bg-gray-100 font-semibold px-8 py-3 text-lg"
-        >
-          <Crown className="w-5 h-5 mr-2" />
-          Inizia la prova gratuita
-        </Button>
-        <p className="text-sm mt-4 opacity-75">
-          Nessun impegno • Cancella quando vuoi
-        </p>
-      </div>
-    </div>
-  );
+      
+    </div>;
 };
-
 export default ProPage;
