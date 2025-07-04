@@ -26,8 +26,27 @@ serve(async (req) => {
 
   try {
     logStep("Webhook received");
+
+    // Determine which Stripe keys to use
+    const isTestMode = Deno.env.get("STRIPE_TEST_MODE") === "true";
+    const stripeKey = isTestMode 
+      ? Deno.env.get("STRIPE_TEST_SECRET_KEY") 
+      : Deno.env.get("STRIPE_SECRET_KEY");
+    const webhookSecret = isTestMode 
+      ? Deno.env.get("STRIPE_TEST_WEBHOOK_SECRET") 
+      : Deno.env.get("STRIPE_WEBHOOK_SECRET");
     
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
+    if (!stripeKey) {
+      throw new Error(`Stripe secret key not found for ${isTestMode ? 'test' : 'live'} mode`);
+    }
+    
+    if (!webhookSecret) {
+      throw new Error(`Stripe webhook secret not found for ${isTestMode ? 'test' : 'live'} mode`);
+    }
+    
+    logStep("Using Stripe mode", { testMode: isTestMode });
+    
+    const stripe = new Stripe(stripeKey, {
       apiVersion: "2023-10-16",
     });
 
@@ -36,12 +55,6 @@ serve(async (req) => {
     
     if (!signature) {
       throw new Error("No Stripe signature found");
-    }
-
-    // Verify webhook signature
-    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
-    if (!webhookSecret) {
-      throw new Error("STRIPE_WEBHOOK_SECRET not configured");
     }
 
     let event;
