@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -184,13 +183,13 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Pro Upgrade Section - Highlighted */}
+        {/* ProZilla Upgrade Section - Highlighted */}
         <div className="px-2 pb-4">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={handleProClick}
-                className="w-full justify-start bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-semibold shadow-lg border-2 border-yellow-300/50 transition-all duration-200 hover:scale-105"
+                className="w-full justify-start bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold shadow-lg border-2 border-red-400/50 transition-all duration-200 hover:scale-105"
               >
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1">
@@ -199,7 +198,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   </div>
                   {!isCollapsed && (
                     <div className="flex flex-col items-start">
-                      <span className="text-sm font-bold">Diventa Pro</span>
+                      <span className="text-sm font-bold">Diventa ProZilla</span>
                       <span className="text-xs opacity-90">Sblocca tutto!</span>
                     </div>
                   )}
