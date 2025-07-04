@@ -48,7 +48,7 @@ export const JobTracker = () => {
         </div>
       </div>
     );
-  }
+  };
 
   // Filter applications based on status
   const filteredApplications = statusFilter === 'all' 
@@ -108,9 +108,9 @@ export const JobTracker = () => {
           </header>
 
           <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
-            {/* Applications counter and filters */}
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full lg:w-auto">
+            {/* Applications counter - Only show on applications tab */}
+            {activeTab === 'applications' && (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-6">
                 <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
                   <Target className="w-5 h-5 text-red-500" />
                   <span className="text-sm text-white/70">
@@ -124,63 +124,7 @@ export const JobTracker = () => {
                   </span>
                 </div>
               </div>
-
-              {/* Filters and View Mode Switcher - Only show on applications tab */}
-              {activeTab === 'applications' && (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full lg:w-auto">
-                  {/* Status Filter */}
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full sm:w-[180px] border-white/20 bg-white/10 hover:bg-white/20 text-white">
-                      <SelectValue placeholder="Filter by status" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-800 border-white/20">
-                      <SelectItem value="all" className="text-white hover:bg-white/10">All Applications</SelectItem>
-                      {uniqueStatuses.map((status) => (
-                        <SelectItem key={status} value={status} className="text-white hover:bg-white/10">
-                          {status === 'in-corso' ? 'In Progress' :
-                           status === 'primo-colloquio' ? 'First Interview' :
-                           status === 'secondo-colloquio' ? 'Second Interview' :
-                           status === 'colloquio-tecnico' ? 'Technical Interview' :
-                           status === 'colloquio-finale' ? 'Final Interview' :
-                           status === 'offerta-ricevuta' ? 'Offer Received' :
-                           status === 'rifiutato' ? 'Rejected' :
-                           status === 'ghosting' ? 'Ghosting' :
-                           status === 'ritirato' ? 'Withdrawn' : status}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  {/* View Mode Switcher */}
-                  <div className="flex items-center gap-2 w-full sm:w-auto">
-                    <Button
-                      onClick={() => setViewMode('list')}
-                      variant={viewMode === 'list' ? 'default' : 'outline'}
-                      size="sm"
-                      className={viewMode === 'list' 
-                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
-                        : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                      }
-                    >
-                      <List className="w-4 h-4 mr-2" />
-                      List
-                    </Button>
-                    <Button
-                      onClick={() => setViewMode('kanban')}
-                      variant={viewMode === 'kanban' ? 'default' : 'outline'}
-                      size="sm"
-                      className={viewMode === 'kanban' 
-                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
-                        : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                      }
-                    >
-                      <Columns className="w-4 h-4 mr-2" />
-                      Kanban
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
 
             {/* Quick counters - Only show on applications tab */}
             {activeTab === 'applications' && (
@@ -232,6 +176,62 @@ export const JobTracker = () => {
                     </div>
                   </CardContent>
                 </Card>
+              </div>
+            )}
+
+            {/* Filters and View Mode Switcher - Only show on applications tab */}
+            {activeTab === 'applications' && (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                {/* Status Filter */}
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full sm:w-[180px] border-white/20 bg-white/10 hover:bg-white/20 text-white">
+                    <SelectValue placeholder="Filter by status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-800 border-white/20">
+                    <SelectItem value="all" className="text-white hover:bg-white/10">All Applications</SelectItem>
+                    {uniqueStatuses.map((status) => (
+                      <SelectItem key={status} value={status} className="text-white hover:bg-white/10">
+                        {status === 'in-corso' ? 'In Progress' :
+                         status === 'primo-colloquio' ? 'First Interview' :
+                         status === 'secondo-colloquio' ? 'Second Interview' :
+                         status === 'colloquio-tecnico' ? 'Technical Interview' :
+                         status === 'colloquio-finale' ? 'Final Interview' :
+                         status === 'offerta-ricevuta' ? 'Offer Received' :
+                         status === 'rifiutato' ? 'Rejected' :
+                         status === 'ghosting' ? 'Ghosting' :
+                         status === 'ritirato' ? 'Withdrawn' : status}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* View Mode Switcher */}
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <Button
+                    onClick={() => setViewMode('list')}
+                    variant={viewMode === 'list' ? 'default' : 'outline'}
+                    size="sm"
+                    className={viewMode === 'list' 
+                      ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                      : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                    }
+                  >
+                    <List className="w-4 h-4 mr-2" />
+                    List
+                  </Button>
+                  <Button
+                    onClick={() => setViewMode('kanban')}
+                    variant={viewMode === 'kanban' ? 'default' : 'outline'}
+                    size="sm"
+                    className={viewMode === 'kanban' 
+                      ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                      : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                    }
+                  >
+                    <Columns className="w-4 h-4 mr-2" />
+                    Kanban
+                  </Button>
+                </div>
               </div>
             )}
 
