@@ -1,22 +1,10 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { useSubscription } from '@/hooks/useSubscription';
-import { BarChart3, FileText, Settings, LogOut, Calendar, Clock, rocket } from 'lucide-react';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarTrigger,
-  useSidebar,
-} from '@/components/ui/sidebar';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
+import React from "react";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { BarChart3, Settings, Crown, Target } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useSubscription } from "@/hooks/useSubscription";
+import { Badge } from "@/components/ui/badge";
 
 interface AppSidebarProps {
   activeTab: string;
@@ -24,205 +12,86 @@ interface AppSidebarProps {
   onSettingsClick: () => void;
 }
 
-export const AppSidebar: React.FC<AppSidebarProps> = ({
-  activeTab,
-  onTabChange,
-  onSettingsClick,
-}) => {
-  const navigate = useNavigate();
-  const { signOut, user } = useAuth();
+export const AppSidebar = ({ activeTab, onTabChange, onSettingsClick }: AppSidebarProps) => {
+  const { user, signOut } = useAuth();
   const { isPro } = useSubscription();
-  const { state } = useSidebar();
-  
-  const isCollapsed = state === 'collapsed';
-
-  const handleSignOut = async () => {
-    await signOut();
-  };
-
-  const handleSettingsClick = () => {
-    onSettingsClick();
-  };
 
   const handleProClick = () => {
-    navigate('/pro');
-  };
-
-  const menuItems = [
-    {
-      title: 'Applications',
-      icon: FileText,
-      id: 'applications',
-      onClick: () => onTabChange('applications'),
-    },
-    {
-      title: 'Statistics',
-      icon: BarChart3,
-      id: 'statistics',
-      onClick: () => onTabChange('statistics'),
-    },
-    {
-      title: 'Settings',
-      icon: Settings,
-      id: 'settings',
-      onClick: handleSettingsClick,
-    },
-  ];
-
-  // Add Pro button only for free users
-  if (!isPro) {
-    menuItems.splice(-1, 0, {
-      title: '🚀 Become Prozilla',
-      icon: rocket,
-      id: 'pro',
-      onClick: handleProClick,
-    });
-  }
-
-  const getUserInitials = () => {
-    if (user?.email) {
-      return user.email.substring(0, 2).toUpperCase();
-    }
-    return 'U';
-  };
-
-  // Date and time display component
-  const DateTimeDisplay = () => {
-    const [currentDateTime, setCurrentDateTime] = React.useState(new Date());
-
-    React.useEffect(() => {
-      const timer = setInterval(() => {
-        setCurrentDateTime(new Date());
-      }, 1000);
-
-      return () => clearInterval(timer);
-    }, []);
-
-    const formatDate = (date: Date) => {
-      return date.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric'
-      });
-    };
-
-    const formatTime = (date: Date) => {
-      return date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    };
-
-    if (isCollapsed) {
-      return (
-        <div className="flex flex-col items-center gap-1 p-2">
-          <Calendar className="w-4 h-4 text-white/70" />
-          <Clock className="w-4 h-4 text-white/70" />
-        </div>
-      );
-    }
-
-    return (
-      <div className="space-y-2 p-3 bg-white/5 rounded-lg">
-        <div className="flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-white/70" />
-          <span className="text-xs text-white/90 font-medium">
-            {formatDate(currentDateTime)}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-white/70" />
-          <span className="text-xs text-white/90 font-mono">
-            {formatTime(currentDateTime)}
-          </span>
-        </div>
-      </div>
-    );
+    window.location.href = '/pro';
   };
 
   return (
-    <Sidebar className="border-r border-white/20 bg-gradient-to-b from-blue-900 to-blue-800 backdrop-blur-md">
-      <SidebarHeader className="p-4 border-b border-white/10">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg overflow-hidden shadow-lg">
-              <img 
-                src="/lovable-uploads/95407aee-75ac-4d31-a281-db4fc0472751.png" 
-                alt="TrackZilla Logo" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            {!isCollapsed && (
-              <div>
-                <h2 className="text-lg font-bold text-white">TrackZilla</h2>
-                {isPro && (
-                  <span className="text-xs text-yellow-400 font-medium">ProZilla</span>
-                )}
-              </div>
+    <Sidebar className="bg-gradient-to-br from-gray-900 to-gray-800 border-r border-white/20">
+      <SidebarHeader className="p-4 border-b border-white/20">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+            <Target className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-white flex items-center gap-2">
+              TrackZilla
+              {isPro && <Crown className="w-4 h-4 text-yellow-500" />}
+            </h2>
+            {isPro && (
+              <Badge variant="secondary" className="text-xs bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
+                Pro
+              </Badge>
             )}
           </div>
-          <SidebarTrigger className="text-white hover:bg-white/10 h-8 w-8" />
-        </div>
-        
-        {/* Profile Section */}
-        <div className="flex items-center gap-3 mt-4 p-3 bg-white/5 rounded-lg">
-          <Avatar className="w-8 h-8">
-            <AvatarFallback className="bg-blue-500 text-white text-xs">
-              {getUserInitials()}
-            </AvatarFallback>
-          </Avatar>
-          {!isCollapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm text-white/90 truncate">{user?.email}</p>
-              {isPro && (
-                <span className="text-xs text-yellow-400 font-medium">Pro Member</span>
-              )}
-            </div>
-          )}
         </div>
       </SidebarHeader>
-
-      <SidebarContent className="flex-1">
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton
-                    onClick={item.onClick}
-                    className={`w-full justify-start text-white/70 hover:text-white hover:bg-white/10 transition-colors ${
-                      activeTab === item.id ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' : ''
-                    } ${
-                      item.id === 'pro' ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 text-yellow-300 hover:text-yellow-200' : ''
-                    }`}
-                  >
-                    <item.icon className="w-4 h-4" />
-                    {!isCollapsed && <span>{item.title}</span>}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-
-      <SidebarFooter className="p-4 border-t border-white/10 space-y-3">
-        {/* Date and Time Display */}
-        <DateTimeDisplay />
-        
-        {/* Logout Button */}
-        <SidebarMenu>
+      
+      <SidebarContent>
+        <SidebarMenu className="p-4 space-y-2">
           <SidebarMenuItem>
             <SidebarMenuButton
-              onClick={handleSignOut}
-              className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 transition-colors"
+              onClick={() => onTabChange('applications')}
+              className={`w-full justify-start text-white hover:bg-white/10 transition-colors ${
+                activeTab === 'applications' ? 'bg-white/20' : ''
+              }`}
             >
-              <LogOut className="w-4 h-4" />
-              {!isCollapsed && <span>Logout</span>}
+              <Target className="w-4 h-4 mr-3" />
+              Applications
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => onTabChange('statistics')}
+              className={`w-full justify-start text-white hover:bg-white/10 transition-colors ${
+                activeTab === 'statistics' ? 'bg-white/20' : ''
+              }`}
+            >
+              <BarChart3 className="w-4 h-4 mr-3" />
+              Statistics
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
+          {!isPro && (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={handleProClick}
+                className="w-full justify-start text-yellow-400 hover:bg-yellow-500/20 transition-colors border border-yellow-500/30 bg-yellow-500/10"
+              >
+                <Crown className="w-4 h-4 mr-3" />
+                🚀 Become Prozilla
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
+          
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={onSettingsClick}
+              className={`w-full justify-start text-white hover:bg-white/10 transition-colors ${
+                activeTab === 'settings' ? 'bg-white/20' : ''
+              }`}
+            >
+              <Settings className="w-4 h-4 mr-3" />
+              Settings
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarFooter>
+      </SidebarContent>
     </Sidebar>
   );
 };

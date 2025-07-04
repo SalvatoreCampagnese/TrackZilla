@@ -88,6 +88,7 @@ export type Database = {
       }
       job_applications: {
         Row: {
+          application_count: number | null
           application_date: string
           company_name: string
           created_at: string
@@ -103,6 +104,7 @@ export type Database = {
           work_mode: string
         }
         Insert: {
+          application_count?: number | null
           application_date: string
           company_name: string
           created_at?: string
@@ -118,6 +120,7 @@ export type Database = {
           work_mode?: string
         }
         Update: {
+          application_count?: number | null
           application_date?: string
           company_name?: string
           created_at?: string
@@ -131,6 +134,45 @@ export type Database = {
           updated_at?: string
           user_id?: string
           work_mode?: string
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          stripe_customer_id: string | null
+          subscribed: boolean
+          subscription_end: string | null
+          subscription_status: string | null
+          subscription_tier: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_status?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_status?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -175,7 +217,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_application_count: {
+        Args: { user_uuid: string }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
