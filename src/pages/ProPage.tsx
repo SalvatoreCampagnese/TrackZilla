@@ -1,15 +1,53 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import React, { useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 import { Crown, Check, X, Zap, Eye, Kanban, Infinity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
 const ProPage = () => {
-  const navigate = useNavigate();
-  const handleUpgrade = () => {
-    // Placeholder per l'integrazione con Stripe
-    console.log('Avvio processo di upgrade...');
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleUpgrade = async () => {
+    if (!user) {
+      toast({
+        title: "Accesso richiesto",
+        description: "Devi effettuare l'accesso per procedere con l'upgrade.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {
+          priceId: 'price_1QUqAoH7XbY2U1Z7oIp2wm9K' // This is the price ID for the product
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error('Error creating checkout:', error);
+      toast({
+        title: "Errore",
+        description: "Si è verificato un errore durante l'avvio del checkout. Riprova.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   const features = {
     pro: [{
       icon: <Infinity className="w-5 h-5" />,
@@ -46,7 +84,9 @@ const ProPage = () => {
       description: "Contenuti base solamente"
     }]
   };
-  return <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
+
+  return (
+    <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
@@ -73,13 +113,15 @@ const ProPage = () => {
             <Badge variant="secondary" className="mt-2 bg-white/20 text-white">Attuale</Badge>
           </CardHeader>
           <CardContent className="space-y-4">
-            {features.free.map((feature, index) => <div key={index} className="flex items-start gap-3">
+            {features.free.map((feature, index) => (
+              <div key={index} className="flex items-start gap-3">
                 {feature.icon}
                 <div>
                   <h4 className="font-medium text-white">{feature.title}</h4>
                   <p className="text-sm text-white/70">{feature.description}</p>
                 </div>
-              </div>)}
+              </div>
+            ))}
           </CardContent>
         </Card>
 
@@ -101,7 +143,8 @@ const ProPage = () => {
             <p className="text-red-100 mt-2">Tutto incluso</p>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
-            {features.pro.map((feature, index) => <div key={index} className="flex items-start gap-3">
+            {features.pro.map((feature, index) => (
+              <div key={index} className="flex items-start gap-3">
                 <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Check className="w-3 h-3 text-green-400" />
                 </div>
@@ -109,12 +152,18 @@ const ProPage = () => {
                   <h4 className="font-medium text-white">{feature.title}</h4>
                   <p className="text-sm text-white/70">{feature.description}</p>
                 </div>
-              </div>)}
+              </div>
+            ))}
             
             <div className="pt-6">
-              <Button onClick={handleUpgrade} className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 text-lg" size="lg">
+              <Button 
+                onClick={handleUpgrade} 
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 text-lg" 
+                size="lg"
+              >
                 <Crown className="w-5 h-5 mr-2" />
-                Diventa ProZilla Ora
+                {isLoading ? "Caricamento..." : "Diventa ProZilla Ora"}
               </Button>
             </div>
           </CardContent>
@@ -179,9 +228,8 @@ const ProPage = () => {
           </div>
         </CardContent>
       </Card>
-
-      {/* CTA Section */}
-      
-    </div>;
+    </div>
+  );
 };
+
 export default ProPage;
