@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,7 +10,7 @@ import { KanbanBoard } from './kanban/KanbanBoard';
 import { AppSidebar } from './AppSidebar';
 import { SettingsContent } from './SettingsContent';
 import ProPage from '@/pages/ProPage';
-import { Plus, Target, TrendingUp, Clock, CheckCircle, List, Columns } from 'lucide-react';
+import { Plus, Target, TrendingUp, Clock, CheckCircle, List, Columns, Sparkles, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
@@ -45,10 +46,18 @@ export const JobTracker = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 sm:h-32 sm:w-32 border-b-2 border-red-500 mx-auto"></div>
-          <p className="mt-4 text-white text-sm sm:text-base">Loading applications...</p>
+          <div className="relative">
+            <div className="animate-spin rounded-full h-20 w-20 border-4 border-purple-200 border-t-purple-500 mx-auto"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 opacity-20 animate-pulse"></div>
+          </div>
+          <p className="mt-6 text-white text-lg font-medium">Loading applications...</p>
+          <div className="mt-2 flex items-center justify-center gap-1">
+            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+          </div>
         </div>
       </div>
     );
@@ -85,7 +94,14 @@ export const JobTracker = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex w-full">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex w-full relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-3/4 left-3/4 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
+        </div>
+
         <AppSidebar 
           activeTab={activeTab}
           onTabChange={setActiveTab}
@@ -93,153 +109,169 @@ export const JobTracker = () => {
           onProClick={handleProClick}
         />
         
-        <main className="flex-1 flex flex-col min-w-0">
-          {/* Sticky Header */}
-          <header className="sticky top-0 z-10 flex items-center justify-between p-4 lg:p-6 border-b border-white/20 bg-gradient-to-br from-gray-900 to-gray-800 backdrop-blur-md">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger className="text-white hover:bg-white/10 h-8 w-8" />
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
+        <main className="flex-1 flex flex-col min-w-0 relative z-10">
+          {/* Enhanced Header */}
+          <header className="sticky top-0 z-20 backdrop-blur-xl bg-black/20 border-b border-white/10">
+            <div className="flex items-center justify-between p-4 lg:p-6">
+              <div className="flex items-center gap-6">
+                <SidebarTrigger className="text-white hover:bg-white/10 h-10 w-10 rounded-xl transition-all duration-200" />
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                      TrackZilla
+                    </h1>
+                    <p className="text-sm text-purple-200/70">Your Career Dashboard</p>
+                  </div>
+                </div>
               </div>
+              
+              {activeTab === 'applications' && (
+                <Button 
+                  onClick={handleAddApplication}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 text-white shadow-lg hover:shadow-xl hover:scale-105 rounded-xl px-6"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Add Application
+                </Button>
+              )}
             </div>
-            
-            {activeTab === 'applications' && (
-              <Button 
-                onClick={handleAddApplication}
-                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white shadow-lg"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Application
-              </Button>
-            )}
           </header>
 
-          <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
-            {/* Applications counter - Only show on applications tab */}
+          <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-full space-y-8">
+            {/* Enhanced Applications counter */}
             {activeTab === 'applications' && (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-6">
-                <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
-                  <Target className="w-5 h-5 text-red-500" />
-                  <span className="text-sm text-white/70">
-                    {applications.length} total applications
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-sm text-white/70">
-                    {inProgressApplications} in progress
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Quick counters - Only show on applications tab */}
-            {activeTab === 'applications' && (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                  <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
-                    <div>
-                      <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Total</p>
-                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{totalApplications}</p>
-                    </div>
-                    <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
-                      <Target className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-red-500" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                  <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
-                    <div>
-                      <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Response Rate</p>
-                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-400">{responseRate.toFixed(1)}%</p>
-                    </div>
-                    <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
-                      <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-green-400" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                  <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
-                    <div>
-                      <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Interviews</p>
-                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-purple-400">{interviewsObtained}</p>
-                    </div>
-                    <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
-                      <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-purple-400" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                  <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
-                    <div>
-                      <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Avg Time</p>
-                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-orange-400">{avgFeedbackTime}d</p>
-                    </div>
-                    <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
-                      <Clock className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-orange-400" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {/* Filters and View Mode Switcher - Only show on applications tab */}
-            {activeTab === 'applications' && (
-              <div className="flex flex-col sm:flex-row items-start w-full sm:items-center justify-between gap-4 mb-6">
-                {/* Status Filter and View Mode Switcher */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full justify-between">
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full sm:w-[180px] border-white/20 bg-white/10 hover:bg-white/20 text-white">
-                      <SelectValue placeholder="Filter by status" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-800 border-white/20">
-                      <SelectItem value="all" className="text-white hover:bg-white/10">All Applications</SelectItem>
-                      {uniqueStatuses.map((status) => (
-                        <SelectItem key={status} value={status} className="text-white hover:bg-white/10">
-                          {status === 'in-corso' ? 'In Progress' :
-                           status === 'primo-colloquio' ? 'First Interview' :
-                           status === 'secondo-colloquio' ? 'Second Interview' :
-                           status === 'colloquio-tecnico' ? 'Technical Interview' :
-                           status === 'colloquio-finale' ? 'Final Interview' :
-                           status === 'offerta-ricevuta' ? 'Offer Received' :
-                           status === 'rifiutato' ? 'Rejected' :
-                           status === 'ghosting' ? 'Ghosting' :
-                           status === 'ritirato' ? 'Withdrawn' : status}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  {/* View Mode Switcher */}
-                  <div className="flex items-center gap-2 w-full sm:w-auto">
-                    <Button
-                      onClick={() => setViewMode('list')}
-                      variant={viewMode === 'list' ? 'default' : 'outline'}
-                      size="sm"
-                      className={viewMode === 'list' 
-                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
-                        : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                      }
-                    >
-                      <List className="w-4 h-4 mr-2" />
-                      List
-                    </Button>
-                    <Button
-                      onClick={() => setViewMode('kanban')}
-                      variant={viewMode === 'kanban' ? 'default' : 'outline'}
-                      size="sm"
-                      className={viewMode === 'kanban' 
-                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
-                        : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                      }
-                    >
-                      <Columns className="w-4 h-4 mr-2" />
-                      Kanban
-                    </Button>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-xl border border-purple-300/20 rounded-2xl shadow-lg">
+                  <div className="p-2 bg-purple-500/20 rounded-xl">
+                    <Target className="w-6 h-6 text-purple-300" />
                   </div>
+                  <div>
+                    <p className="text-sm text-purple-200/70 font-medium">Total Applications</p>
+                    <p className="text-2xl font-bold text-white">{applications.length}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-xl border border-green-300/20 rounded-2xl shadow-lg">
+                  <div className="p-2 bg-green-500/20 rounded-xl">
+                    <Activity className="w-6 h-6 text-green-300" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-green-200/70 font-medium">In Progress</p>
+                    <p className="text-2xl font-bold text-white">{inProgressApplications}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Enhanced Quick counters */}
+            {activeTab === 'applications' && (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+                <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-xl border-blue-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
+                  <CardContent className="flex items-center justify-between p-6">
+                    <div>
+                      <p className="text-sm font-medium text-blue-200/70 mb-2">Total</p>
+                      <p className="text-3xl font-bold text-white">{totalApplications}</p>
+                      <div className="w-12 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-3"></div>
+                    </div>
+                    <div className="p-4 bg-blue-500/20 rounded-2xl group-hover:scale-110 transition-transform">
+                      <Target className="w-8 h-8 text-blue-300" />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-xl border-green-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
+                  <CardContent className="flex items-center justify-between p-6">
+                    <div>
+                      <p className="text-sm font-medium text-green-200/70 mb-2">Response Rate</p>
+                      <p className="text-3xl font-bold text-white">{responseRate.toFixed(1)}%</p>
+                      <div className="w-12 h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full mt-3"></div>
+                    </div>
+                    <div className="p-4 bg-green-500/20 rounded-2xl group-hover:scale-110 transition-transform">
+                      <TrendingUp className="w-8 h-8 text-green-300" />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl border-purple-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
+                  <CardContent className="flex items-center justify-between p-6">
+                    <div>
+                      <p className="text-sm font-medium text-purple-200/70 mb-2">Interviews</p>
+                      <p className="text-3xl font-bold text-white">{interviewsObtained}</p>
+                      <div className="w-12 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mt-3"></div>
+                    </div>
+                    <div className="p-4 bg-purple-500/20 rounded-2xl group-hover:scale-110 transition-transform">
+                      <CheckCircle className="w-8 h-8 text-purple-300" />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-xl border-orange-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
+                  <CardContent className="flex items-center justify-between p-6">
+                    <div>
+                      <p className="text-sm font-medium text-orange-200/70 mb-2">Avg Time</p>
+                      <p className="text-3xl font-bold text-white">{avgFeedbackTime}d</p>
+                      <div className="w-12 h-1 bg-gradient-to-r from-orange-400 to-red-400 rounded-full mt-3"></div>
+                    </div>
+                    <div className="p-4 bg-orange-500/20 rounded-2xl group-hover:scale-110 transition-transform">
+                      <Clock className="w-8 h-8 text-orange-300" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Enhanced Filters and View Mode Switcher */}
+            {activeTab === 'applications' && (
+              <div className="flex flex-col sm:flex-row items-start w-full sm:items-center justify-between gap-6 p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full sm:w-[220px] border-white/20 bg-white/10 hover:bg-white/20 text-white rounded-xl h-12 transition-all duration-200">
+                    <SelectValue placeholder="Filter by status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-800 border-white/20 rounded-xl">
+                    <SelectItem value="all" className="text-white hover:bg-white/10 rounded-lg">All Applications</SelectItem>
+                    {uniqueStatuses.map((status) => (
+                      <SelectItem key={status} value={status} className="text-white hover:bg-white/10 rounded-lg">
+                        {status === 'in-corso' ? 'In Progress' :
+                         status === 'primo-colloquio' ? 'First Interview' :
+                         status === 'secondo-colloquio' ? 'Second Interview' :
+                         status === 'colloquio-tecnico' ? 'Technical Interview' :
+                         status === 'colloquio-finale' ? 'Final Interview' :
+                         status === 'offerta-ricevuta' ? 'Offer Received' :
+                         status === 'rifiutato' ? 'Rejected' :
+                         status === 'ghosting' ? 'Ghosting' :
+                         status === 'ritirato' ? 'Withdrawn' : status}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <div className="flex items-center gap-3 p-2 bg-white/10 rounded-2xl backdrop-blur-sm">
+                  <Button
+                    onClick={() => setViewMode('list')}
+                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    size="sm"
+                    className={viewMode === 'list' 
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl px-6 shadow-lg'
+                      : 'text-white/70 hover:text-white hover:bg-white/10 rounded-xl px-6'
+                    }
+                  >
+                    <List className="w-4 h-4 mr-2" />
+                    List
+                  </Button>
+                  <Button
+                    onClick={() => setViewMode('kanban')}
+                    variant={viewMode === 'kanban' ? 'default' : 'ghost'}
+                    size="sm"
+                    className={viewMode === 'kanban' 
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl px-6 shadow-lg'
+                      : 'text-white/70 hover:text-white hover:bg-white/10 rounded-xl px-6'
+                    }
+                  >
+                    <Columns className="w-4 h-4 mr-2" />
+                    Kanban
+                  </Button>
                 </div>
               </div>
             )}
