@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { BarChart3, FileText, Settings, LogOut, Calendar, Clock } from 'lucide-react';
+import { BarChart3, FileText, Settings, LogOut, Calendar, Clock, Crown, Zap } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -41,6 +41,10 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
   const handleSettingsClick = () => {
     onSettingsClick();
+  };
+
+  const handleProClick = () => {
+    navigate('/pro');
   };
 
   const menuItems = [
@@ -179,6 +183,31 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Pro Upgrade Section - Highlighted */}
+        <div className="px-2 pb-4">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={handleProClick}
+                className="w-full justify-start bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-semibold shadow-lg border-2 border-yellow-300/50 transition-all duration-200 hover:scale-105"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <Crown className="w-4 h-4" />
+                    <Zap className="w-3 h-3" />
+                  </div>
+                  {!isCollapsed && (
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm font-bold">Diventa Pro</span>
+                      <span className="text-xs opacity-90">Sblocca tutto!</span>
+                    </div>
+                  )}
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </div>
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-white/10 space-y-3">
