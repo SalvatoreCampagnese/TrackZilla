@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,11 +10,11 @@ import { KanbanBoard } from './kanban/KanbanBoard';
 import { AppSidebar } from './AppSidebar';
 import { SettingsContent } from './SettingsContent';
 import ProPage from '@/pages/ProPage';
-import { Plus, Target, TrendingUp, Clock, CheckCircle, List, Columns, Sparkles, Activity } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { DashboardHeader } from './dashboard/DashboardHeader';
+import { ApplicationsCounter } from './dashboard/ApplicationsCounter';
+import { QuickStats } from './dashboard/QuickStats';
+import { FilterControls } from './dashboard/FilterControls';
 
 export const JobTracker = () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export const JobTracker = () => {
         </div>
       </div>
     );
-  };
+  }
 
   // Filter applications based on status
   const filteredApplications = statusFilter === 'all' 
@@ -109,169 +110,44 @@ export const JobTracker = () => {
         />
         
         <main className="flex-1 flex flex-col min-w-0 relative z-10">
-          {/* Enhanced Header - removed SidebarTrigger */}
-          <header className="sticky top-0 z-20 backdrop-blur-xl bg-black/20 border-b border-white/10">
-            <div className="flex items-center justify-between p-4 lg:p-6">
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                      TrackZilla
-                    </h1>
-                    <p className="text-sm text-purple-200/70">Your Career Dashboard</p>
-                  </div>
-                </div>
-              </div>
-              
-              {activeTab === 'applications' && (
-                <Button 
-                  onClick={handleAddApplication}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 text-white shadow-lg hover:shadow-xl hover:scale-105 rounded-xl px-6"
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Add Application
-                </Button>
-              )}
-            </div>
-          </header>
+          {/* Mobile Sidebar Trigger - Always visible on mobile */}
+          <div className="md:hidden fixed top-4 left-4 z-30">
+            <SidebarTrigger className="bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105" />
+          </div>
 
-          <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-full space-y-8">
+          <DashboardHeader 
+            activeTab={activeTab}
+            onAddApplication={handleAddApplication}
+          />
+
+          <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-full space-y-6 sm:space-y-8">
             {/* Enhanced Applications counter */}
             {activeTab === 'applications' && (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-xl border border-purple-300/20 rounded-2xl shadow-lg">
-                  <div className="p-2 bg-purple-500/20 rounded-xl">
-                    <Target className="w-6 h-6 text-purple-300" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-purple-200/70 font-medium">Total Applications</p>
-                    <p className="text-2xl font-bold text-white">{applications.length}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-xl border border-green-300/20 rounded-2xl shadow-lg">
-                  <div className="p-2 bg-green-500/20 rounded-xl">
-                    <Activity className="w-6 h-6 text-green-300" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-green-200/70 font-medium">In Progress</p>
-                    <p className="text-2xl font-bold text-white">{inProgressApplications}</p>
-                  </div>
-                </div>
-              </div>
+              <ApplicationsCounter 
+                totalApplications={applications.length}
+                inProgressApplications={inProgressApplications}
+              />
             )}
 
             {/* Enhanced Quick counters */}
             {activeTab === 'applications' && (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-                <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-xl border-blue-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
-                  <CardContent className="flex items-center justify-between p-6">
-                    <div>
-                      <p className="text-sm font-medium text-blue-200/70 mb-2">Total</p>
-                      <p className="text-3xl font-bold text-white">{totalApplications}</p>
-                      <div className="w-12 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-3"></div>
-                    </div>
-                    <div className="p-4 bg-blue-500/20 rounded-2xl group-hover:scale-110 transition-transform">
-                      <Target className="w-8 h-8 text-blue-300" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-xl border-green-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
-                  <CardContent className="flex items-center justify-between p-6">
-                    <div>
-                      <p className="text-sm font-medium text-green-200/70 mb-2">Response Rate</p>
-                      <p className="text-3xl font-bold text-white">{responseRate.toFixed(1)}%</p>
-                      <div className="w-12 h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full mt-3"></div>
-                    </div>
-                    <div className="p-4 bg-green-500/20 rounded-2xl group-hover:scale-110 transition-transform">
-                      <TrendingUp className="w-8 h-8 text-green-300" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl border-purple-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
-                  <CardContent className="flex items-center justify-between p-6">
-                    <div>
-                      <p className="text-sm font-medium text-purple-200/70 mb-2">Interviews</p>
-                      <p className="text-3xl font-bold text-white">{interviewsObtained}</p>
-                      <div className="w-12 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mt-3"></div>
-                    </div>
-                    <div className="p-4 bg-purple-500/20 rounded-2xl group-hover:scale-110 transition-transform">
-                      <CheckCircle className="w-8 h-8 text-purple-300" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-xl border-orange-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
-                  <CardContent className="flex items-center justify-between p-6">
-                    <div>
-                      <p className="text-sm font-medium text-orange-200/70 mb-2">Avg Time</p>
-                      <p className="text-3xl font-bold text-white">{avgFeedbackTime}d</p>
-                      <div className="w-12 h-1 bg-gradient-to-r from-orange-400 to-red-400 rounded-full mt-3"></div>
-                    </div>
-                    <div className="p-4 bg-orange-500/20 rounded-2xl group-hover:scale-110 transition-transform">
-                      <Clock className="w-8 h-8 text-orange-300" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+              <QuickStats 
+                totalApplications={totalApplications}
+                responseRate={responseRate}
+                interviewsObtained={interviewsObtained}
+                avgFeedbackTime={avgFeedbackTime}
+              />
             )}
 
             {/* Enhanced Filters and View Mode Switcher */}
             {activeTab === 'applications' && (
-              <div className="flex flex-col sm:flex-row items-start w-full sm:items-center justify-between gap-6 p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg">
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-[220px] border-white/20 bg-white/10 hover:bg-white/20 text-white rounded-xl h-12 transition-all duration-200">
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-white/20 rounded-xl">
-                    <SelectItem value="all" className="text-white hover:bg-white/10 rounded-lg">All Applications</SelectItem>
-                    {uniqueStatuses.map((status) => (
-                      <SelectItem key={status} value={status} className="text-white hover:bg-white/10 rounded-lg">
-                        {status === 'in-corso' ? 'In Progress' :
-                         status === 'primo-colloquio' ? 'First Interview' :
-                         status === 'secondo-colloquio' ? 'Second Interview' :
-                         status === 'colloquio-tecnico' ? 'Technical Interview' :
-                         status === 'colloquio-finale' ? 'Final Interview' :
-                         status === 'offerta-ricevuta' ? 'Offer Received' :
-                         status === 'rifiutato' ? 'Rejected' :
-                         status === 'ghosting' ? 'Ghosting' :
-                         status === 'ritirato' ? 'Withdrawn' : status}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <div className="flex items-center gap-3 p-2 bg-white/10 rounded-2xl backdrop-blur-sm">
-                  <Button
-                    onClick={() => setViewMode('list')}
-                    variant={viewMode === 'list' ? 'default' : 'ghost'}
-                    size="sm"
-                    className={viewMode === 'list' 
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl px-6 shadow-lg'
-                      : 'text-white/70 hover:text-white hover:bg-white/10 rounded-xl px-6'
-                    }
-                  >
-                    <List className="w-4 h-4 mr-2" />
-                    List
-                  </Button>
-                  <Button
-                    onClick={() => setViewMode('kanban')}
-                    variant={viewMode === 'kanban' ? 'default' : 'ghost'}
-                    size="sm"
-                    className={viewMode === 'kanban' 
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl px-6 shadow-lg'
-                      : 'text-white/70 hover:text-white hover:bg-white/10 rounded-xl px-6'
-                    }
-                  >
-                    <Columns className="w-4 h-4 mr-2" />
-                    Kanban
-                  </Button>
-                </div>
-              </div>
+              <FilterControls 
+                statusFilter={statusFilter}
+                onStatusFilterChange={setStatusFilter}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+                uniqueStatuses={uniqueStatuses}
+              />
             )}
 
             {/* Content based on active tab */}

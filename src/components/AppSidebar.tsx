@@ -22,7 +22,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 }) => {
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
-  const { state } = useSidebar();
+  const { state, isMobile } = useSidebar();
   const isCollapsed = state === 'collapsed';
 
   const handleSignOut = async () => {
@@ -92,7 +92,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       });
     };
 
-    if (isCollapsed) {
+    if (isCollapsed && !isMobile) {
       return (
         <div className="flex flex-col items-center gap-2 p-3 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-purple-300/20 rounded-xl">
           <Calendar className="w-4 h-4 text-purple-300" />
@@ -124,7 +124,10 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   };
 
   return (
-    <Sidebar className="border-r border-white/10 bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 backdrop-blur-md shadow-2xl">
+    <Sidebar 
+      className="border-r border-white/10 bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 backdrop-blur-md shadow-2xl"
+      collapsible="icon"
+    >
       <SidebarHeader className="p-6 border-b border-white/10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -137,7 +140,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 />
               </div>
             </div>
-            {!isCollapsed && (
+            {(!isCollapsed || isMobile) && (
               <div>
                 <h2 className="text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
                   TrackZilla
@@ -150,13 +153,15 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         </div>
         
         {/* Enhanced Profile Section */}
-        <div className="flex items-center gap-4 mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-blue-300/20 rounded-xl shadow-lg">
+        <div className={`flex items-center gap-4 mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-blue-300/20 rounded-xl shadow-lg ${
+          isCollapsed && !isMobile ? 'justify-center' : ''
+        }`}>
           <Avatar className="w-10 h-10 border-2 border-purple-300/30">
             <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold">
               {getUserInitials()}
             </AvatarFallback>
           </Avatar>
-          {!isCollapsed && (
+          {(!isCollapsed || isMobile) && (
             <div className="flex-1 min-w-0">
               <p className="text-sm text-white/90 truncate font-medium">{user?.email}</p>
               <p className="text-xs text-purple-200/70">Premium User</p>
@@ -173,11 +178,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton 
                     onClick={item.onClick} 
+                    tooltip={isCollapsed && !isMobile ? item.title : undefined}
                     className={`w-full justify-start text-white/80 hover:text-white hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-200 rounded-xl h-12 ${
                       activeTab === item.id 
                         ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-white border border-purple-300/30 shadow-lg' 
                         : ''
-                    }`}
+                    } ${isCollapsed && !isMobile ? 'justify-center' : ''}`}
                   >
                     <div className={`p-2 rounded-lg ${
                       activeTab === item.id 
@@ -186,7 +192,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                     }`}>
                       <item.icon className="w-5 h-5" />
                     </div>
-                    {!isCollapsed && <span className="font-medium">{item.title}</span>}
+                    {(!isCollapsed || isMobile) && <span className="font-medium">{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -206,16 +212,17 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <SidebarMenuItem>
             <SidebarMenuButton 
               onClick={handleProClick} 
-              className={`w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-xl border-2 border-purple-400/50 transition-all duration-300 hover:scale-105 rounded-xl h-14 ${
+              tooltip={isCollapsed && !isMobile ? "Diventa ProZilla" : undefined}
+              className={`w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-xl border-2 border-purple-400/50 transition-all duration-300 hover:scale-105 rounded-xl h-14 ${
                 activeTab === 'pro' ? 'scale-105 shadow-2xl border-purple-300/70' : ''
-              }`}
+              } ${isCollapsed && !isMobile ? 'justify-center' : 'justify-start'}`}
             >
-              <div className="flex items-center gap-3">
+              <div className={`flex items-center ${isCollapsed && !isMobile ? '' : 'gap-3'}`}>
                 <div className="flex items-center gap-1 p-2 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-lg">
                   <Zap className="w-5 h-5 text-yellow-300" />
-                  <Sparkles className="w-4 h-4 text-orange-300" />
+                  {(!isCollapsed || isMobile) && <Sparkles className="w-4 h-4 text-orange-300" />}
                 </div>
-                {!isCollapsed && (
+                {(!isCollapsed || isMobile) && (
                   <div className="flex flex-col items-start">
                     <span className="text-sm font-bold">Diventa ProZilla</span>
                     <span className="text-xs text-purple-200/80">Unlock Premium</span>
@@ -231,12 +238,15 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <SidebarMenuItem>
             <SidebarMenuButton 
               onClick={handleSignOut} 
-              className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 transition-all duration-200 rounded-xl h-12 border border-transparent hover:border-red-400/30"
+              tooltip={isCollapsed && !isMobile ? "Logout" : undefined}
+              className={`w-full text-white/70 hover:text-white hover:bg-red-500/20 transition-all duration-200 rounded-xl h-12 border border-transparent hover:border-red-400/30 ${
+                isCollapsed && !isMobile ? 'justify-center' : 'justify-start'
+              }`}
             >
               <div className="p-2 bg-red-500/20 rounded-lg">
                 <LogOut className="w-5 h-5 text-red-300" />
               </div>
-              {!isCollapsed && <span className="font-medium">Logout</span>}
+              {(!isCollapsed || isMobile) && <span className="font-medium">Logout</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
