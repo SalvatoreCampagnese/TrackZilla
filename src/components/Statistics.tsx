@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { JobApplication } from '@/types/job';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +11,20 @@ interface StatisticsProps {
 }
 
 export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
+  console.log('Statistics component rendered with applications:', applications);
+
+  // Early return with fallback if no applications
+  if (!applications || applications.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-12">
+          <div className="text-white/70 text-lg mb-4">No applications found</div>
+          <div className="text-white/50 text-sm">Add some job applications to see statistics</div>
+        </div>
+      </div>
+    );
+  }
+
   const totalApplications = applications.length;
   const responsesReceived = applications.filter(app => 
     !['in-corso', 'ghosting'].includes(app.status)
@@ -122,34 +137,6 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     .sort((a, b) => b.stageScore - a.stageScore)
     .slice(0, 10);
 
-  const workModeChartConfig = {
-    value: {
-      label: "Applications",
-    },
-    remote: {
-      label: "Remote",
-      color: "#ef4444",
-    },
-    hybrid: {
-      label: "Hybrid", 
-      color: "#f97316",
-    },
-    onsite: {
-      label: "On-site",
-      color: "#eab308",
-    },
-    notSpecified: {
-      label: "Not Specified",
-      color: "#22c55e",
-    },
-  };
-
-  const statusChartConfig = {
-    value: {
-      label: "Count",
-    },
-  };
-
   const COLORS = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'];
 
   return (
@@ -253,7 +240,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         </Card>
       </div>
 
-      {/* Charts section - Now fully responsive */}
+      {/* Charts section - Fully responsive */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Work Mode Distribution */}
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
@@ -265,22 +252,33 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
           <CardContent>
             {workModeData.length > 0 ? (
               <div className="w-full">
-                <div className="w-full h-[250px] sm:h-[300px]">
+                <div className="w-full h-[200px] sm:h-[250px] md:h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={workModeData}
                         cx="50%"
                         cy="50%"
-                        innerRadius={40}
-                        outerRadius={80}
+                        innerRadius={30}
+                        outerRadius={60}
                         dataKey="value"
                       >
                         {workModeData.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <ChartTooltip 
+                        content={({ active, payload }) => {
+                          if (active && payload && payload.length) {
+                            return (
+                              <div className="bg-gray-800 border border-white/20 rounded-lg p-2">
+                                <p className="text-white text-sm">{`${payload[0].name}: ${payload[0].value} (${payload[0].payload.percentage}%)`}</p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -316,18 +314,29 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
           </CardHeader>
           <CardContent>
             {statusData.length > 0 ? (
-              <div className="w-full h-[250px] sm:h-[300px]">
+              <div className="w-full h-[200px] sm:h-[250px] md:h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={statusData} layout="horizontal" margin={{ top: 5, right: 30, left: 5, bottom: 5 }}>
+                  <BarChart data={statusData} layout="vertical" margin={{ top: 5, right: 30, left: 5, bottom: 5 }}>
                     <XAxis type="number" hide />
                     <YAxis 
                       type="category" 
                       dataKey="name" 
-                      tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 11 }}
-                      width={80}
+                      tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 10 }}
+                      width={60}
                     />
                     <Bar dataKey="value" fill="#ef4444" radius={[0, 4, 4, 0]} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <ChartTooltip 
+                      content={({ active, payload, label }) => {
+                        if (active && payload && payload.length) {
+                          return (
+                            <div className="bg-gray-800 border border-white/20 rounded-lg p-2">
+                              <p className="text-white text-sm">{`${label}: ${payload[0].value}`}</p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
