@@ -79,12 +79,13 @@ export const useSubscription = () => {
         },
         (payload) => {
           console.log('Subscription updated:', payload);
-          if (payload.new) {
+          if (payload.new && typeof payload.new === 'object') {
+            const newData = payload.new as any;
             setSubscriptionData({
-              subscribed: payload.new.subscribed || false,
-              subscription_tier: payload.new.subscription_tier || null,
-              subscription_end: payload.new.subscription_end || null,
-              subscription_status: payload.new.subscription_status || null,
+              subscribed: newData.subscribed || false,
+              subscription_tier: newData.subscription_tier || null,
+              subscription_end: newData.subscription_end || null,
+              subscription_status: newData.subscription_status || null,
             });
           }
         }
