@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -14,11 +13,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useSubscription } from '@/hooks/useSubscription';
+import { useApplicationLimit } from '@/hooks/useApplicationLimit';
+import { Crown, Lock } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export const JobTracker = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { applications, loading, updateApplicationStatus, deleteApplication, refetch } = useJobApplications();
+  const { isPro } = useSubscription();
+  const { canAddApplication, isAtLimit, remainingApplications, freeLimit } = useApplicationLimit();
   const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [activeTab, setActiveTab] = useState('applications');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -32,11 +37,23 @@ export const JobTracker = () => {
   };
 
   const handleAddApplication = () => {
+    if (!canAddApplication) {
+      navigate('/pro');
+      return;
+    }
     navigate('/add-job');
   };
 
   const handleSettingsClick = () => {
     setActiveTab('settings');
+  };
+
+  const handleKanbanView = () => {
+    if (!isPro) {
+      navigate('/pro');
+      return;
+    }
+    setViewMode('kanban');
   };
 
   if (loading) {
@@ -94,20 +111,61 @@ export const JobTracker = () => {
             <div className="flex items-center gap-4">
               <SidebarTrigger className="text-white hover:bg-white/10 h-8 w-8" />
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                  TrackZilla
+                  {isPro && <Crown className="w-5 h-5 text-yellow-500" />}
+                </h1>
               </div>
             </div>
             
             <Button 
               onClick={handleAddApplication}
-              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white shadow-lg"
+              className={`${
+                canAddApplication 
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700' 
+                  : 'bg-gray-600 hover:bg-gray-700'
+              } transition-all duration-200 text-white shadow-lg`}
+              disabled={!canAddApplication}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Application
+              {canAddApplication ? 'Add Application' : `Limit Reached (${freeLimit})`}
             </Button>
           </header>
 
           <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
+            {/* Application Limit Warning for Free Users */}
+            {!isPro && isAtLimit && (
+              <Alert className="mb-6 bg-yellow-500/20 border-yellow-500/30 text-yellow-200">
+                <Lock className="h-4 w-4" />
+                <AlertDescription>
+                  Hai raggiunto il limite di {freeLimit} candidature del piano gratuito. 
+                  <Button 
+                    variant="link" 
+                    className="text-yellow-300 hover:text-yellow-100 p-0 ml-1 h-auto"
+                    onClick={() => navigate('/pro')}
+                  >
+                    Passa a ProZilla per candidature illimitate!
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {/* Free User Progress */}
+            {!isPro && !isAtLimit && (
+              <Alert className="mb-6 bg-blue-500/20 border-blue-500/30 text-blue-200">
+                <AlertDescription>
+                  Candidature rimanenti: {remainingApplications} su {freeLimit}
+                  <Button 
+                    variant="link" 
+                    className="text-blue-300 hover:text-blue-100 p-0 ml-1 h-auto"
+                    onClick={() => navigate('/pro')}
+                  >
+                    Upgrade a ProZilla
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            )}
+
             {/* Applications counter - Only show on applications tab */}
             {activeTab === 'applications' && (
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-6">
@@ -182,7 +240,6 @@ export const JobTracker = () => {
             {/* Filters and View Mode Switcher - Only show on applications tab */}
             {activeTab === 'applications' && (
               <div className="flex flex-col sm:flex-row items-start w-full sm:items-center justify-between gap-4 mb-6">
-                {/* Status Filter and View Mode Switcher */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full justify-between">
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-full sm:w-[180px] border-white/20 bg-white/10 hover:bg-white/20 text-white">
@@ -221,16 +278,18 @@ export const JobTracker = () => {
                       List
                     </Button>
                     <Button
-                      onClick={() => setViewMode('kanban')}
+                      onClick={handleKanbanView}
                       variant={viewMode === 'kanban' ? 'default' : 'outline'}
                       size="sm"
-                      className={viewMode === 'kanban' 
+                      className={`${viewMode === 'kanban' 
                         ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
                         : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                      }
+                      } ${!isPro ? 'relative' : ''}`}
+                      disabled={!isPro}
                     >
                       <Columns className="w-4 h-4 mr-2" />
                       Kanban
+                      {!isPro && <Lock className="w-3 h-3 ml-1" />}
                     </Button>
                   </div>
                 </div>

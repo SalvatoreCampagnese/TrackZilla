@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { BarChart3, FileText, Settings, LogOut, Calendar, Clock } from 'lucide-react';
+import { useSubscription } from '@/hooks/useSubscription';
+import { BarChart3, FileText, Settings, LogOut, Calendar, Clock, rocket } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -31,6 +31,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 }) => {
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
+  const { isPro } = useSubscription();
   const { state } = useSidebar();
   
   const isCollapsed = state === 'collapsed';
@@ -41,6 +42,10 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
   const handleSettingsClick = () => {
     onSettingsClick();
+  };
+
+  const handleProClick = () => {
+    navigate('/pro');
   };
 
   const menuItems = [
@@ -63,6 +68,16 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       onClick: handleSettingsClick,
     },
   ];
+
+  // Add Pro button only for free users
+  if (!isPro) {
+    menuItems.splice(-1, 0, {
+      title: '🚀 Become Prozilla',
+      icon: rocket,
+      id: 'pro',
+      onClick: handleProClick,
+    });
+  }
 
   const getUserInitials = () => {
     if (user?.email) {
@@ -138,7 +153,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               />
             </div>
             {!isCollapsed && (
-              <h2 className="text-lg font-bold text-white">TrackZilla</h2>
+              <div>
+                <h2 className="text-lg font-bold text-white">TrackZilla</h2>
+                {isPro && (
+                  <span className="text-xs text-yellow-400 font-medium">ProZilla</span>
+                )}
+              </div>
             )}
           </div>
           <SidebarTrigger className="text-white hover:bg-white/10 h-8 w-8" />
@@ -154,6 +174,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           {!isCollapsed && (
             <div className="flex-1 min-w-0">
               <p className="text-sm text-white/90 truncate">{user?.email}</p>
+              {isPro && (
+                <span className="text-xs text-yellow-400 font-medium">Pro Member</span>
+              )}
             </div>
           )}
         </div>
@@ -169,6 +192,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                     onClick={item.onClick}
                     className={`w-full justify-start text-white/70 hover:text-white hover:bg-white/10 transition-colors ${
                       activeTab === item.id ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' : ''
+                    } ${
+                      item.id === 'pro' ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 text-yellow-300 hover:text-yellow-200' : ''
                     }`}
                   >
                     <item.icon className="w-4 h-4" />
