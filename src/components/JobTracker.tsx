@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,6 +8,7 @@ import { Statistics } from './Statistics';
 import { KanbanBoard } from './kanban/KanbanBoard';
 import { AppSidebar } from './AppSidebar';
 import { SettingsContent } from './SettingsContent';
+import ProPage from '@/pages/ProPage';
 import { Plus, Target, TrendingUp, Clock, CheckCircle, List, Columns } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -37,6 +37,10 @@ export const JobTracker = () => {
 
   const handleSettingsClick = () => {
     setActiveTab('settings');
+  };
+
+  const handleProClick = () => {
+    setActiveTab('pro');
   };
 
   if (loading) {
@@ -86,6 +90,7 @@ export const JobTracker = () => {
           activeTab={activeTab}
           onTabChange={setActiveTab}
           onSettingsClick={handleSettingsClick}
+          onProClick={handleProClick}
         />
         
         <main className="flex-1 flex flex-col min-w-0">
@@ -98,13 +103,15 @@ export const JobTracker = () => {
               </div>
             </div>
             
-            <Button 
-              onClick={handleAddApplication}
-              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white shadow-lg"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Application
-            </Button>
+            {activeTab === 'applications' && (
+              <Button 
+                onClick={handleAddApplication}
+                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white shadow-lg"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Application
+              </Button>
+            )}
           </header>
 
           <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
@@ -262,6 +269,10 @@ export const JobTracker = () => {
             
             {activeTab === 'settings' && (
               <SettingsContent />
+            )}
+
+            {activeTab === 'pro' && (
+              <ProPage />
             )}
           </div>
         </main>

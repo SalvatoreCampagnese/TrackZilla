@@ -21,12 +21,14 @@ interface AppSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   onSettingsClick: () => void;
+  onProClick: () => void;
 }
 
 export const AppSidebar: React.FC<AppSidebarProps> = ({
   activeTab,
   onTabChange,
   onSettingsClick,
+  onProClick,
 }) => {
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
@@ -43,7 +45,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   };
 
   const handleProClick = () => {
-    navigate('/pro');
+    onProClick();
   };
 
   const menuItems = [
@@ -189,7 +191,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={handleProClick}
-                className="w-full justify-start bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold shadow-lg border-2 border-red-400/50 transition-all duration-200 hover:scale-105"
+                className={`w-full justify-start bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold shadow-lg border-2 border-red-400/50 transition-all duration-200 hover:scale-105 ${
+                  activeTab === 'pro' ? 'scale-105 shadow-xl' : ''
+                }`}
               >
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1">
