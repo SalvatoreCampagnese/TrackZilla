@@ -27,7 +27,7 @@ const ProPage = () => {
     try {
       const { data, error } = await supabase.functions.invoke('create-checkout', {
         body: {
-          priceId: 'price_1QUqAoH7XbY2U1Z7oIp2wm9K' // This is the price ID for the product
+          priceId: 'price_1Rh8BAJyLFziZ5rmdoQu3djS'
         }
       });
 
@@ -138,7 +138,7 @@ const ProPage = () => {
               <CardTitle className="text-2xl font-bold">ProZilla</CardTitle>
             </div>
             <div className="text-4xl font-bold mt-4">
-              €9.99<span className="text-lg font-normal opacity-80">/mese</span>
+              €4.79<span className="text-lg font-normal opacity-80">/mese</span>
             </div>
             <p className="text-red-100 mt-2">Tutto incluso</p>
           </CardHeader>
