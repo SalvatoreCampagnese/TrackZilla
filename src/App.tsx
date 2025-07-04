@@ -11,6 +11,8 @@ import ImportPage from "./pages/ImportPage";
 import ApplicationDetailPage from "./pages/ApplicationDetailPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProPage from "./pages/ProPage";
+import SuccessPage from "./pages/SuccessPage";
+import SubscriptionPage from "./pages/SubscriptionPage";
 import SitemapPage from "./components/SitemapPage";
 import TermsPage from "./pages/TermsPage";
 
@@ -30,6 +32,8 @@ const App = () => (
             <Route path="/application/:id" element={<ApplicationDetailPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/pro" element={<ProPage />} />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/subscription" element={<SubscriptionPage />} />
             <Route path="/sitemap" element={<SitemapPage />} />
             <Route path="/sitemap.xml" element={<SitemapPage />} />
             <Route path="/terms" element={<TermsPage />} />
