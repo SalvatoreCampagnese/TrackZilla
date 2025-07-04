@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Clock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { toast } from '@/hooks/use-toast';
 
 interface UserProfile {
   firstName?: string;
@@ -18,6 +19,7 @@ interface UserProfile {
 export const SettingsContent = () => {
   const [ghostingDays, setGhostingDays] = useState(14);
   const [savedGhostingDays, setSavedGhostingDays] = useState(14);
+  const [isLoading, setIsLoading] = useState(false);
   
   const [userProfile, setUserProfile] = useState<UserProfile>({
     firstName: '',
@@ -35,16 +37,36 @@ export const SettingsContent = () => {
     currentCompany: ''
   });
 
-  const handleSave = () => {
-    localStorage.setItem('ghostingDays', ghostingDays.toString());
-    localStorage.setItem('userProfile', JSON.stringify(userProfile));
+  const handleSave = async () => {
+    setIsLoading(true);
     
-    setSavedGhostingDays(ghostingDays);
-    setSavedUserProfile(userProfile);
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      localStorage.setItem('ghostingDays', ghostingDays.toString());
+      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+      
+      setSavedGhostingDays(ghostingDays);
+      setSavedUserProfile(userProfile);
+      
+      toast({
+        title: "Settings saved!",
+        description: "Your preferences have been updated successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error saving settings",
+        description: "There was a problem saving your settings. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Load saved settings
-  React.useEffect(() => {
+  useEffect(() => {
     const savedGhostingDays = localStorage.getItem('ghostingDays');
     const savedProfile = localStorage.getItem('userProfile');
     
@@ -69,24 +91,19 @@ export const SettingsContent = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
-      <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Settings</h2>
-        <p className="text-white/70">Manage your account preferences</p>
-      </div>
-
+    <div className="space-y-6 w-full max-w-4xl">
       {/* Personal Information */}
       <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <User className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-white text-base sm:text-lg">
+            <User className="w-4 h-4 sm:w-5 sm:h-5" />
             Personal Information
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="first-name" className="text-white/90">
+              <Label htmlFor="first-name" className="text-white/90 text-sm sm:text-base">
                 First Name
               </Label>
               <Input
@@ -94,12 +111,12 @@ export const SettingsContent = () => {
                 type="text"
                 value={userProfile.firstName || ''}
                 onChange={(e) => handleProfileChange('firstName', e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-sm sm:text-base h-10 sm:h-11"
                 placeholder="Your first name"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="middle-name" className="text-white/90">
+              <Label htmlFor="middle-name" className="text-white/90 text-sm sm:text-base">
                 Middle Name
               </Label>
               <Input
@@ -107,13 +124,13 @@ export const SettingsContent = () => {
                 type="text"
                 value={userProfile.middleName || ''}
                 onChange={(e) => handleProfileChange('middleName', e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-sm sm:text-base h-10 sm:h-11"
                 placeholder="Your middle name"
               />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="last-name" className="text-white/90">
+            <Label htmlFor="last-name" className="text-white/90 text-sm sm:text-base">
               Last Name
             </Label>
             <Input
@@ -121,12 +138,12 @@ export const SettingsContent = () => {
               type="text"
               value={userProfile.lastName || ''}
               onChange={(e) => handleProfileChange('lastName', e.target.value)}
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-sm sm:text-base h-10 sm:h-11"
               placeholder="Your last name"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="role" className="text-white/90">
+            <Label htmlFor="role" className="text-white/90 text-sm sm:text-base">
               Role
             </Label>
             <Input
@@ -134,12 +151,12 @@ export const SettingsContent = () => {
               type="text"
               value={userProfile.role || ''}
               onChange={(e) => handleProfileChange('role', e.target.value)}
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-sm sm:text-base h-10 sm:h-11"
               placeholder="e.g., Software Engineer, Product Manager"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="current-company" className="text-white/90">
+            <Label htmlFor="current-company" className="text-white/90 text-sm sm:text-base">
               Current Company
             </Label>
             <Input
@@ -147,7 +164,7 @@ export const SettingsContent = () => {
               type="text"
               value={userProfile.currentCompany || ''}
               onChange={(e) => handleProfileChange('currentCompany', e.target.value)}
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-sm sm:text-base h-10 sm:h-11"
               placeholder="Your current company"
             />
           </div>
@@ -159,15 +176,15 @@ export const SettingsContent = () => {
       {/* Application Settings */}
       <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Clock className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-white text-base sm:text-lg">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             Application Settings
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="ghosting-days" className="text-white/90">
+              <Label htmlFor="ghosting-days" className="text-white/90 text-sm sm:text-base">
                 Days after which an application is considered "ghosted"
               </Label>
               <Input
@@ -177,9 +194,9 @@ export const SettingsContent = () => {
                 max="365"
                 value={ghostingDays}
                 onChange={(e) => setGhostingDays(parseInt(e.target.value) || 14)}
-                className="bg-white/10 border-white/20 text-white w-32"
+                className="bg-white/10 border-white/20 text-white w-32 text-sm sm:text-base h-10 sm:h-11"
               />
-              <p className="text-sm text-white/60">
+              <p className="text-xs sm:text-sm text-white/60">
                 Currently: {savedGhostingDays} days
               </p>
             </div>
@@ -192,13 +209,13 @@ export const SettingsContent = () => {
       {/* Privacy & Security */}
       <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Shield className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-white text-base sm:text-lg">
+            <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
             Privacy & Security
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-white/70 text-sm">
+          <p className="text-white/70 text-xs sm:text-sm">
             Your data is securely stored and encrypted. Only you have access to your job application data.
           </p>
         </CardContent>
@@ -208,9 +225,10 @@ export const SettingsContent = () => {
       <div className="flex justify-end pt-4">
         <Button 
           onClick={handleSave}
-          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8"
+          disabled={isLoading}
+          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 sm:px-8 text-sm sm:text-base h-10 sm:h-11"
         >
-          Save Settings
+          {isLoading ? 'Saving...' : 'Save Settings'}
         </Button>
       </div>
     </div>
