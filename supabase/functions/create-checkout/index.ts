@@ -59,15 +59,22 @@ serve(async (req) => {
       logStep("No existing customer found");
     }
 
+    // Use different price IDs based on test/live mode
     const { priceId } = await req.json();
-    logStep("Creating checkout session", { priceId });
+    const finalPriceId = isTestMode ? "price_1RgkaSFPBWwnsbLSRI0Ap9QH" : priceId;
+    
+    logStep("Creating checkout session", { 
+      originalPriceId: priceId, 
+      finalPriceId, 
+      testMode: isTestMode 
+    });
 
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
       line_items: [
         {
-          price: priceId,
+          price: finalPriceId,
           quantity: 1,
         },
       ],
