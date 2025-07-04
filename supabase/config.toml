@@ -41,6 +41,9 @@ smtp_port = 54326
 [functions]
 verify_jwt = true
 
+[functions.stripe-webhook]
+verify_jwt = false
+
 [auth]
 enabled = true
 port = 9999

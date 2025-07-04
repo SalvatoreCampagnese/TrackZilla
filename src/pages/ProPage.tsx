@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { Crown, Check, X, Zap, Eye, Kanban, Infinity } from 'lucide-react';
+import { useSubscription } from '@/hooks/useSubscription';
+import { Crown, Check, X, Zap, Eye, Kanban, Infinity, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 const ProPage = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { subscribed, subscription_tier, subscription_end, loading: subscriptionLoading } = useSubscription();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUpgrade = async () => {
@@ -45,6 +47,27 @@ const ProPage = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal');
+      
+      if (error) throw error;
+      
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error('Error opening customer portal:', error);
+      toast({
+        title: "Errore",
+        description: "Impossibile aprire il portale di gestione.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -85,8 +108,50 @@ const ProPage = () => {
     }]
   };
 
+  if (subscriptionLoading) {
+    return (
+      <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-500 mx-auto"></div>
+          <p className="mt-4 text-white">Caricamento stato abbonamento...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
+      {/* Current Subscription Status */}
+      {subscribed && (
+        <div className="mb-8">
+          <Card className="border-2 border-green-500 bg-gradient-to-br from-green-900/20 to-green-800/20 backdrop-blur-md">
+            <CardHeader className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <CheckCircle className="w-8 h-8 text-green-400" />
+                <h2 className="text-2xl font-bold text-white">Abbonamento Attivo</h2>
+              </div>
+              <Badge className="bg-green-500 text-white">
+                {subscription_tier} - Attivo
+              </Badge>
+              {subscription_end && (
+                <p className="text-green-100 mt-2">
+                  Rinnovo: {new Date(subscription_end).toLocaleDateString('it-IT')}
+                </p>
+              )}
+            </CardHeader>
+            <CardContent className="text-center">
+              <Button 
+                onClick={handleManageSubscription}
+                className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
+                variant="outline"
+              >
+                Gestisci Abbonamento
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
@@ -96,8 +161,10 @@ const ProPage = () => {
           </h1>
         </div>
         <p className="text-xl text-white/80 max-w-2xl mx-auto">
-          Sblocca tutto il potenziale del tuo job tracking. 
-          Gestisci infinite candidature con strumenti professionali.
+          {subscribed 
+            ? "Stai sfruttando tutto il potenziale del tuo job tracking!"
+            : "Sblocca tutto il potenziale del tuo job tracking. Gestisci infinite candidature con strumenti professionali."
+          }
         </p>
       </div>
 
@@ -110,7 +177,9 @@ const ProPage = () => {
             <div className="text-4xl font-bold text-white mt-4">
               €0<span className="text-lg font-normal text-white/70">/mese</span>
             </div>
-            <Badge variant="secondary" className="mt-2 bg-white/20 text-white">Attuale</Badge>
+            <Badge variant="secondary" className="mt-2 bg-white/20 text-white">
+              {!subscribed ? "Attuale" : "Piano Base"}
+            </Badge>
           </CardHeader>
           <CardContent className="space-y-4">
             {features.free.map((feature, index) => (
@@ -126,13 +195,25 @@ const ProPage = () => {
         </Card>
 
         {/* Pro Plan */}
-        <Card className="relative border-2 border-red-500 shadow-2xl scale-105 bg-gradient-to-br from-red-900/20 to-red-800/20 backdrop-blur-md">
+        <Card className={`relative border-2 shadow-2xl backdrop-blur-md ${
+          subscribed 
+            ? 'border-green-500 bg-gradient-to-br from-green-900/20 to-green-800/20 scale-105' 
+            : 'border-red-500 bg-gradient-to-br from-red-900/20 to-red-800/20 scale-105'
+        }`}>
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <Badge className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-1">
-              🚀 Consigliato
+            <Badge className={`px-4 py-1 ${
+              subscribed 
+                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                : 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+            }`}>
+              {subscribed ? '✅ Attivo' : '🚀 Consigliato'}
             </Badge>
           </div>
-          <CardHeader className="text-center pb-8 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-t-lg">
+          <CardHeader className={`text-center pb-8 text-white rounded-t-lg ${
+            subscribed 
+              ? 'bg-gradient-to-r from-green-500 to-green-600'
+              : 'bg-gradient-to-r from-red-500 to-red-600'
+          }`}>
             <div className="flex items-center justify-center gap-2">
               <Crown className="w-6 h-6 text-yellow-300" />
               <CardTitle className="text-2xl font-bold">ProZilla</CardTitle>
@@ -140,7 +221,9 @@ const ProPage = () => {
             <div className="text-4xl font-bold mt-4">
               €4.79<span className="text-lg font-normal opacity-80">/mese</span>
             </div>
-            <p className="text-red-100 mt-2">Tutto incluso</p>
+            <p className={`mt-2 ${subscribed ? 'text-green-100' : 'text-red-100'}`}>
+              Tutto incluso
+            </p>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
             {features.pro.map((feature, index) => (
@@ -156,15 +239,26 @@ const ProPage = () => {
             ))}
             
             <div className="pt-6">
-              <Button 
-                onClick={handleUpgrade} 
-                disabled={isLoading}
-                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 text-lg" 
-                size="lg"
-              >
-                <Crown className="w-5 h-5 mr-2" />
-                {isLoading ? "Caricamento..." : "Diventa ProZilla Ora"}
-              </Button>
+              {subscribed ? (
+                <Button 
+                  onClick={handleManageSubscription}
+                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 text-lg" 
+                  size="lg"
+                >
+                  <Crown className="w-5 h-5 mr-2" />
+                  Gestisci Abbonamento
+                </Button>
+              ) : (
+                <Button 
+                  onClick={handleUpgrade} 
+                  disabled={isLoading}
+                  className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 text-lg" 
+                  size="lg"
+                >
+                  <Crown className="w-5 h-5 mr-2" />
+                  {isLoading ? "Caricamento..." : "Diventa ProZilla Ora"}
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
