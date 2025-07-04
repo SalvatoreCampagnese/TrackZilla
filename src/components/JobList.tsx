@@ -84,23 +84,6 @@ export const JobList: React.FC<JobListProps> = ({
 
   return (
     <div>
-      {/* Filter */}
-      <div className="mb-4 sm:mb-6">
-        <Select value={filter} onValueChange={(value) => setFilter(value as JobStatus | 'all')}>
-          <SelectTrigger className="w-full sm:w-48 bg-gray-800 border-gray-700 text-white">
-            <SelectValue placeholder="Filter by status" />
-          </SelectTrigger>
-          <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
-            <SelectItem value="all" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">All applications</SelectItem>
-            {Object.entries(JOB_STATUS_LABELS).map(([key, label]) => (
-              <SelectItem key={key} value={key} className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
       {/* Applications Grid */}
       <div className="grid gap-4 sm:gap-6">
         {filteredApplications.map((application) => (
