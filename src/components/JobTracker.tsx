@@ -8,10 +8,12 @@ import { JobList } from './JobList';
 import { Statistics } from './Statistics';
 import { KanbanBoard } from './kanban/KanbanBoard';
 import { AppSidebar } from './AppSidebar';
+import { SettingsContent } from './SettingsContent';
 import { Plus, Target, TrendingUp, Clock, CheckCircle, List, Columns } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export const JobTracker = () => {
   const navigate = useNavigate();
@@ -19,25 +21,10 @@ export const JobTracker = () => {
   const { applications, loading, updateApplicationStatus, deleteApplication, refetch } = useJobApplications();
   const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [activeTab, setActiveTab] = useState('applications');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
 
   // Initialize the ghosting updater
   useGhostingUpdater();
-
-  // Get user's first name from localStorage
-  const getUserDisplayName = () => {
-    try {
-      const userProfile = localStorage.getItem('userProfile');
-      if (userProfile) {
-        const profile = JSON.parse(userProfile);
-        if (profile.firstName) {
-          return profile.firstName;
-        }
-      }
-    } catch (error) {
-      console.error('Error getting user profile:', error);
-    }
-    return user?.email;
-  };
 
   const handleUpdateStatus = async (id: string, status: any) => {
     await updateApplicationStatus(id, status);
@@ -49,7 +36,7 @@ export const JobTracker = () => {
   };
 
   const handleSettingsClick = () => {
-    // This will be handled by the sidebar navigation
+    setActiveTab('settings');
   };
 
   if (loading) {
@@ -63,26 +50,34 @@ export const JobTracker = () => {
     );
   }
 
+  // Filter applications based on status
+  const filteredApplications = statusFilter === 'all' 
+    ? applications 
+    : applications.filter(app => app.status === statusFilter);
+
   // Calculations for quick counters
-  const totalApplications = applications.length;
-  const responsesReceived = applications.filter(app => 
+  const totalApplications = filteredApplications.length;
+  const responsesReceived = filteredApplications.filter(app => 
     !['in-corso', 'ghosting'].includes(app.status)
   ).length;
   const responseRate = totalApplications > 0 ? (responsesReceived / totalApplications * 100) : 0;
-  const interviewsObtained = applications.filter(app => 
+  const interviewsObtained = filteredApplications.filter(app => 
     ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status)
   ).length;
-  const avgFeedbackTime = applications.length > 0 
-    ? Math.round(applications.reduce((acc, app) => {
+  const avgFeedbackTime = filteredApplications.length > 0 
+    ? Math.round(filteredApplications.reduce((acc, app) => {
         const daysSinceApplication = Math.floor((new Date().getTime() - new Date(app.applicationDate).getTime()) / (1000 * 60 * 60 * 24));
         return acc + daysSinceApplication;
-      }, 0) / applications.length)
+      }, 0) / filteredApplications.length)
     : 0;
 
   // Calculate applications in progress (excluding ghosting, retired, and refused)
-  const inProgressApplications = applications.filter(app => 
+  const inProgressApplications = filteredApplications.filter(app => 
     !['ghosting', 'ritirato', 'rifiutato'].includes(app.status)
   ).length;
+
+  // Get unique statuses for filter dropdown
+  const uniqueStatuses = [...new Set(applications.map(app => app.status))];
 
   return (
     <SidebarProvider>
@@ -94,20 +89,18 @@ export const JobTracker = () => {
         />
         
         <main className="flex-1 flex flex-col min-w-0">
-          {/* Header */}
-          <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 lg:p-6 border-b border-white/20 gap-4">
+          {/* Sticky Header */}
+          <header className="sticky top-0 z-10 flex items-center justify-between p-4 lg:p-6 border-b border-white/20 bg-gradient-to-br from-gray-900 to-gray-800 backdrop-blur-md">
             <div className="flex items-center gap-4">
-              {/* Mobile sidebar trigger - visible only on mobile */}
-              <SidebarTrigger className="md:hidden text-white hover:bg-white/10 h-8 w-8" />
+              <SidebarTrigger className="text-white hover:bg-white/10 h-8 w-8" />
               <div>
                 <h1 className="text-xl sm:text-2xl font-bold text-white">TrackZilla</h1>
-                <p className="text-sm text-white/70">Welcome back, {getUserDisplayName()}</p>
               </div>
             </div>
             
             <Button 
               onClick={handleAddApplication}
-              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white shadow-lg w-full sm:w-auto"
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 text-white shadow-lg"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Application
@@ -115,7 +108,7 @@ export const JobTracker = () => {
           </header>
 
           <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
-            {/* Applications counter and status */}
+            {/* Applications counter and filters */}
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full lg:w-auto">
                 <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
@@ -132,100 +125,128 @@ export const JobTracker = () => {
                 </div>
               </div>
 
-              {/* View Mode Switcher - Only show on applications tab */}
+              {/* Filters and View Mode Switcher - Only show on applications tab */}
               {activeTab === 'applications' && (
-                <div className="flex items-center gap-2 w-full lg:w-auto">
-                  <Button
-                    onClick={() => setViewMode('list')}
-                    variant={viewMode === 'list' ? 'default' : 'outline'}
-                    size="sm"
-                    className={viewMode === 'list' 
-                      ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
-                      : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                    }
-                  >
-                    <List className="w-4 h-4 mr-2" />
-                    List
-                  </Button>
-                  <Button
-                    onClick={() => setViewMode('kanban')}
-                    variant={viewMode === 'kanban' ? 'default' : 'outline'}
-                    size="sm"
-                    className={viewMode === 'kanban' 
-                      ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
-                      : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                    }
-                  >
-                    <Columns className="w-4 h-4 mr-2" />
-                    Kanban
-                  </Button>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full lg:w-auto">
+                  {/* Status Filter */}
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full sm:w-[180px] border-white/20 bg-white/10 hover:bg-white/20 text-white">
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-800 border-white/20">
+                      <SelectItem value="all" className="text-white hover:bg-white/10">All Applications</SelectItem>
+                      {uniqueStatuses.map((status) => (
+                        <SelectItem key={status} value={status} className="text-white hover:bg-white/10">
+                          {status === 'in-corso' ? 'In Progress' :
+                           status === 'primo-colloquio' ? 'First Interview' :
+                           status === 'secondo-colloquio' ? 'Second Interview' :
+                           status === 'colloquio-tecnico' ? 'Technical Interview' :
+                           status === 'colloquio-finale' ? 'Final Interview' :
+                           status === 'offerta-ricevuta' ? 'Offer Received' :
+                           status === 'rifiutato' ? 'Rejected' :
+                           status === 'ghosting' ? 'Ghosting' :
+                           status === 'ritirato' ? 'Withdrawn' : status}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {/* View Mode Switcher */}
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <Button
+                      onClick={() => setViewMode('list')}
+                      variant={viewMode === 'list' ? 'default' : 'outline'}
+                      size="sm"
+                      className={viewMode === 'list' 
+                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                        : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                      }
+                    >
+                      <List className="w-4 h-4 mr-2" />
+                      List
+                    </Button>
+                    <Button
+                      onClick={() => setViewMode('kanban')}
+                      variant={viewMode === 'kanban' ? 'default' : 'outline'}
+                      size="sm"
+                      className={viewMode === 'kanban' 
+                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                        : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                      }
+                    >
+                      <Columns className="w-4 h-4 mr-2" />
+                      Kanban
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Quick counters */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-              <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Total</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{totalApplications}</p>
-                  </div>
-                  <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
-                    <Target className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-red-500" />
-                  </div>
-                </CardContent>
-              </Card>
+            {/* Quick counters - Only show on applications tab */}
+            {activeTab === 'applications' && (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
+                  <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
+                    <div>
+                      <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Total</p>
+                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{totalApplications}</p>
+                    </div>
+                    <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
+                      <Target className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-red-500" />
+                    </div>
+                  </CardContent>
+                </Card>
 
-              <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Response Rate</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-400">{responseRate.toFixed(1)}%</p>
-                  </div>
-                  <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
-                    <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-green-400" />
-                  </div>
-                </CardContent>
-              </Card>
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
+                  <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
+                    <div>
+                      <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Response Rate</p>
+                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-400">{responseRate.toFixed(1)}%</p>
+                    </div>
+                    <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
+                      <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-green-400" />
+                    </div>
+                  </CardContent>
+                </Card>
 
-              <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Interviews</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-purple-400">{interviewsObtained}</p>
-                  </div>
-                  <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
-                    <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-purple-400" />
-                  </div>
-                </CardContent>
-              </Card>
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
+                  <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
+                    <div>
+                      <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Interviews</p>
+                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-purple-400">{interviewsObtained}</p>
+                    </div>
+                    <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
+                      <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-purple-400" />
+                    </div>
+                  </CardContent>
+                </Card>
 
-              <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
-                <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Avg Time</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-orange-400">{avgFeedbackTime}d</p>
-                  </div>
-                  <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
-                    <Clock className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-orange-400" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
+                  <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
+                    <div>
+                      <p className="text-xs sm:text-sm font-medium text-white/70 mb-1">Avg Time</p>
+                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-orange-400">{avgFeedbackTime}d</p>
+                    </div>
+                    <div className="p-2 sm:p-3 bg-white/10 rounded-xl">
+                      <Clock className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-orange-400" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
 
             {/* Content based on active tab */}
             {activeTab === 'applications' && (
               <div className="overflow-hidden">
                 {viewMode === 'list' ? (
                   <JobList
-                    applications={applications}
+                    applications={filteredApplications}
                     onUpdateStatus={handleUpdateStatus}
                     onDelete={deleteApplication}
                   />
                 ) : (
                   <KanbanBoard
-                    applications={applications}
+                    applications={filteredApplications}
                     onUpdateStatus={handleUpdateStatus}
                     onDelete={deleteApplication}
                   />
@@ -235,6 +256,10 @@ export const JobTracker = () => {
             
             {activeTab === 'statistics' && (
               <Statistics applications={applications} />
+            )}
+            
+            {activeTab === 'settings' && (
+              <SettingsContent />
             )}
           </div>
         </main>

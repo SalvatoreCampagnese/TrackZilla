@@ -40,7 +40,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   };
 
   const handleSettingsClick = () => {
-    navigate('/settings');
+    onSettingsClick();
   };
 
   const menuItems = [
@@ -108,7 +108,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     }
 
     return (
-      <div className="space-y-2 p-3 bg-white/5 rounded-lg mx-2">
+      <div className="space-y-2 p-3 bg-white/5 rounded-lg">
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-white/70" />
           <span className="text-xs text-white/90 font-medium">
@@ -181,7 +181,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-2 border-t border-white/10 space-y-2">
+      <SidebarFooter className="p-4 border-t border-white/10 space-y-3">
         {/* Date and Time Display */}
         <DateTimeDisplay />
         
@@ -190,7 +190,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleSignOut}
-              className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 transition-colors mx-2"
+              className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 transition-colors"
             >
               <LogOut className="w-4 h-4" />
               {!isCollapsed && <span>Logout</span>}
