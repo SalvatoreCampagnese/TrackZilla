@@ -28,7 +28,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 }) => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
-  const { collapsed } = useSidebar();
+  const { state } = useSidebar();
+  
+  const isCollapsed = state === 'collapsed';
 
   const handleSignOut = async () => {
     await signOut();
@@ -72,7 +74,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               className="w-full h-full object-cover" 
             />
           </div>
-          {!collapsed && (
+          {!isCollapsed && (
             <h2 className="text-lg font-bold text-white">TrackZilla</h2>
           )}
         </div>
@@ -91,7 +93,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                     }`}
                   >
                     <item.icon className="w-4 h-4" />
-                    {!collapsed && <span>{item.title}</span>}
+                    {!isCollapsed && <span>{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
