@@ -181,7 +181,7 @@ export const JobTracker = () => {
 
             {/* Filters and View Mode Switcher - Only show on applications tab */}
             {activeTab === 'applications' && (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row items-start w-full sm:items-center justify-between gap-4 mb-6">
                 {/* Status Filter and View Mode Switcher */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
