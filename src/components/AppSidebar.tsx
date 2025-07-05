@@ -118,7 +118,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         )}
       </SidebarHeader>
 
-      <SidebarContent className={`flex-1 py-4 ${isCollapsed && !isMobile ? 'px-3' : 'px-4'}`}>
+      <SidebarContent className={`flex-1 py-4 ${isCollapsed && !isMobile ? '' : 'px-4'}`}>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
