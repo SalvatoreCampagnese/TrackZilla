@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Sparkles, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   activeTab,
   onAddApplication
 }) => {
-  return <header className="sticky top-0 z-20 backdrop-blur-xl bg-black/20 border-b border-white/10">
+  return <header className="sticky top-0 z-30 backdrop-blur-xl bg-black/30 border-b border-white/10 shadow-lg">
       <div className="flex items-center justify-between p-4 lg:p-6">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
