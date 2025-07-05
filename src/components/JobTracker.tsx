@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
 import { useSubscription } from '@/hooks/useSubscription';
-import { JobApplication } from '@/types/job';
+import { JobApplication, JobStatus } from '@/types/job';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
 import { AppSidebar } from './AppSidebar';
@@ -40,7 +40,7 @@ export const JobTracker = () => {
     refetch
   } = useJobApplications();
 
-  const handleUpdateStatus = async (id: string, status: string) => {
+  const handleUpdateStatus = async (id: string, status: JobStatus) => {
     try {
       await updateApplication(id, { status });
       toast({
