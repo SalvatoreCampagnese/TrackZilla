@@ -70,7 +70,6 @@ export const useKanbanBoard = ({ applications, onUpdateStatus }: UseKanbanBoardP
     if (savedColumns) {
       try {
         const parsed = JSON.parse(savedColumns);
-        // Merge with defaults to ensure isDefault and enabled properties exist
         const mergedColumns = parsed.map((col: any) => ({
           ...col,
           isDefault: DEFAULT_COLUMNS.find(def => def.id === col.id)?.isDefault || false,
@@ -84,18 +83,23 @@ export const useKanbanBoard = ({ applications, onUpdateStatus }: UseKanbanBoardP
     }
   }, []);
 
-  // Save columns to localStorage
   const saveColumns = (newColumns: KanbanColumnType[]) => {
     setColumns(newColumns);
     localStorage.setItem('kanban-columns', JSON.stringify(newColumns));
   };
 
   const handleDragStart = () => {
+    console.log('Drag started');
     setIsDragging(true);
+    // Add class to body to prevent scrolling during drag
+    document.body.style.overflow = 'hidden';
   };
 
   const handleDragEnd = (result: DropResult) => {
+    console.log('Drag ended', result);
     setIsDragging(false);
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
     
     const { destination, source, draggableId } = result;
 
@@ -109,8 +113,8 @@ export const useKanbanBoard = ({ applications, onUpdateStatus }: UseKanbanBoardP
     const destinationColumn = enabledColumns.find(col => col.id === destination.droppableId);
     if (!destinationColumn) return;
 
-    // Get the first status value from the destination column
     const newStatus = destinationColumn.statusValues[0];
+    console.log('Updating status to:', newStatus);
     onUpdateStatus(draggableId, newStatus);
   };
 
@@ -120,14 +124,12 @@ export const useKanbanBoard = ({ applications, onUpdateStatus }: UseKanbanBoardP
 
     const enabledColumns = columns.filter(col => col.enabled);
     
-    // Find current column
     const currentColumnIndex = enabledColumns.findIndex(col => 
       col.statusValues.includes(application.status)
     );
     
     if (currentColumnIndex === -1) return;
 
-    // Move to next column (or back to first if at the end)
     const nextColumnIndex = (currentColumnIndex + 1) % enabledColumns.length;
     const nextColumn = enabledColumns[nextColumnIndex];
     const newStatus = nextColumn.statusValues[0];

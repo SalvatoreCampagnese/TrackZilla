@@ -85,27 +85,26 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   return (
     <>
       <div 
-        className={`bg-white rounded-lg border shadow-sm p-4 transition-all duration-200 touch-manipulation select-none w-full max-w-none ${
+        className={`bg-white rounded-lg border shadow-sm p-4 transition-all duration-200 w-full ${
           isDragging 
-            ? 'shadow-2xl cursor-grabbing opacity-90 rotate-3 scale-105' 
-            : 'cursor-grab hover:cursor-grab hover:shadow-md'
+            ? 'shadow-2xl rotate-2 scale-105 cursor-grabbing' 
+            : 'cursor-grab hover:shadow-md hover:scale-[1.02]'
         }`}
         style={{
-          // Maintain consistent width during drag
-          width: isDragging ? '288px' : 'auto', // Same as w-72 (18rem = 288px)
-          maxWidth: isDragging ? '288px' : 'none',
-          minWidth: isDragging ? '288px' : 'auto',
+          width: '100%',
+          maxWidth: '100%',
+          minWidth: '250px',
           zIndex: isDragging ? 10000 : 'auto',
-          position: 'relative'
+          pointerEvents: isDragging ? 'none' : 'auto'
         }}
       >
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
-          <div className="flex-1 min-w-0 cursor-inherit">
-            <h4 className="font-semibold text-gray-900 truncate text-base cursor-inherit">
+          <div className="flex-1 min-w-0">
+            <h4 className="font-semibold text-gray-900 truncate text-base">
               {application.companyName}
             </h4>
-            <p className="text-sm text-gray-600 truncate cursor-inherit mt-1">
+            <p className="text-sm text-gray-600 truncate mt-1">
               {application.roleDescription || 'No role specified'}
             </p>
           </div>
@@ -116,7 +115,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
                 onClick={handleMoveClick}
                 variant="ghost"
                 size="sm"
-                className="text-indigo-500 hover:text-indigo-700 hover:bg-indigo-50 h-8 w-8 p-0 touch-manipulation cursor-pointer"
+                className="text-indigo-500 hover:text-indigo-700 hover:bg-indigo-50 h-8 w-8 p-0"
                 title="Move to next column"
               >
                 <ArrowRight className="w-4 h-4" />
@@ -132,7 +131,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
               onClick={handleDetailClick}
               variant="ghost"
               size="sm"
-              className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 h-6 w-6 p-0 touch-manipulation cursor-pointer"
+              className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 h-6 w-6 p-0"
               title="View details"
             >
               <Eye className="w-3 h-3" />
@@ -141,7 +140,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
               onClick={handleAlertsClick}
               variant="ghost"
               size="sm"
-              className="text-amber-500 hover:text-amber-700 hover:bg-amber-50 h-6 w-6 p-0 touch-manipulation cursor-pointer"
+              className="text-amber-500 hover:text-amber-700 hover:bg-amber-50 h-6 w-6 p-0"
               title="Manage alerts"
             >
               <Bell className="w-3 h-3" />
@@ -150,7 +149,8 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
               onClick={handleDelete}
               variant="ghost"
               size="sm"
-              className="text-red-500 hover:text-red-700 hover:bg-red-50 h-6 w-6 p-0 touch-manipulation cursor-pointer"
+              className="text-red-500 hover:text-red-700 hover:bg-red-50 h-6 w-6 p-0"
+              title="Delete"
             >
               <Trash2 className="w-3 h-3" />
             </Button>
@@ -158,41 +158,41 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         </div>
 
         {/* Details */}
-        <div className="space-y-2 cursor-inherit">
-          <div className="flex items-center gap-2 text-xs text-gray-500 cursor-inherit">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-xs text-gray-500">
             <Calendar className="w-3 h-3 flex-shrink-0" />
             <span className="truncate">{formatDate(application.applicationDate)}</span>
           </div>
 
           {application.interviewDate && (
-            <div className="flex items-center gap-2 text-xs text-blue-600 cursor-inherit">
+            <div className="flex items-center gap-2 text-xs text-blue-600">
               <Bell className="w-3 h-3 flex-shrink-0" />
               <span className="truncate">Interview: {formatDate(application.interviewDate)}</span>
             </div>
           )}
 
           {application.deadline && (
-            <div className="flex items-center gap-2 text-xs text-orange-600 cursor-inherit">
+            <div className="flex items-center gap-2 text-xs text-orange-600">
               <Clock className="w-3 h-3 flex-shrink-0" />
               <span className="truncate">Deadline: {formatDate(application.deadline)}</span>
             </div>
           )}
 
           {application.salary && application.salary !== 'ND' && (
-            <div className="flex items-center gap-2 text-xs text-gray-500 cursor-inherit">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
               <DollarSign className="w-3 h-3 flex-shrink-0" />
               <span className="truncate">{application.salary}</span>
             </div>
           )}
 
-          <div className="flex items-center gap-2 text-xs text-gray-500 cursor-inherit">
+          <div className="flex items-center gap-2 text-xs text-gray-500">
             <MapPin className="w-3 h-3 flex-shrink-0" />
             <span className="truncate">{getWorkModeIcon(application.workMode)} {application.workMode}</span>
           </div>
         </div>
 
         {/* Status Badge */}
-        <div className="mt-3 cursor-inherit">
+        <div className="mt-3">
           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-200">
             {JOB_STATUS_LABELS[application.status]}
           </span>

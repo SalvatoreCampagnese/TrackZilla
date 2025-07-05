@@ -60,7 +60,6 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         onMoveCard={handleMoveCard}
       />
 
-      {/* Column Settings Modal */}
       <ColumnSettings
         open={showSettings}
         onOpenChange={setShowSettings}
@@ -68,7 +67,6 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         onSave={saveColumns}
       />
 
-      {/* Add Column Modal */}
       <AddColumnModal
         open={showAddColumn}
         onOpenChange={setShowAddColumn}

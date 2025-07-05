@@ -3,7 +3,7 @@ import React from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { JobApplication } from '@/types/job';
 import { KanbanColumnType } from './KanbanBoard';
-import { KanbanColumnRenderer } from './KanbanColumnRenderer';
+import { KanbanColumn } from './KanbanColumn';
 
 interface KanbanBoardGridProps {
   columns: KanbanColumnType[];
@@ -40,7 +40,7 @@ export const KanbanBoardGrid: React.FC<KanbanBoardGridProps> = ({
             const columnApplications = getApplicationsForColumn(column);
             
             return (
-              <KanbanColumnRenderer
+              <KanbanColumn
                 key={column.id}
                 column={column}
                 applications={columnApplications}
