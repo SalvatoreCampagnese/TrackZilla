@@ -1,187 +1,178 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
-import { useGhostingUpdater } from '@/hooks/useGhostingUpdater';
+import { useSubscription } from '@/hooks/useSubscription';
+import { JobApplication } from '@/types/job';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
-import { KanbanBoard } from './kanban/KanbanBoard';
 import { AppSidebar } from './AppSidebar';
-import { SettingsContent } from './SettingsContent';
-import { SubscriptionContent } from './SubscriptionContent';
-import ProPage from '@/pages/ProPage';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { DashboardHeader } from './dashboard/DashboardHeader';
-import { ApplicationsCounter } from './dashboard/ApplicationsCounter';
-import { QuickStats } from './dashboard/QuickStats';
 import { FilterControls } from './dashboard/FilterControls';
+import { QuickStats } from './dashboard/QuickStats';
+import { SettingsModal } from './SettingsModal';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 export const JobTracker = () => {
-  const navigate = useNavigate();
   const { user } = useAuth();
-  const { applications, loading, updateApplicationStatus, deleteApplication, refetch } = useJobApplications();
-  const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
-  const [activeTab, setActiveTab] = useState('applications');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { subscribed } = useSubscription();
+  
+  const [activeTab, setActiveTab] = useState<string>('applications');
+  const [showSettings, setShowSettings] = useState(false);
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+  const [sortBy, setSortBy] = useState<'date' | 'company' | 'status'>('date');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Initialize the ghosting updater
-  useGhostingUpdater();
+  const {
+    applications,
+    loading,
+    error,
+    updateApplication,
+    deleteApplication,
+    refetch
+  } = useJobApplications();
 
-  const handleUpdateStatus = async (id: string, status: any) => {
-    await updateApplicationStatus(id, status);
-    await refetch();
+  const handleUpdateStatus = async (id: string, status: string) => {
+    try {
+      await updateApplication(id, { status });
+      toast({
+        title: "Status updated",
+        description: "Application status has been updated successfully.",
+      });
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update application status.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleAddApplication = () => {
-    navigate('/add-job');
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteApplication(id);
+      toast({
+        title: "Application deleted",
+        description: "Job application has been deleted successfully.",
+      });
+    } catch (error) {
+      console.error('Error deleting application:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete application.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleSettingsClick = () => {
-    setActiveTab('settings');
+  const handleUpdateAlerts = async (applicationId: string, alerts: any[]) => {
+    try {
+      await updateApplication(applicationId, { alerts });
+      toast({
+        title: "Alerts updated",
+        description: "Application alerts have been updated successfully.",
+      });
+    } catch (error) {
+      console.error('Error updating alerts:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update application alerts.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleProClick = () => {
-    setActiveTab('pro');
+    navigate('/pro');
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-20 w-20 border-4 border-purple-200 border-t-purple-500 mx-auto"></div>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 opacity-20 animate-pulse"></div>
-          </div>
-          <p className="mt-6 text-white text-lg font-medium">Loading applications...</p>
-          <div className="mt-2 flex items-center justify-center gap-1">
-            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-          </div>
-        </div>
-      </div>
-    );
+  // Filter and sort applications
+  const filteredApplications = applications.filter(app => {
+    const matchesStatus = filterStatus === 'all' || app.status === filterStatus;
+    const matchesSearch = searchTerm === '' || 
+      app.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      app.roleDescription.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    return matchesStatus && matchesSearch;
+  });
+
+  const sortedApplications = [...filteredApplications].sort((a, b) => {
+    switch (sortBy) {
+      case 'company':
+        return a.companyName.localeCompare(b.companyName);
+      case 'status':
+        return a.status.localeCompare(b.status);
+      case 'date':
+      default:
+        return new Date(b.applicationDate).getTime() - new Date(a.applicationDate).getTime();
+    }
+  });
+
+  if (!user) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="text-white">Please log in to continue</div>
+    </div>;
   }
-
-  // Filter applications based on status
-  const filteredApplications = statusFilter === 'all' 
-    ? applications 
-    : applications.filter(app => app.status === statusFilter);
-
-  // Calculations for quick counters
-  const totalApplications = filteredApplications.length;
-  const responsesReceived = filteredApplications.filter(app => 
-    !['in-corso', 'ghosting'].includes(app.status)
-  ).length;
-  const responseRate = totalApplications > 0 ? (responsesReceived / totalApplications * 100) : 0;
-  const interviewsObtained = filteredApplications.filter(app => 
-    ['primo-colloquio', 'secondo-colloquio', 'colloquio-tecnico', 'colloquio-finale', 'offerta-ricevuta'].includes(app.status)
-  ).length;
-  const avgFeedbackTime = filteredApplications.length > 0 
-    ? Math.round(filteredApplications.reduce((acc, app) => {
-        const daysSinceApplication = Math.floor((new Date().getTime() - new Date(app.applicationDate).getTime()) / (1000 * 60 * 60 * 24));
-        return acc + daysSinceApplication;
-      }, 0) / filteredApplications.length)
-    : 0;
-
-  // Calculate applications in progress (excluding ghosting, retired, and refused)
-  const inProgressApplications = filteredApplications.filter(app => 
-    !['ghosting', 'ritirato', 'rifiutato'].includes(app.status)
-  ).length;
-
-  // Get unique statuses for filter dropdown
-  const uniqueStatuses = [...new Set(applications.map(app => app.status))];
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex w-full relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-3/4 left-3/4 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
-        </div>
-
-        <AppSidebar 
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <AppSidebar
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          onSettingsClick={handleSettingsClick}
+          onSettingsClick={() => setShowSettings(true)}
           onProClick={handleProClick}
         />
         
-        <main className="flex-1 flex flex-col min-w-0 relative z-10">
-          <DashboardHeader 
-            activeTab={activeTab}
-            onAddApplication={handleAddApplication}
-          />
+        <SidebarInset className="flex-1">
+          <div className="flex flex-col h-full">
+            <DashboardHeader />
+            
+            <div className="flex-1 p-4 lg:p-6 space-y-4 lg:space-y-6 overflow-auto">
+              {activeTab === 'applications' && (
+                <>
+                  <QuickStats applications={applications} />
+                  
+                  <FilterControls
+                    viewMode={viewMode}
+                    onViewModeChange={setViewMode}
+                    sortBy={sortBy}
+                    onSortByChange={setSortBy}
+                    filterStatus={filterStatus}
+                    onFilterStatusChange={setFilterStatus}
+                    searchTerm={searchTerm}
+                    onSearchTermChange={setSearchTerm}
+                  />
 
-          <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-full space-y-6 sm:space-y-8">
-            {/* Enhanced Applications counter */}
-            {activeTab === 'applications' && (
-              <ApplicationsCounter 
-                totalApplications={applications.length}
-                inProgressApplications={inProgressApplications}
-              />
-            )}
-
-            {/* Enhanced Quick counters */}
-            {activeTab === 'applications' && (
-              <QuickStats 
-                totalApplications={totalApplications}
-                responseRate={responseRate}
-                interviewsObtained={interviewsObtained}
-                avgFeedbackTime={avgFeedbackTime}
-              />
-            )}
-
-            {/* Enhanced Filters and View Mode Switcher */}
-            {activeTab === 'applications' && (
-              <FilterControls 
-                statusFilter={statusFilter}
-                onStatusFilterChange={setStatusFilter}
-                viewMode={viewMode}
-                onViewModeChange={setViewMode}
-                uniqueStatuses={uniqueStatuses}
-              />
-            )}
-
-            {/* Content based on active tab */}
-            {activeTab === 'applications' && (
-              <div className="overflow-hidden">
-                {viewMode === 'list' ? (
                   <JobList
-                    applications={filteredApplications}
+                    applications={sortedApplications}
                     onUpdateStatus={handleUpdateStatus}
-                    onDelete={deleteApplication}
+                    onDelete={handleDelete}
+                    onUpdateAlerts={handleUpdateAlerts}
+                    loading={loading}
+                    error={error}
+                    viewMode={viewMode}
                   />
-                ) : (
-                  <KanbanBoard
-                    applications={filteredApplications}
-                    onUpdateStatus={handleUpdateStatus}
-                    onDelete={deleteApplication}
-                  />
-                )}
-              </div>
-            )}
-            
-            {activeTab === 'statistics' && (
-              <Statistics applications={applications} />
-            )}
-            
-            {activeTab === 'settings' && (
-              <SettingsContent />
-            )}
+                </>
+              )}
 
-            {activeTab === 'subscription' && (
-              <SubscriptionContent />
-            )}
-
-            {activeTab === 'pro' && (
-              <ProPage />
-            )}
+              {activeTab === 'statistics' && (
+                <Statistics applications={applications} />
+              )}
+            </div>
           </div>
-        </main>
+        </SidebarInset>
+
+        <SettingsModal 
+          open={showSettings} 
+          onOpenChange={setShowSettings}
+        />
       </div>
     </SidebarProvider>
   );

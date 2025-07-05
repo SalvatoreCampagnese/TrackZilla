@@ -23,7 +23,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 }) => {
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
-  const { subscribed } = useSubscription();
+  const { subscribed, loading: subscriptionLoading } = useSubscription();
   const { state, isMobile } = useSidebar();
   const isCollapsed = state === 'collapsed';
 
@@ -77,6 +77,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     }
     return 'U';
   };
+
+  // Don't show pro button if loading or if already subscribed
+  const showProButton = !subscriptionLoading && !subscribed;
 
   return (
     <Sidebar 
@@ -149,11 +152,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className={`border-t border-white/10 space-y-3 ${isCollapsed && !isMobile ? 'p-3' : 'p-4'}`}>
-        <Separator className="bg-white/10" />
+      <SidebarFooter className={`space-y-3 ${showProButton ? 'border-t border-white/10' : ''} ${isCollapsed && !isMobile ? 'p-3' : 'p-4'}`}>
+        {showProButton && <Separator className="bg-white/10" />}
         
-        {/* ProZilla Upgrade Section - Only show for non-pro users */}
-        {!subscribed && (
+        {/* ProZilla Upgrade Section - Only show for non-pro users and when not loading */}
+        {showProButton && (
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton 
