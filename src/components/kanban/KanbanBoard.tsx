@@ -137,6 +137,25 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     onUpdateStatus(draggableId, newStatus);
   };
 
+  const handleMoveCard = (applicationId: string) => {
+    const application = applications.find(app => app.id === applicationId);
+    if (!application) return;
+
+    // Find current column
+    const currentColumnIndex = enabledColumns.findIndex(col => 
+      col.statusValues.includes(application.status)
+    );
+    
+    if (currentColumnIndex === -1) return;
+
+    // Move to next column (or back to first if at the end)
+    const nextColumnIndex = (currentColumnIndex + 1) % enabledColumns.length;
+    const nextColumn = enabledColumns[nextColumnIndex];
+    const newStatus = nextColumn.statusValues[0];
+    
+    onUpdateStatus(applicationId, newStatus);
+  };
+
   const addNewColumn = (newColumn: KanbanColumnType) => {
     saveColumns([...columns, newColumn]);
   };
@@ -169,7 +188,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       </div>
 
       {/* Kanban Board */}
-      <div className={`relative ${isDragging ? 'overflow-visible' : ''}`}>
+      <div className="relative">
         <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="flex gap-2 md:gap-4 overflow-x-auto pb-4 px-2 md:px-0">
             {enabledColumns.map((column) => {
@@ -201,7 +220,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                   className="mb-3"
                                   style={{
                                     ...provided.draggableProps.style,
-                                    zIndex: snapshot.isDragging ? 10000 : 'auto',
+                                    zIndex: snapshot.isDragging ? 9999 : 1,
                                     position: snapshot.isDragging ? 'fixed' : 'relative'
                                   }}
                                 >
@@ -209,6 +228,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                     application={application}
                                     onDelete={onDelete}
                                     onUpdateAlerts={onUpdateAlerts}
+                                    onMoveCard={handleMoveCard}
                                     isDragging={snapshot.isDragging}
                                   />
                                 </div>

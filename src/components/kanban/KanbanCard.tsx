@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { JobApplication } from '@/types/job';
 import { JOB_STATUS_LABELS } from '@/types/job';
-import { Calendar, DollarSign, MapPin, Trash2, Bell, Clock, Eye } from 'lucide-react';
+import { Calendar, DollarSign, MapPin, Trash2, Bell, Clock, Eye, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AlertsManager } from '@/components/alerts/AlertsManager';
 import { DeleteConfirmationModal } from '@/components/common/DeleteConfirmationModal';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface KanbanCardProps {
   application: JobApplication;
   onDelete: (id: string) => void;
   onUpdateAlerts?: (applicationId: string, alerts: any[]) => void;
+  onMoveCard?: (applicationId: string) => void;
   isDragging: boolean;
 }
 
@@ -19,9 +21,11 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   application,
   onDelete,
   onUpdateAlerts,
+  onMoveCard,
   isDragging
 }) => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [showAlerts, setShowAlerts] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -43,6 +47,13 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   const handleDetailClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     navigate(`/application/${application.id}`);
+  };
+
+  const handleMoveClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onMoveCard) {
+      onMoveCard(application.id);
+    }
   };
 
   const handleSaveAlerts = (applicationId: string, alerts: any[]) => {
@@ -74,28 +85,41 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   return (
     <>
       <div 
-        className={`card-modern bg-card text-card-foreground border border-border rounded-xl p-4 transition-all duration-200 touch-manipulation select-none ${
+        className={`bg-white rounded-lg border shadow-sm p-4 transition-all duration-200 touch-manipulation select-none ${
           isDragging 
-            ? 'shadow-2xl transform rotate-1 scale-105 cursor-grabbing opacity-95' 
-            : 'cursor-grab hover:cursor-grab hover:shadow-lg'
+            ? 'shadow-xl scale-105 cursor-grabbing opacity-95 z-[9999]' 
+            : 'cursor-grab hover:cursor-grab hover:shadow-md'
         }`}
         style={{
           transformOrigin: 'center center',
-          zIndex: isDragging ? 10000 : 'auto',
-          position: 'relative'
+          zIndex: isDragging ? 9999 : 1,
+          position: isDragging ? 'fixed' : 'relative'
         }}
       >
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1 min-w-0 cursor-inherit">
-            <h4 className="font-semibold text-foreground truncate text-base cursor-inherit">
+            <h4 className="font-semibold text-gray-900 truncate text-base cursor-inherit">
               {application.companyName}
             </h4>
-            <p className="text-sm text-muted-foreground truncate cursor-inherit mt-1">
+            <p className="text-sm text-gray-600 truncate cursor-inherit mt-1">
               {application.roleDescription || 'No role specified'}
             </p>
           </div>
           <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+            {/* Mobile Move Button */}
+            {isMobile && onMoveCard && (
+              <Button
+                onClick={handleMoveClick}
+                variant="ghost"
+                size="sm"
+                className="text-indigo-500 hover:text-indigo-700 hover:bg-indigo-50 h-8 w-8 p-0 touch-manipulation cursor-pointer"
+                title="Move to next column"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            )}
+            
             {(application.alerts && application.alerts.length > 0) && (
               <div className="text-green-500" title="Alerts set">
                 <Bell className="w-4 h-4" />
@@ -132,7 +156,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
         {/* Details */}
         <div className="space-y-2 cursor-inherit">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground cursor-inherit">
+          <div className="flex items-center gap-2 text-xs text-gray-500 cursor-inherit">
             <Calendar className="w-3 h-3 flex-shrink-0" />
             <span className="truncate">{formatDate(application.applicationDate)}</span>
           </div>
@@ -152,13 +176,13 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
           )}
 
           {application.salary && application.salary !== 'ND' && (
-            <div className="flex items-center gap-2 text-xs text-muted-foreground cursor-inherit">
+            <div className="flex items-center gap-2 text-xs text-gray-500 cursor-inherit">
               <DollarSign className="w-3 h-3 flex-shrink-0" />
               <span className="truncate">{application.salary}</span>
             </div>
           )}
 
-          <div className="flex items-center gap-2 text-xs text-muted-foreground cursor-inherit">
+          <div className="flex items-center gap-2 text-xs text-gray-500 cursor-inherit">
             <MapPin className="w-3 h-3 flex-shrink-0" />
             <span className="truncate">{getWorkModeIcon(application.workMode)} {application.workMode}</span>
           </div>
@@ -166,7 +190,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
         {/* Status Badge */}
         <div className="mt-3 cursor-inherit">
-          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-200">
             {JOB_STATUS_LABELS[application.status]}
           </span>
         </div>
