@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable, DraggingStyle } from 'react-beautiful-dnd';
 import { JobApplication } from '@/types/job';
 import { KanbanColumnType } from './KanbanBoard';
 import { KanbanCard } from './KanbanCard';
@@ -60,6 +60,13 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
                     const style = provided.draggableProps.style;
                     const isDragging = snapshot.isDragging;
                     
+                    // Type guard to check if style is DraggingStyle
+                    const isDraggingStyle = (style: any): style is DraggingStyle => {
+                      return style && typeof style.top !== 'undefined';
+                    };
+                    
+                    const draggingStyle = isDraggingStyle(style) ? style : null;
+                    
                     return (
                       <div
                         ref={provided.innerRef}
@@ -70,8 +77,8 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
                           ...style,
                           zIndex: isDragging ? 9999 : 'auto',
                           position: isDragging ? 'fixed' : 'relative',
-                          top: isDragging && style ? style.top : 'auto',
-                          left: isDragging && style ? style.left : 'auto',
+                          top: isDragging && draggingStyle ? draggingStyle.top : 'auto',
+                          left: isDragging && draggingStyle ? draggingStyle.left : 'auto',
                           transform: isDragging && style ? style.transform : 'none',
                           opacity: isDragging ? 0.9 : 1,
                           cursor: isDragging ? 'grabbing' : 'grab'
