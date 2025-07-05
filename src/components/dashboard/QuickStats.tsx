@@ -2,20 +2,31 @@
 import React from 'react';
 import { Target, TrendingUp, CheckCircle, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { JobApplication } from '@/types/job';
 
 interface QuickStatsProps {
-  totalApplications: number;
-  responseRate: number;
-  interviewsObtained: number;
-  avgFeedbackTime: number;
+  applications: JobApplication[];
 }
 
-export const QuickStats: React.FC<QuickStatsProps> = ({
-  totalApplications,
-  responseRate,
-  interviewsObtained,
-  avgFeedbackTime
-}) => {
+export const QuickStats: React.FC<QuickStatsProps> = ({ applications }) => {
+  const totalApplications = applications.length;
+  
+  const responseRate = totalApplications > 0 
+    ? (applications.filter(app => 
+        app.status !== 'in-corso' && app.status !== 'ghosting'
+      ).length / totalApplications) * 100 
+    : 0;
+  
+  const interviewsObtained = applications.filter(app => 
+    app.status.includes('colloquio') || 
+    app.status === 'primo-colloquio' || 
+    app.status === 'secondo-colloquio' ||
+    app.status === 'colloquio-tecnico' ||
+    app.status === 'colloquio-finale'
+  ).length;
+  
+  const avgFeedbackTime = 7; // Default placeholder
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
       <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-xl border-blue-300/20 shadow-xl hover:shadow-2xl rounded-2xl">

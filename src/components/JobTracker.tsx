@@ -12,6 +12,7 @@ import { DashboardHeader } from './dashboard/DashboardHeader';
 import { FilterControls } from './dashboard/FilterControls';
 import { QuickStats } from './dashboard/QuickStats';
 import { SettingsModal } from './SettingsModal';
+import { AddApplicationModal } from './AddApplicationModal';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
@@ -23,6 +24,7 @@ export const JobTracker = () => {
   
   const [activeTab, setActiveTab] = useState<string>('applications');
   const [showSettings, setShowSettings] = useState(false);
+  const [showAddApplication, setShowAddApplication] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [sortBy, setSortBy] = useState<'date' | 'company' | 'status'>('date');
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -33,6 +35,7 @@ export const JobTracker = () => {
     loading,
     error,
     updateApplication,
+    addApplication,
     deleteApplication,
     refetch
   } = useJobApplications();
@@ -66,23 +69,6 @@ export const JobTracker = () => {
       toast({
         title: "Error",
         description: "Failed to delete application.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleUpdateAlerts = async (applicationId: string, alerts: any[]) => {
-    try {
-      await updateApplication(applicationId, { alerts });
-      toast({
-        title: "Alerts updated",
-        description: "Application alerts have been updated successfully.",
-      });
-    } catch (error) {
-      console.error('Error updating alerts:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update application alerts.",
         variant: "destructive",
       });
     }
@@ -132,7 +118,10 @@ export const JobTracker = () => {
         
         <SidebarInset className="flex-1">
           <div className="flex flex-col h-full">
-            <DashboardHeader />
+            <DashboardHeader 
+              activeTab={activeTab}
+              onAddApplication={() => setShowAddApplication(true)}
+            />
             
             <div className="flex-1 p-4 lg:p-6 space-y-4 lg:space-y-6 overflow-auto">
               {activeTab === 'applications' && (
@@ -154,10 +143,6 @@ export const JobTracker = () => {
                     applications={sortedApplications}
                     onUpdateStatus={handleUpdateStatus}
                     onDelete={handleDelete}
-                    onUpdateAlerts={handleUpdateAlerts}
-                    loading={loading}
-                    error={error}
-                    viewMode={viewMode}
                   />
                 </>
               )}
@@ -172,6 +157,12 @@ export const JobTracker = () => {
         <SettingsModal 
           open={showSettings} 
           onOpenChange={setShowSettings}
+        />
+
+        <AddApplicationModal
+          open={showAddApplication}
+          onOpenChange={setShowAddApplication}
+          onAddApplication={addApplication}
         />
       </div>
     </SidebarProvider>

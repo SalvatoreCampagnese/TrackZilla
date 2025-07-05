@@ -9,6 +9,7 @@ export const useJobApplications = () => {
   const { user } = useAuth();
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<any>(null);
 
   const fetchApplications = async () => {
     if (!user) {
@@ -18,6 +19,7 @@ export const useJobApplications = () => {
     }
 
     try {
+      setError(null);
       const { data, error } = await supabase
         .from('job_applications')
         .select('*')
@@ -42,6 +44,7 @@ export const useJobApplications = () => {
       setApplications(mappedApplications);
     } catch (error) {
       console.error('Error fetching applications:', error);
+      setError(error);
       toast({
         title: "Errore nel caricamento",
         description: "Impossibile caricare le candidature",
@@ -104,11 +107,20 @@ export const useJobApplications = () => {
     }
   };
 
-  const updateApplicationStatus = async (id: string, status: JobStatus) => {
+  const updateApplication = async (id: string, updates: Partial<JobApplication>) => {
     try {
       const { error } = await supabase
         .from('job_applications')
-        .update({ status })
+        .update({
+          ...(updates.status && { status: updates.status }),
+          ...(updates.jobDescription && { job_description: updates.jobDescription }),
+          ...(updates.companyName && { company_name: updates.companyName }),
+          ...(updates.roleDescription && { role_description: updates.roleDescription }),
+          ...(updates.salary && { salary: updates.salary }),
+          ...(updates.workMode && { work_mode: updates.workMode }),
+          ...(updates.applicationDate && { application_date: updates.applicationDate }),
+          ...(updates.tags && { tags: updates.tags }),
+        })
         .eq('id', id)
         .eq('deleted', false);
 
@@ -116,22 +128,26 @@ export const useJobApplications = () => {
 
       setApplications(prev => 
         prev.map(app => 
-          app.id === id ? { ...app, status } : app
+          app.id === id ? { ...app, ...updates } : app
         )
       );
 
       toast({
-        title: "Stato aggiornato",
-        description: "Lo stato della candidatura è stato aggiornato"
+        title: "Candidatura aggiornata",
+        description: "La candidatura è stata aggiornata con successo"
       });
     } catch (error) {
       console.error('Error updating application:', error);
       toast({
         title: "Errore nell'aggiornamento",
-        description: "Impossibile aggiornare lo stato",
+        description: "Impossibile aggiornare la candidatura",
         variant: "destructive"
       });
     }
+  };
+
+  const updateApplicationStatus = async (id: string, status: JobStatus) => {
+    await updateApplication(id, { status });
   };
 
   const deleteApplication = async (id: string) => {
@@ -166,7 +182,9 @@ export const useJobApplications = () => {
   return {
     applications,
     loading,
+    error,
     addApplication,
+    updateApplication,
     updateApplicationStatus,
     deleteApplication,
     refetch: fetchApplications
