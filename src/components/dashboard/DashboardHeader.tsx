@@ -21,9 +21,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       <div className="flex items-center justify-between p-4 lg:p-6">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
-            {isCollapsed && (
               <SidebarTrigger className="text-white hover:bg-white/10 h-8 w-8 rounded-xl transition-all duration-200 hover:scale-105" />
-            )}
             <div>
               {/* Header content can be added here if needed */}
             </div>
