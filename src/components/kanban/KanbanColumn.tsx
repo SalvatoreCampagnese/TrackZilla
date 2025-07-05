@@ -56,34 +56,37 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
                   draggableId={application.id}
                   index={index}
                 >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className="mb-3"
-                      style={{
-                        ...provided.draggableProps.style,
-                        zIndex: snapshot.isDragging ? 9999 : 'auto',
-                        position: snapshot.isDragging ? 'fixed' : 'relative',
-                        top: snapshot.isDragging ? provided.draggableProps.style?.top : 'auto',
-                        left: snapshot.isDragging ? provided.draggableProps.style?.left : 'auto',
-                        transform: snapshot.isDragging 
-                          ? provided.draggableProps.style?.transform 
-                          : 'none',
-                        opacity: snapshot.isDragging ? 0.9 : 1,
-                        cursor: snapshot.isDragging ? 'grabbing' : 'grab'
-                      }}
-                    >
-                      <KanbanCard
-                        application={application}
-                        onDelete={onDelete}
-                        onUpdateAlerts={onUpdateAlerts}
-                        onMoveCard={onMoveCard}
-                        isDragging={snapshot.isDragging}
-                      />
-                    </div>
-                  )}
+                  {(provided, snapshot) => {
+                    const style = provided.draggableProps.style;
+                    const isDragging = snapshot.isDragging;
+                    
+                    return (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="mb-3"
+                        style={{
+                          ...style,
+                          zIndex: isDragging ? 9999 : 'auto',
+                          position: isDragging ? 'fixed' : 'relative',
+                          top: isDragging && style ? style.top : 'auto',
+                          left: isDragging && style ? style.left : 'auto',
+                          transform: isDragging && style ? style.transform : 'none',
+                          opacity: isDragging ? 0.9 : 1,
+                          cursor: isDragging ? 'grabbing' : 'grab'
+                        }}
+                      >
+                        <KanbanCard
+                          application={application}
+                          onDelete={onDelete}
+                          onUpdateAlerts={onUpdateAlerts}
+                          onMoveCard={onMoveCard}
+                          isDragging={isDragging}
+                        />
+                      </div>
+                    );
+                  }}
                 </Draggable>
               ))}
               {provided.placeholder}
