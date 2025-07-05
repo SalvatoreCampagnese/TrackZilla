@@ -116,16 +116,10 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 
   const handleDragStart = () => {
     setIsDragging(true);
-    // Ensure dragging elements are visible and follow the mouse
-    document.body.style.userSelect = 'none';
-    document.body.style.cursor = 'grabbing';
   };
 
   const handleDragEnd = (result: DropResult) => {
     setIsDragging(false);
-    // Reset body styles
-    document.body.style.userSelect = '';
-    document.body.style.cursor = '';
     
     const { destination, source, draggableId } = result;
 
@@ -175,64 +169,63 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       </div>
 
       {/* Kanban Board */}
-      <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <div className="flex gap-2 md:gap-4 overflow-x-auto pb-4 px-2 md:px-0 relative">
-          {enabledColumns.map((column) => {
-            const columnApplications = getApplicationsForColumn(column);
-            
-            return (
-              <div key={column.id} className="flex-shrink-0 w-72 md:w-80">
-                <KanbanColumn column={column} applicationCount={columnApplications.length}>
-                  <Droppable droppableId={column.id}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        className={`min-h-[200px] p-2 rounded-lg transition-colors relative ${
-                          snapshot.isDraggingOver ? 'bg-white/10' : 'bg-white/5'
-                        }`}
-                      >
-                        {columnApplications.map((application, index) => (
-                          <Draggable
-                            key={application.id}
-                            draggableId={application.id}
-                            index={index}
-                          >
-                            {(provided, snapshot) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="mb-3 relative"
-                                style={{
-                                  ...provided.draggableProps.style,
-                                  // Ensure dragged card follows mouse properly
-                                  ...(snapshot.isDragging && {
-                                    zIndex: 9999,
-                                    transform: provided.draggableProps.style?.transform || 'none'
-                                  })
-                                }}
-                              >
-                                <KanbanCard
-                                  application={application}
-                                  onDelete={onDelete}
-                                  onUpdateAlerts={onUpdateAlerts}
-                                  isDragging={snapshot.isDragging}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </KanbanColumn>
-              </div>
-            );
-          })}
-        </div>
-      </DragDropContext>
+      <div className={`relative ${isDragging ? 'overflow-visible' : ''}`}>
+        <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <div className="flex gap-2 md:gap-4 overflow-x-auto pb-4 px-2 md:px-0">
+            {enabledColumns.map((column) => {
+              const columnApplications = getApplicationsForColumn(column);
+              
+              return (
+                <div key={column.id} className="flex-shrink-0 w-72 md:w-80">
+                  <KanbanColumn column={column} applicationCount={columnApplications.length}>
+                    <Droppable droppableId={column.id}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                          className={`min-h-[200px] p-2 rounded-lg transition-colors ${
+                            snapshot.isDraggingOver ? 'bg-white/10' : 'bg-white/5'
+                          }`}
+                        >
+                          {columnApplications.map((application, index) => (
+                            <Draggable
+                              key={application.id}
+                              draggableId={application.id}
+                              index={index}
+                            >
+                              {(provided, snapshot) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className="mb-3"
+                                  style={{
+                                    ...provided.draggableProps.style,
+                                    zIndex: snapshot.isDragging ? 10000 : 'auto',
+                                    position: snapshot.isDragging ? 'fixed' : 'relative'
+                                  }}
+                                >
+                                  <KanbanCard
+                                    application={application}
+                                    onDelete={onDelete}
+                                    onUpdateAlerts={onUpdateAlerts}
+                                    isDragging={snapshot.isDragging}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </KanbanColumn>
+                </div>
+              );
+            })}
+          </div>
+        </DragDropContext>
+      </div>
 
       {/* Column Settings Modal */}
       <ColumnSettings

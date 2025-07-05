@@ -14,7 +14,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
   children
 }) => {
   return (
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg relative z-0">
+    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg relative">
       {/* Column Header */}
       <div className="flex items-center justify-between mb-3 md:mb-4">
         <div className="flex items-center gap-2 md:gap-3">
@@ -27,7 +27,9 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
       </div>
 
       {/* Column Content */}
-      {children}
+      <div className="relative">
+        {children}
+      </div>
     </div>
   );
 };
