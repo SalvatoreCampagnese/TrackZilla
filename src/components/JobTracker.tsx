@@ -9,6 +9,7 @@ import { Statistics } from './Statistics';
 import { KanbanBoard } from './kanban/KanbanBoard';
 import { AppSidebar } from './AppSidebar';
 import { SettingsContent } from './SettingsContent';
+import { SubscriptionContent } from './SubscriptionContent';
 import ProPage from '@/pages/ProPage';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { DashboardHeader } from './dashboard/DashboardHeader';
@@ -110,11 +111,6 @@ export const JobTracker = () => {
         />
         
         <main className="flex-1 flex flex-col min-w-0 relative z-10">
-          {/* Mobile Sidebar Trigger - Always visible on mobile */}
-          <div className="md:hidden fixed top-4 left-4 z-30">
-            <SidebarTrigger className="bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105" />
-          </div>
-
           <DashboardHeader 
             activeTab={activeTab}
             onAddApplication={handleAddApplication}
@@ -175,6 +171,10 @@ export const JobTracker = () => {
             
             {activeTab === 'settings' && (
               <SettingsContent />
+            )}
+
+            {activeTab === 'subscription' && (
+              <SubscriptionContent />
             )}
 
             {activeTab === 'pro' && (
