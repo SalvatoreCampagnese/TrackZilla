@@ -91,14 +91,19 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   useEffect(() => {
     const savedColumns = localStorage.getItem('kanban-columns');
     if (savedColumns) {
-      const parsed = JSON.parse(savedColumns);
-      // Merge with defaults to ensure isDefault and enabled properties exist
-      const mergedColumns = parsed.map((col: any) => ({
-        ...col,
-        isDefault: DEFAULT_COLUMNS.find(def => def.id === col.id)?.isDefault || false,
-        enabled: col.enabled !== undefined ? col.enabled : true
-      }));
-      setColumns(mergedColumns);
+      try {
+        const parsed = JSON.parse(savedColumns);
+        // Merge with defaults to ensure isDefault and enabled properties exist
+        const mergedColumns = parsed.map((col: any) => ({
+          ...col,
+          isDefault: DEFAULT_COLUMNS.find(def => def.id === col.id)?.isDefault || false,
+          enabled: col.enabled !== undefined ? col.enabled : true
+        }));
+        setColumns(mergedColumns);
+      } catch (error) {
+        console.error('Error parsing saved columns:', error);
+        setColumns(DEFAULT_COLUMNS);
+      }
     }
   }, []);
 
