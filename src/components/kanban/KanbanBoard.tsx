@@ -116,17 +116,16 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 
   const handleDragStart = () => {
     setIsDragging(true);
-    // Improve drag performance
+    // Ensure dragging elements are visible and follow the mouse
     document.body.style.userSelect = 'none';
-    // Ensure dragging elements are visible
-    document.body.style.overflow = 'hidden';
+    document.body.style.cursor = 'grabbing';
   };
 
   const handleDragEnd = (result: DropResult) => {
     setIsDragging(false);
     // Reset body styles
     document.body.style.userSelect = '';
-    document.body.style.overflow = '';
+    document.body.style.cursor = '';
     
     const { destination, source, draggableId } = result;
 
@@ -207,9 +206,11 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                 className="mb-3 relative"
                                 style={{
                                   ...provided.draggableProps.style,
-                                  // Ensure proper z-index during drag
-                                  zIndex: snapshot.isDragging ? 9999 : 'auto',
-                                  position: snapshot.isDragging ? 'relative' : 'static'
+                                  // Ensure dragged card follows mouse properly
+                                  ...(snapshot.isDragging && {
+                                    zIndex: 9999,
+                                    transform: provided.draggableProps.style?.transform || 'none'
+                                  })
                                 }}
                               >
                                 <KanbanCard
