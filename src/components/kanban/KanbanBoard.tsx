@@ -201,7 +201,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
               
               return (
                 <div key={column.id} className="flex-shrink-0 w-72 md:w-80">
-                  <KanbanColumn column={column} applicationCount={columnApplications.length}>
+                  <KanbanColumn column={column} applicationCount={columnApplications.length} isDragging={isDragging}>
                     <Droppable droppableId={column.id}>
                       {(provided, snapshot) => (
                         <div
@@ -225,8 +225,11 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                   className="mb-3"
                                   style={{
                                     ...provided.draggableProps.style,
-                                    zIndex: snapshot.isDragging ? 9999 : 1,
-                                    position: snapshot.isDragging ? 'fixed' : 'relative'
+                                    // Ensure proper positioning during drag
+                                    transform: snapshot.isDragging 
+                                      ? provided.draggableProps.style?.transform 
+                                      : 'none',
+                                    zIndex: snapshot.isDragging ? 10000 : 1,
                                   }}
                                 >
                                   <KanbanCard

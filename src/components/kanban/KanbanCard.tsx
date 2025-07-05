@@ -85,15 +85,18 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   return (
     <>
       <div 
-        className={`bg-white rounded-lg border shadow-sm p-4 transition-all duration-200 touch-manipulation select-none ${
+        className={`bg-white rounded-lg border shadow-sm p-4 transition-all duration-200 touch-manipulation select-none w-full max-w-none ${
           isDragging 
-            ? 'shadow-xl scale-105 cursor-grabbing opacity-95 z-[9999]' 
+            ? 'shadow-2xl cursor-grabbing opacity-90 rotate-3 scale-105' 
             : 'cursor-grab hover:cursor-grab hover:shadow-md'
         }`}
         style={{
-          transformOrigin: 'center center',
-          zIndex: isDragging ? 9999 : 1,
-          position: isDragging ? 'fixed' : 'relative'
+          // Maintain consistent width during drag
+          width: isDragging ? '288px' : 'auto', // Same as w-72 (18rem = 288px)
+          maxWidth: isDragging ? '288px' : 'none',
+          minWidth: isDragging ? '288px' : 'auto',
+          zIndex: isDragging ? 10000 : 'auto',
+          position: 'relative'
         }}
       >
         {/* Header */}

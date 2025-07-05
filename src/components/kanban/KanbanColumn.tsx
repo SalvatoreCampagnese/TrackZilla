@@ -6,15 +6,24 @@ interface KanbanColumnProps {
   column: KanbanColumnType;
   applicationCount: number;
   children: React.ReactNode;
+  isDragging?: boolean;
 }
 
 export const KanbanColumn: React.FC<KanbanColumnProps> = ({
   column,
   applicationCount,
-  children
+  children,
+  isDragging = false
 }) => {
   return (
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg relative">
+    <div 
+      className={`bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 md:p-4 shadow-lg relative transition-all duration-200 ${
+        isDragging ? 'z-0' : 'z-10'
+      }`}
+      style={{
+        zIndex: isDragging ? 0 : 10
+      }}
+    >
       {/* Column Header */}
       <div className="flex items-center justify-between mb-3 md:mb-4">
         <div className="flex items-center gap-2 md:gap-3">
