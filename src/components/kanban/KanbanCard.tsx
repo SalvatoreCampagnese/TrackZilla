@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { JobApplication } from '@/types/job';
@@ -75,15 +76,15 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
       <div 
         className={`bg-white backdrop-blur-md border shadow-lg transition-all duration-200 rounded-lg p-3 md:p-4 touch-manipulation select-none ${
           isDragging 
-            ? 'shadow-2xl transform rotate-2 scale-105 cursor-grabbing border-blue-400 bg-white opacity-100' 
+            ? 'shadow-2xl transform rotate-2 scale-105 cursor-grabbing border-blue-400 bg-white/95 opacity-100 !z-[9999]' 
             : 'cursor-grab hover:cursor-grab hover:shadow-xl border-white/40 bg-white/95'
         }`}
         style={{
           transformOrigin: 'center center',
           ...(isDragging && {
             zIndex: 9999,
-            position: 'fixed',
-            width: '288px' // Fixed width (w-72 = 288px)
+            position: 'relative',
+            width: 'auto'
           })
         }}
       >

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { JobApplication } from '@/types/job';
@@ -117,12 +118,15 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     setIsDragging(true);
     // Improve drag performance
     document.body.style.userSelect = 'none';
+    // Ensure dragging elements are visible
+    document.body.style.overflow = 'hidden';
   };
 
   const handleDragEnd = (result: DropResult) => {
     setIsDragging(false);
     // Reset body styles
     document.body.style.userSelect = '';
+    document.body.style.overflow = '';
     
     const { destination, source, draggableId } = result;
 
@@ -145,7 +149,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   };
 
   return (
-    <div className="h-full">
+    <div className="h-full relative">
       {/* Header */}
       <div className="flex items-center justify-between mb-4 md:mb-6 px-2 md:px-0">
         <h2 className="text-lg md:text-xl font-semibold text-white">Kanban Board</h2>
@@ -173,7 +177,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 
       {/* Kanban Board */}
       <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <div className="flex gap-2 md:gap-4 overflow-x-auto pb-4 px-2 md:px-0">
+        <div className="flex gap-2 md:gap-4 overflow-x-auto pb-4 px-2 md:px-0 relative">
           {enabledColumns.map((column) => {
             const columnApplications = getApplicationsForColumn(column);
             
@@ -185,7 +189,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                       <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        className={`min-h-[200px] p-2 rounded-lg transition-colors ${
+                        className={`min-h-[200px] p-2 rounded-lg transition-colors relative ${
                           snapshot.isDraggingOver ? 'bg-white/10' : 'bg-white/5'
                         }`}
                       >
@@ -200,15 +204,12 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                className="mb-3"
+                                className="mb-3 relative"
                                 style={{
                                   ...provided.draggableProps.style,
-                                  // Ensure proper positioning during drag
-                                  ...(snapshot.isDragging && {
-                                    position: 'fixed',
-                                    zIndex: 9999,
-                                    pointerEvents: 'auto'
-                                  })
+                                  // Ensure proper z-index during drag
+                                  zIndex: snapshot.isDragging ? 9999 : 'auto',
+                                  position: snapshot.isDragging ? 'relative' : 'static'
                                 }}
                               >
                                 <KanbanCard
