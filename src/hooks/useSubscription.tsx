@@ -63,39 +63,8 @@ export const useSubscription = () => {
     checkSubscription();
   }, [user]);
 
-  // Set up real-time subscription updates
-  useEffect(() => {
-    if (!user?.email) return;
-
-    const channel = supabase
-      .channel('subscription-updates')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'subscribers',
-          filter: `email=eq.${user.email}`,
-        },
-        (payload) => {
-          console.log('Subscription updated:', payload);
-          if (payload.new && typeof payload.new === 'object') {
-            const newData = payload.new as any;
-            setSubscriptionData({
-              subscribed: newData.subscribed || false,
-              subscription_tier: newData.subscription_tier || null,
-              subscription_end: newData.subscription_end || null,
-              subscription_status: newData.subscription_status || null,
-            });
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [user?.email]);
+  // Remove the real-time subscription to avoid conflicts
+  // The subscription status will be checked via the checkSubscription function instead
 
   return {
     ...subscriptionData,

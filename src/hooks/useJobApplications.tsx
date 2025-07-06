@@ -179,6 +179,33 @@ export const useJobApplications = () => {
     fetchApplications();
   }, [user]);
 
+  // Set up real-time subscription for job applications only if user exists
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel('job-applications-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'job_applications',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          console.log('Job application change:', payload);
+          // Refetch applications when there's a change
+          fetchApplications();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
   return {
     applications,
     loading,
