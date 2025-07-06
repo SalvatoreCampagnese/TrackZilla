@@ -25,7 +25,7 @@ export const JobTracker = () => {
   const [activeTab, setActiveTab] = useState<string>('applications');
   const [showSettings, setShowSettings] = useState(false);
   const [showAddApplication, setShowAddApplication] = useState(false);
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [sortBy, setSortBy] = useState<'date' | 'company' | 'status'>('date');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,16 +33,15 @@ export const JobTracker = () => {
   const {
     applications,
     loading,
-    error,
-    updateApplication,
     addApplication,
+    updateApplicationStatus,
     deleteApplication,
     refetch
   } = useJobApplications();
 
   const handleUpdateStatus = async (id: string, status: JobStatus) => {
     try {
-      await updateApplication(id, { status });
+      await updateApplicationStatus(id, status);
       toast({
         title: "Status updated",
         description: "Application status has been updated successfully.",
@@ -101,13 +100,13 @@ export const JobTracker = () => {
   });
 
   if (!user) {
-    return <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="text-white">Please log in to continue</div>
     </div>;
   }
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="text-white">Loading...</div>
     </div>;
   }
@@ -122,39 +121,47 @@ export const JobTracker = () => {
           onProClick={handleProClick}
         />
         
-        <SidebarInset className="flex-1">
+        <SidebarInset className="flex-1 min-w-0">
           <div className="flex flex-col h-full">
             <DashboardHeader 
               activeTab={activeTab}
               onAddApplication={() => setShowAddApplication(true)}
             />
             
-            <div className="flex-1 p-4 lg:p-6 space-y-4 lg:space-y-6 overflow-auto">
+            <div className="flex-1 p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6 overflow-auto">
               {activeTab === 'applications' && (
                 <>
-                  <QuickStats applications={applications} />
+                  <div className="w-full">
+                    <QuickStats applications={applications} />
+                  </div>
                   
-                  <FilterControls
-                    viewMode={viewMode}
-                    onViewModeChange={setViewMode}
-                    sortBy={sortBy}
-                    onSortByChange={setSortBy}
-                    filterStatus={filterStatus}
-                    onFilterStatusChange={setFilterStatus}
-                    searchTerm={searchTerm}
-                    onSearchTermChange={setSearchTerm}
-                  />
+                  <div className="w-full">
+                    <FilterControls
+                      viewMode={viewMode}
+                      onViewModeChange={setViewMode}
+                      sortBy={sortBy}
+                      onSortByChange={setSortBy}
+                      filterStatus={filterStatus}
+                      onFilterStatusChange={setFilterStatus}
+                      searchTerm={searchTerm}
+                      onSearchTermChange={setSearchTerm}
+                    />
+                  </div>
 
-                  <JobList
-                    applications={sortedApplications}
-                    onUpdateStatus={handleUpdateStatus}
-                    onDelete={handleDelete}
-                  />
+                  <div className="w-full">
+                    <JobList
+                      applications={sortedApplications}
+                      onUpdateStatus={handleUpdateStatus}
+                      onDelete={handleDelete}
+                    />
+                  </div>
                 </>
               )}
 
               {activeTab === 'statistics' && (
-                <Statistics applications={applications} />
+                <div className="w-full">
+                  <Statistics applications={applications} />
+                </div>
               )}
             </div>
           </div>
