@@ -6,6 +6,7 @@ import { useSubscription } from '@/hooks/useSubscription';
 import { JobApplication, JobStatus } from '@/types/job';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
+import { SubscriptionContent } from './SubscriptionContent';
 import { AppSidebar } from './AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { DashboardHeader } from './dashboard/DashboardHeader';
