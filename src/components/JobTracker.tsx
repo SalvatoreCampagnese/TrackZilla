@@ -163,6 +163,12 @@ export const JobTracker = () => {
                   <Statistics applications={applications} />
                 </div>
               )}
+
+              {activeTab === 'subscription' && (
+                <div className="w-full">
+                  <SubscriptionContent />
+                </div>
+              )}
             </div>
           </div>
         </SidebarInset>

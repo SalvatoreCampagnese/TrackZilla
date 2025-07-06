@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -39,10 +38,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     onProClick();
   };
 
-  const handleSubscriptionClick = () => {
-    navigate('/subscription');
-  };
-
   const menuItems = [
     {
       title: 'Applications',
@@ -67,7 +62,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       title: 'Subscription',
       icon: CreditCard,
       id: 'subscription',
-      onClick: handleSubscriptionClick
+      onClick: () => onTabChange('subscription')
     }] : [])
   ];
 
