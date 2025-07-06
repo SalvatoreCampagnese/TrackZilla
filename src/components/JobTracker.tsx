@@ -25,7 +25,7 @@ export const JobTracker = () => {
   const [activeTab, setActiveTab] = useState<string>('applications');
   const [showSettings, setShowSettings] = useState(false);
   const [showAddApplication, setShowAddApplication] = useState(false);
-  const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [sortBy, setSortBy] = useState<'date' | 'company' | 'status'>('date');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -128,7 +128,7 @@ export const JobTracker = () => {
               onAddApplication={() => setShowAddApplication(true)}
             />
             
-            <div className="flex-1 p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6 overflow-auto">
+            <div className="flex-1 p-2 sm:p-3 md:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6 overflow-auto">
               {activeTab === 'applications' && (
                 <>
                   <div className="w-full">
