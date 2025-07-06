@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { List, Grid } from 'lucide-react';
+import { List, Grid, Kanban } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 
 interface FilterControlsProps {
-  viewMode: 'list' | 'grid';
-  onViewModeChange: (mode: 'list' | 'grid') => void;
+  viewMode: 'list' | 'grid' | 'kanban';
+  onViewModeChange: (mode: 'list' | 'grid' | 'kanban') => void;
   sortBy: 'date' | 'company' | 'status';
   onSortByChange: (sortBy: 'date' | 'company' | 'status') => void;
   filterStatus: string;
@@ -103,6 +103,18 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           >
             <Grid className="w-4 h-4 mr-1.5" />
             <span className="text-xs">Grid</span>
+          </Button>
+          <Button
+            onClick={() => onViewModeChange('kanban')}
+            variant={viewMode === 'kanban' ? 'default' : 'ghost'}
+            size="sm"
+            className={viewMode === 'kanban' 
+              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg px-3 py-2 shadow-lg h-8'
+              : 'text-white/70 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 h-8'
+            }
+          >
+            <Kanban className="w-4 h-4 mr-1.5" />
+            <span className="text-xs">Kanban</span>
           </Button>
         </div>
       </div>

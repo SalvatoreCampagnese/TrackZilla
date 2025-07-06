@@ -7,6 +7,7 @@ import { JobApplication, JobStatus } from '@/types/job';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
 import { SubscriptionContent } from './SubscriptionContent';
+import { KanbanBoard } from './KanbanBoard';
 import { AppSidebar } from './AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { DashboardHeader } from './dashboard/DashboardHeader';
@@ -26,7 +27,7 @@ export const JobTracker = () => {
   const [activeTab, setActiveTab] = useState<string>('applications');
   const [showSettings, setShowSettings] = useState(false);
   const [showAddApplication, setShowAddApplication] = useState(false);
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'grid' | 'kanban'>('list');
   const [sortBy, setSortBy] = useState<'date' | 'company' | 'status'>('date');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -150,11 +151,19 @@ export const JobTracker = () => {
                   </div>
 
                   <div className="w-full">
-                    <JobList
-                      applications={sortedApplications}
-                      onUpdateStatus={handleUpdateStatus}
-                      onDelete={handleDelete}
-                    />
+                    {viewMode === 'kanban' ? (
+                      <KanbanBoard
+                        applications={sortedApplications}
+                        onUpdateStatus={handleUpdateStatus}
+                        onDelete={handleDelete}
+                      />
+                    ) : (
+                      <JobList
+                        applications={sortedApplications}
+                        onUpdateStatus={handleUpdateStatus}
+                        onDelete={handleDelete}
+                      />
+                    )}
                   </div>
                 </>
               )}
