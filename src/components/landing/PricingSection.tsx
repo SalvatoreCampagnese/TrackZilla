@@ -69,7 +69,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 </CardTitle>
                 <Crown className="w-6 h-6 text-yellow-400" />
               </div>
-              <div className="text-white mb-6">
+              <div className="text-white mb-6 ">
                 <span className="text-4xl font-bold">€4.79</span>
                 <span className="text-white/60 ml-2">/month</span>
               </div>
