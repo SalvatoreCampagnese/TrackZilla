@@ -49,7 +49,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
       className={`
         flex flex-col min-w-[280px] max-w-[320px] bg-gradient-to-b ${getColumnColor(id)} 
         backdrop-blur-xl border rounded-2xl p-4 shadow-lg
-        ${isOver ? 'ring-2 ring-white/50 shadow-2xl' : ''}
+        ${isOver ? 'ring-2 ring-white/50 shadow-2xl scale-105' : ''}
         transition-all duration-200
       `}
     >
@@ -60,7 +60,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
         </span>
       </div>
 
-      <div className="flex flex-col gap-3 min-h-[200px]">
+      <div className="flex flex-col gap-3 min-h-[200px] flex-1">
         {applications.map((application) => (
           <KanbanCard
             key={application.id}

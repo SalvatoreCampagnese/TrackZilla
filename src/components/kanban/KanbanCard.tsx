@@ -66,7 +66,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
       {...listeners}
       className={`
         cursor-grab active:cursor-grabbing
-        ${isDragging ? 'opacity-50 scale-105 rotate-2' : 'hover:scale-102'}
+        ${isDragging ? 'opacity-50 scale-105 rotate-2 z-50' : 'hover:scale-102'}
         transition-all duration-200
       `}
     >
