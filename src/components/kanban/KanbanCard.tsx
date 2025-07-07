@@ -122,29 +122,6 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
               </Badge>
             </div>
           </div>
-
-          {/* Tags */}
-          {application.tags && application.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1">
-              {application.tags.slice(0, 3).map((tag, index) => (
-                <Badge
-                  key={index}
-                  variant="secondary"
-                  className="text-xs px-2 py-0.5 bg-white/10 text-white/80 border-white/20"
-                >
-                  {tag}
-                </Badge>
-              ))}
-              {application.tags.length > 3 && (
-                <Badge
-                  variant="secondary"
-                  className="text-xs px-2 py-0.5 bg-white/10 text-white/50 border-white/20"
-                >
-                  +{application.tags.length - 3}
-                </Badge>
-              )}
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>

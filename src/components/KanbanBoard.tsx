@@ -8,9 +8,9 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  DragOverEvent,
 } from '@dnd-kit/core';
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
@@ -60,15 +60,28 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     const activeId = active.id as string;
     const overId = over.id as string;
 
-    // If dropped on a column, update the status
+    console.log('Drag end - Active:', activeId, 'Over:', overId);
+
+    // Find the application being dragged
+    const application = applications.find(app => app.id === activeId);
+    if (!application) return;
+
+    // Check if dropped on a column (status change)
     if (columns.includes(overId as JobStatus)) {
       const newStatus = overId as JobStatus;
-      const application = applications.find(app => app.id === activeId);
-      
-      if (application && application.status !== newStatus) {
+      if (application.status !== newStatus) {
+        console.log('Updating status from', application.status, 'to', newStatus);
         await onUpdateStatus(activeId, newStatus);
       }
     }
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    
+    if (!over) return;
+    
+    console.log('Drag over - Active:', active.id, 'Over:', over.id);
   };
 
   return (
@@ -77,16 +90,22 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
       >
         <div className="flex gap-4 overflow-x-auto pb-4 min-h-[600px]">
           {columns.map((status) => (
-            <KanbanColumn
+            <SortableContext
               key={status}
-              id={status}
-              title={JOB_STATUS_LABELS[status]}
-              applications={getApplicationsByStatus(status)}
-              onDelete={onDelete}
-            />
+              items={getApplicationsByStatus(status).map(app => app.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <KanbanColumn
+                id={status}
+                title={JOB_STATUS_LABELS[status]}
+                applications={getApplicationsByStatus(status)}
+                onDelete={onDelete}
+              />
+            </SortableContext>
           ))}
         </div>
       </DndContext>

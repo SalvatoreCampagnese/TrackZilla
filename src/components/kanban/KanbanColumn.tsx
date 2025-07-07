@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { JobApplication, JobStatus } from '@/types/job';
 import { KanbanCard } from './KanbanCard';
 
@@ -61,22 +60,20 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
         </span>
       </div>
 
-      <SortableContext items={applications.map(app => app.id)} strategy={verticalListSortingStrategy}>
-        <div className="flex flex-col gap-3 min-h-[200px]">
-          {applications.map((application) => (
-            <KanbanCard
-              key={application.id}
-              application={application}
-              onDelete={onDelete}
-            />
-          ))}
-          {applications.length === 0 && (
-            <div className="flex items-center justify-center h-32 text-white/50 text-sm font-medium">
-              Drop applications here
-            </div>
-          )}
-        </div>
-      </SortableContext>
+      <div className="flex flex-col gap-3 min-h-[200px]">
+        {applications.map((application) => (
+          <KanbanCard
+            key={application.id}
+            application={application}
+            onDelete={onDelete}
+          />
+        ))}
+        {applications.length === 0 && (
+          <div className="flex items-center justify-center h-32 text-white/50 text-sm font-medium">
+            Drop applications here
+          </div>
+        )}
+      </div>
     </div>
   );
 };
