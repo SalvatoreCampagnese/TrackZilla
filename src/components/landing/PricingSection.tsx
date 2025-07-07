@@ -51,9 +51,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                     {feature}
                   </li>)}
               </ul>
-              <Button onClick={onGetStarted} variant="outline" className="w-full border-white/20 bg-white/10 hover:bg-white/20 text-white">
-                Start Free
-              </Button>
+              
             </CardContent>
           </Card>
 
