@@ -52,6 +52,9 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     return applications.filter(app => app.status === status);
   };
 
+  // Get all application IDs for the sortable context
+  const allApplicationIds = applications.map(app => app.id);
+
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -66,13 +69,23 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     const application = applications.find(app => app.id === activeId);
     if (!application) return;
 
-    // Check if dropped on a column (status change)
+    let targetStatus: JobStatus | null = null;
+
+    // Check if dropped directly on a column
     if (columns.includes(overId as JobStatus)) {
-      const newStatus = overId as JobStatus;
-      if (application.status !== newStatus) {
-        console.log('Updating status from', application.status, 'to', newStatus);
-        await onUpdateStatus(activeId, newStatus);
+      targetStatus = overId as JobStatus;
+    } else {
+      // If dropped on another card, find which column that card belongs to
+      const targetApplication = applications.find(app => app.id === overId);
+      if (targetApplication) {
+        targetStatus = targetApplication.status;
       }
+    }
+
+    // If we found a target status and it's different from current status, update
+    if (targetStatus && application.status !== targetStatus) {
+      console.log('Updating status from', application.status, 'to', targetStatus);
+      await onUpdateStatus(activeId, targetStatus);
     }
   };
 
@@ -92,22 +105,22 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
       >
-        <div className="flex gap-4 overflow-x-auto pb-4 min-h-[600px]">
-          {columns.map((status) => (
-            <SortableContext
-              key={status}
-              items={getApplicationsByStatus(status).map(app => app.id)}
-              strategy={verticalListSortingStrategy}
-            >
+        <SortableContext
+          items={allApplicationIds}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="flex gap-4 overflow-x-auto pb-4 min-h-[600px]">
+            {columns.map((status) => (
               <KanbanColumn
+                key={status}
                 id={status}
                 title={JOB_STATUS_LABELS[status]}
                 applications={getApplicationsByStatus(status)}
                 onDelete={onDelete}
               />
-            </SortableContext>
-          ))}
-        </div>
+            ))}
+          </div>
+        </SortableContext>
       </DndContext>
     </div>
   );
