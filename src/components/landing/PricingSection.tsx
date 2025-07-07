@@ -10,7 +10,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 }) => {
   const features = {
     free: ["Track up to 50 applications", "Basic analytics dashboard", "Manual status updates", "Basic export functionality"],
-    pro: ["Unlimited applications tracking", "Advanced analytics & insights", "Chrome extension automation", "Smart follow-up reminders", "Priority email support", "Custom status workflows", "Advanced filtering & search", "Bulk operations", "Interview tracking", "Company reviews database"]
+    pro: ["Unlimited applications tracking", "Kanban board for Jobs", "Advanced analytics & insights", "Interview questions history", "Company reviews database"]
   };
   return <section className="relative py-12 lg:py-16 overflow-hidden">
       {/* Background gradient overlay */}
