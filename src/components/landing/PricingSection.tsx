@@ -1,37 +1,18 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Crown, Zap } from 'lucide-react';
-
 interface PricingSectionProps {
   onGetStarted: () => void;
 }
-
-export const PricingSection: React.FC<PricingSectionProps> = ({ onGetStarted }) => {
+export const PricingSection: React.FC<PricingSectionProps> = ({
+  onGetStarted
+}) => {
   const features = {
-    free: [
-      "Track up to 50 applications",
-      "Basic analytics dashboard",
-      "Manual status updates",
-      "Basic export functionality"
-    ],
-    pro: [
-      "Unlimited applications tracking",
-      "Advanced analytics & insights",
-      "Chrome extension automation",
-      "Smart follow-up reminders",
-      "Priority email support",
-      "Custom status workflows",
-      "Advanced filtering & search",
-      "Bulk operations",
-      "Interview tracking",
-      "Company reviews database"
-    ]
+    free: ["Track up to 50 applications", "Basic analytics dashboard", "Manual status updates", "Basic export functionality"],
+    pro: ["Unlimited applications tracking", "Advanced analytics & insights", "Chrome extension automation", "Smart follow-up reminders", "Priority email support", "Custom status workflows", "Advanced filtering & search", "Bulk operations", "Interview tracking", "Company reviews database"]
   };
-
-  return (
-    <section className="relative py-12 lg:py-16 overflow-hidden">
+  return <section className="relative py-12 lg:py-16 overflow-hidden">
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-transparent"></div>
       
@@ -65,18 +46,12 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onGetStarted }) 
             </CardHeader>
             <CardContent className="p-0">
               <ul className="space-y-3 mb-8">
-                {features.free.map((feature, index) => (
-                  <li key={index} className="flex items-center text-white/80">
+                {features.free.map((feature, index) => <li key={index} className="flex items-center text-white/80">
                     <Check className="w-4 h-4 text-green-400 mr-3 flex-shrink-0" />
                     {feature}
-                  </li>
-                ))}
+                  </li>)}
               </ul>
-              <Button 
-                onClick={onGetStarted}
-                variant="outline" 
-                className="w-full border-white/20 bg-white/10 hover:bg-white/20 text-white"
-              >
+              <Button onClick={onGetStarted} variant="outline" className="w-full border-white/20 bg-white/10 hover:bg-white/20 text-white">
                 Start Free
               </Button>
             </CardContent>
@@ -86,9 +61,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onGetStarted }) 
           <Card className="bg-gradient-to-br from-purple-500/20 to-red-500/20 backdrop-blur-lg border border-purple-300/30 rounded-2xl p-6 hover:from-purple-500/30 hover:to-red-500/30 transition-all duration-300 relative overflow-hidden">
             {/* Popular badge */}
             <div className="absolute top-4 right-4">
-              <div className="bg-gradient-to-r from-purple-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                Most Popular
-              </div>
+              
             </div>
             
             <CardHeader className="pb-4 p-0">
@@ -105,23 +78,15 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onGetStarted }) 
             </CardHeader>
             <CardContent className="p-0">
               <ul className="space-y-3 mb-8">
-                {features.pro.map((feature, index) => (
-                  <li key={index} className="flex items-center text-white/90">
+                {features.pro.map((feature, index) => <li key={index} className="flex items-center text-white/90">
                     <Check className="w-4 h-4 text-green-400 mr-3 flex-shrink-0" />
                     {feature}
-                  </li>
-                ))}
+                  </li>)}
               </ul>
-              <Button 
-                onClick={onGetStarted}
-                className="w-full bg-gradient-to-r from-purple-500 to-red-500 hover:from-purple-600 hover:to-red-600 text-white font-semibold"
-              >
-                Upgrade to Pro
-              </Button>
+              
             </CardContent>
           </Card>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
