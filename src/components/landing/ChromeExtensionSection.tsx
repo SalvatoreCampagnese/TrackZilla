@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,9 +6,8 @@ import { Chrome, Download, Zap, ArrowRight, CheckCircle } from 'lucide-react';
 export const ChromeExtensionSection: React.FC = () => {
   const features = [
     "One-click application tracking from LinkedIn",
-    "Auto-extract job details and company info",
+    "Auto-extract job details and company info", 
     "Instant status updates without leaving LinkedIn",
-    "Smart job description parsing",
     "Automatic follow-up reminders",
     "Seamless sync with your dashboard"
   ];
