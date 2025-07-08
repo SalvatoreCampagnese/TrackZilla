@@ -94,6 +94,9 @@ export const JobTracker = () => {
     setShowAddApplication(true);
   };
 
+  // Check if add button should be disabled
+  const canAddApplication = subscribed || applications.length < 50;
+
   // Filter and sort applications
   const filteredApplications = applications.filter(app => {
     const matchesStatus = filterStatus === 'all' || app.status === filterStatus;
@@ -144,6 +147,7 @@ export const JobTracker = () => {
               activeTab={activeTab}
               onAddApplication={handleAddApplication}
               onProClick={handleProClick}
+              canAddApplication={canAddApplication}
             />
             
             <div className="flex-1 p-2 sm:p-3 md:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6 overflow-auto">
