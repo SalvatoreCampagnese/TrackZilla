@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,8 +7,9 @@ import { Chrome, Download, Zap, ArrowRight, CheckCircle } from 'lucide-react';
 export const ChromeExtensionSection: React.FC = () => {
   const features = [
     "One-click application tracking from LinkedIn",
-    "Auto-extract job details and company info", 
+    "Auto-extract job details and company info",
     "Instant status updates without leaving LinkedIn",
+    "Smart job description parsing",
     "Automatic follow-up reminders",
     "Seamless sync with your dashboard"
   ];
@@ -88,7 +90,7 @@ export const ChromeExtensionSection: React.FC = () => {
               <CardContent className="p-0">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-green-500 rounded-2xl mb-6">
-                    <img src="/lovable-uploads/6954c22b-6d42-46f9-b18b-cb4bb816b599.png" alt="TrackZilla Extension" className="w-12 h-12" />
+                    <img src="/lovable-uploads/6954c22b-6d42-46f9-b18b-cb4bb816b599.png" alt="TrackZilla Extension" className="w-100 h-100" />
                   </div>
                   <h4 className="text-2xl font-bold text-white mb-4">
                     TrackZilla Extension
