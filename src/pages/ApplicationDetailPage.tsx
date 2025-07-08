@@ -1,14 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
+import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/integrations/supabase/client';
 import { JobApplication } from '@/types/job';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Building2, Calendar, Euro, MapPin, Edit, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, Building2, Calendar, Euro, MapPin, Edit, ChevronDown, ChevronUp, Crown, Lock } from 'lucide-react';
 import { InterviewQuestions } from '@/components/application-detail/InterviewQuestions';
 import { CompanyReviews } from '@/components/application-detail/CompanyReviews';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -19,9 +19,11 @@ export default function ApplicationDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { subscribed } = useSubscription();
   const [application, setApplication] = useState<JobApplication | null>(null);
   const [loading, setLoading] = useState(true);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState('questions');
 
   useEffect(() => {
     if (!id || !user) return;
@@ -97,6 +99,19 @@ export default function ApplicationDetailPage() {
 
   const handleEditApplication = () => {
     navigate(`/add-job?edit=${id}`);
+  };
+
+  const handleTabChange = (value: string) => {
+    if (!subscribed && (value === 'questions' || value === 'reviews')) {
+      toast({
+        title: "Pro feature",
+        description: "Interview questions and company reviews are only available for Pro users.",
+        variant: "destructive",
+      });
+      navigate('/?tab=pro');
+      return;
+    }
+    setActiveTab(value);
   };
 
   const shouldTruncateDescription = (text: string) => {
@@ -241,35 +256,75 @@ export default function ApplicationDetailPage() {
         </Card>
 
         {/* Tabs for Interview Questions and Company Reviews */}
-        <Tabs defaultValue="questions" className="w-full">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-md border border-white/20">
             <TabsTrigger 
               value="questions"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70 relative"
             >
               Interview Questions
+              {!subscribed && <Crown className="w-3 h-3 ml-1 text-yellow-400" />}
             </TabsTrigger>
             <TabsTrigger 
               value="reviews"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70 relative"
             >
               Company Reviews
+              {!subscribed && <Crown className="w-3 h-3 ml-1 text-yellow-400" />}
             </TabsTrigger>
           </TabsList>
           
           <TabsContent value="questions" className="mt-6">
-            <InterviewQuestions 
-              applicationId={application.id}
-              companyName={application.companyName}
-              roleDescription={application.roleDescription}
-            />
+            {subscribed ? (
+              <InterviewQuestions 
+                applicationId={application.id}
+                companyName={application.companyName}
+                roleDescription={application.roleDescription}
+              />
+            ) : (
+              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+                <CardContent className="p-8 text-center">
+                  <Lock className="w-16 h-16 text-white/50 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">Pro Feature</h3>
+                  <p className="text-white/70 mb-6">
+                    Interview questions are only available for Pro users. Upgrade to unlock this feature and more!
+                  </p>
+                  <Button 
+                    onClick={() => navigate('/?tab=pro')}
+                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
+                  >
+                    <Crown className="w-4 h-4 mr-2" />
+                    Upgrade to Pro
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
           
           <TabsContent value="reviews" className="mt-6">
-            <CompanyReviews 
-              companyName={application.companyName}
-              roleDescription={application.roleDescription}
-            />
+            {subscribed ? (
+              <CompanyReviews 
+                companyName={application.companyName}
+                roleDescription={application.roleDescription}
+              />
+            ) : (
+              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+                <CardContent className="p-8 text-center">
+                  <Lock className="w-16 h-16 text-white/50 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">Pro Feature</h3>
+                  <p className="text-white/70 mb-6">
+                    Company reviews are only available for Pro users. Upgrade to unlock this feature and more!
+                  </p>
+                  <Button 
+                    onClick={() => navigate('/?tab=pro')}
+                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
+                  >
+                    <Crown className="w-4 h-4 mr-2" />
+                    Upgrade to Pro
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
       </div>

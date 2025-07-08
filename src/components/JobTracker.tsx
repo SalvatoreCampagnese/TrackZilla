@@ -80,6 +80,20 @@ export const JobTracker = () => {
     setActiveTab('pro');
   };
 
+  const handleAddApplication = () => {
+    // Check if user has reached the 50 application limit for free users
+    if (!subscribed && applications.length >= 50) {
+      toast({
+        title: "Application limit reached",
+        description: "Free users can only track up to 50 applications. Upgrade to Pro for unlimited tracking.",
+        variant: "destructive",
+      });
+      handleProClick();
+      return;
+    }
+    setShowAddApplication(true);
+  };
+
   // Filter and sort applications
   const filteredApplications = applications.filter(app => {
     const matchesStatus = filterStatus === 'all' || app.status === filterStatus;
@@ -128,7 +142,7 @@ export const JobTracker = () => {
           <div className="flex flex-col h-full">
             <DashboardHeader 
               activeTab={activeTab}
-              onAddApplication={() => setShowAddApplication(true)}
+              onAddApplication={handleAddApplication}
               onProClick={handleProClick}
             />
             
@@ -149,6 +163,7 @@ export const JobTracker = () => {
                       onFilterStatusChange={setFilterStatus}
                       searchTerm={searchTerm}
                       onSearchTermChange={setSearchTerm}
+                      onProClick={handleProClick}
                     />
                   </div>
 
