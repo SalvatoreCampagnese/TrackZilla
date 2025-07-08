@@ -47,7 +47,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Free Plan */}
-          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300">
+          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 flex flex-col">
             <CardHeader className="pb-4 p-0">
               <div className="flex items-center justify-between mb-4">
                 <CardTitle className="text-white text-2xl font-bold">
@@ -60,8 +60,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 <span className="text-white/60 ml-2">/month</span>
               </div>
             </CardHeader>
-            <CardContent className="p-0">
-              <ul className="space-y-3 mb-8">
+            <CardContent className="p-0 flex-1 flex flex-col">
+              <ul className="space-y-3 mb-8 flex-1">
                 {features.free.map((feature, index) => (
                   <li key={index} className="flex items-center text-white/80">
                     <Check className="w-4 h-4 text-green-400 mr-3 flex-shrink-0" />
@@ -71,7 +71,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               </ul>
               <Button 
                 onClick={onGetStarted}
-                className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 transition-all duration-300"
+                className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 transition-all duration-300 self-end"
                 variant="outline"
               >
                 Start for free
