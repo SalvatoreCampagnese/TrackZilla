@@ -1,214 +1,129 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import React from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { JobApplication } from '@/types/job';
-import { JOB_STATUS_LABELS } from '@/types/job';
-import { Calendar, DollarSign, MapPin, Trash2, Bell, Settings, Clock, Eye } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { AlertsManager } from '@/components/alerts/AlertsManager';
-import { DeleteConfirmationModal } from '@/components/common/DeleteConfirmationModal';
+import { Trash2, Building2, Calendar, DollarSign, MapPin } from 'lucide-react';
+import { format } from 'date-fns';
 
 interface KanbanCardProps {
   application: JobApplication;
-  onDelete: (id: string) => void;
-  onUpdateAlerts?: (applicationId: string, alerts: any[]) => void;
-  isDragging: boolean;
+  onDelete: (id: string) => Promise<void>;
 }
 
 export const KanbanCard: React.FC<KanbanCardProps> = ({
   application,
   onDelete,
-  onUpdateAlerts,
-  isDragging
 }) => {
-  const navigate = useNavigate();
-  const [showAlerts, setShowAlerts] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: application.id });
 
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowDeleteModal(true);
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
   };
 
-  const handleConfirmDelete = () => {
-    onDelete(application.id);
-    setShowDeleteModal(false);
-  };
-
-  const handleAlertsClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowAlerts(true);
-  };
-
-  const handleDetailClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    navigate(`/application/${application.id}`);
-  };
-
-  const handleSaveAlerts = (applicationId: string, alerts: any[]) => {
-    if (onUpdateAlerts) {
-      onUpdateAlerts(applicationId, alerts);
-    }
-  };
-
-  const getWorkModeIcon = (workMode: string) => {
+  const getWorkModeColor = (workMode: string) => {
     switch (workMode) {
       case 'remoto':
-        return '🏠';
+        return 'bg-green-500/20 text-green-300 border-green-400/30';
       case 'ibrido':
-        return '🏢🏠';
+        return 'bg-yellow-500/20 text-yellow-300 border-yellow-400/30';
       case 'in-presenza':
-        return '🏢';
+        return 'bg-blue-500/20 text-blue-300 border-blue-400/30';
       default:
-        return '❓';
+        return 'bg-gray-500/20 text-gray-300 border-gray-400/30';
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric'
-    });
+  const getWorkModeLabel = (workMode: string) => {
+    switch (workMode) {
+      case 'remoto':
+        return 'Remote';
+      case 'ibrido':
+        return 'Hybrid';
+      case 'in-presenza':
+        return 'On-site';
+      default:
+        return 'N/A';
+    }
   };
 
   return (
-    <>
-      <div 
-        className={`bg-white backdrop-blur-md border shadow-lg transition-all duration-200 rounded-lg p-3 md:p-4 touch-manipulation select-none ${
-          isDragging 
-            ? 'shadow-2xl transform rotate-2 scale-105 cursor-grabbing border-blue-400 bg-white opacity-100' 
-            : 'cursor-grab hover:cursor-grab hover:shadow-xl border-white/40 bg-white/95'
-        }`}
-        style={{
-          transformOrigin: 'center center',
-          ...(isDragging && {
-            zIndex: 9999,
-            position: 'fixed',
-            width: '288px' // Fixed width (w-72 = 288px)
-          })
-        }}
-      >
-        {/* Header */}
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex-1 min-w-0 cursor-inherit">
-            <h4 className="font-semibold text-gray-900 truncate text-sm md:text-base cursor-inherit">
-              {application.companyName}
-            </h4>
-            <p className="text-xs md:text-sm text-gray-600 truncate cursor-inherit">
-              {application.roleDescription || 'No role specified'}
-            </p>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`
+        cursor-grab active:cursor-grabbing
+        ${isDragging ? 'opacity-50 scale-105 rotate-2 z-50' : 'hover:scale-102'}
+        transition-all duration-200
+      `}
+    >
+      <Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 hover:border-white/30 transition-all duration-200 shadow-lg">
+        <CardContent className="p-4 space-y-3">
+          {/* Header with company and delete button */}
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <Building2 className="w-4 h-4 text-white/70 flex-shrink-0" />
+              <h4 className="text-white font-semibold text-sm truncate">
+                {application.companyName}
+              </h4>
+            </div>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(application.id);
+              }}
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0 text-red-400 hover:text-red-300 hover:bg-red-500/20 flex-shrink-0"
+            >
+              <Trash2 className="w-3 h-3" />
+            </Button>
           </div>
-          <div className="flex items-center gap-1 flex-shrink-0 ml-2">
-            {(application.alerts && application.alerts.length > 0) && (
-              <div className="text-green-500" title="Alerts set">
-                <Bell className="w-3 h-3 md:w-3.5 md:h-3.5" />
+
+          {/* Role */}
+          <p className="text-white/80 text-sm font-medium line-clamp-2">
+            {application.roleDescription}
+          </p>
+
+          {/* Details */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-white/60 text-xs">
+              <Calendar className="w-3 h-3 flex-shrink-0" />
+              <span>{format(new Date(application.applicationDate), 'MMM dd, yyyy')}</span>
+            </div>
+
+            {application.salary && application.salary !== 'ND' && (
+              <div className="flex items-center gap-2 text-white/60 text-xs">
+                <DollarSign className="w-3 h-3 flex-shrink-0" />
+                <span>{application.salary}</span>
               </div>
             )}
-            <Button
-              onClick={handleDetailClick}
-              variant="ghost"
-              size="sm"
-              className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 h-5 w-5 md:h-6 md:w-6 p-0 touch-manipulation cursor-pointer"
-              title="View details"
-            >
-              <Eye className="w-2.5 h-2.5 md:w-3 md:h-3" />
-            </Button>
-            <Button
-              onClick={handleAlertsClick}
-              variant="ghost"
-              size="sm"
-              className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 h-5 w-5 md:h-6 md:w-6 p-0 touch-manipulation cursor-pointer"
-              title="Manage alerts"
-            >
-              <Settings className="w-2.5 h-2.5 md:w-3 md:h-3" />
-            </Button>
-            <Button
-              onClick={handleDelete}
-              variant="ghost"
-              size="sm"
-              className="text-red-500 hover:text-red-700 hover:bg-red-50 h-5 w-5 md:h-6 md:w-6 p-0 touch-manipulation cursor-pointer"
-            >
-              <Trash2 className="w-2.5 h-2.5 md:w-3 md:h-3" />
-            </Button>
-          </div>
-        </div>
 
-        {/* Details */}
-        <div className="space-y-1.5 md:space-y-2 cursor-inherit">
-          <div className="flex items-center gap-2 text-xs text-gray-600 cursor-inherit">
-            <Calendar className="w-2.5 h-2.5 md:w-3 md:h-3 flex-shrink-0" />
-            <span className="truncate">{formatDate(application.applicationDate)}</span>
-          </div>
-
-          {application.interviewDate && (
-            <div className="flex items-center gap-2 text-xs text-blue-600 cursor-inherit">
-              <Bell className="w-2.5 h-2.5 md:w-3 md:h-3 flex-shrink-0" />
-              <span className="truncate">Interview: {formatDate(application.interviewDate)}</span>
-            </div>
-          )}
-
-          {application.deadline && (
-            <div className="flex items-center gap-2 text-xs text-orange-600 cursor-inherit">
-              <Clock className="w-2.5 h-2.5 md:w-3 md:h-3 flex-shrink-0" />
-              <span className="truncate">Deadline: {formatDate(application.deadline)}</span>
-            </div>
-          )}
-
-          {application.salary && application.salary !== 'ND' && (
-            <div className="flex items-center gap-2 text-xs text-gray-600 cursor-inherit">
-              <DollarSign className="w-2.5 h-2.5 md:w-3 md:h-3 flex-shrink-0" />
-              <span className="truncate">{application.salary}</span>
-            </div>
-          )}
-
-          <div className="flex items-center gap-2 text-xs text-gray-600 cursor-inherit">
-            <MapPin className="w-2.5 h-2.5 md:w-3 md:h-3 flex-shrink-0" />
-            <span className="truncate">{getWorkModeIcon(application.workMode)} {application.workMode}</span>
-          </div>
-        </div>
-
-        {/* Status Badge */}
-        <div className="mt-2 md:mt-3 cursor-inherit">
-          <span className="inline-flex items-center px-2 py-0.5 md:py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-            {JOB_STATUS_LABELS[application.status]}
-          </span>
-        </div>
-
-        {/* Tags */}
-        {application.tags && application.tags.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-1 cursor-inherit">
-            {application.tags.slice(0, 2).map((tag, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center px-1.5 md:px-2 py-0.5 md:py-1 rounded text-xs bg-gray-100 text-gray-700 truncate max-w-20 md:max-w-24"
+            <div className="flex items-center gap-2 text-white/60 text-xs">
+              <MapPin className="w-3 h-3 flex-shrink-0" />
+              <Badge 
+                variant="outline" 
+                className={`text-xs px-2 py-0.5 border ${getWorkModeColor(application.workMode)}`}
               >
-                {tag}
-              </span>
-            ))}
-            {application.tags.length > 2 && (
-              <span className="text-xs text-gray-500">
-                +{application.tags.length - 2}
-              </span>
-            )}
+                {getWorkModeLabel(application.workMode)}
+              </Badge>
+            </div>
           </div>
-        )}
-      </div>
-
-      {/* Alerts Manager Modal */}
-      <AlertsManager
-        open={showAlerts}
-        onOpenChange={setShowAlerts}
-        application={application}
-        onSave={handleSaveAlerts}
-      />
-
-      {/* Delete Confirmation Modal */}
-      <DeleteConfirmationModal
-        open={showDeleteModal}
-        onOpenChange={setShowDeleteModal}
-        onConfirm={handleConfirmDelete}
-        itemName={application.companyName}
-        itemType="application"
-      />
-    </>
+        </CardContent>
+      </Card>
+    </div>
   );
 };

@@ -38,7 +38,7 @@ export const JobDetailsForm: React.FC<JobDetailsFormProps> = ({
       
       <div className="space-y-4">
         <div>
-          <Label htmlFor="companyName" className="text-white font-medium">Company Name *</Label>
+          <Label htmlFor="companyName" className="text-white font-medium text-sm sm:text-base">Company Name *</Label>
           <Input
             id="companyName"
             value={parsedData.companyName}
@@ -46,14 +46,14 @@ export const JobDetailsForm: React.FC<JobDetailsFormProps> = ({
               ...prev,
               companyName: e.target.value
             }))}
-            className="mt-1 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 focus-visible:ring-red-500 focus-visible:border-red-500"
+            className="mt-1 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 focus-visible:ring-red-500 focus-visible:border-red-500 text-sm sm:text-base h-10 sm:h-11"
             required
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="salary" className="text-white font-medium">Salary</Label>
+            <Label htmlFor="salary" className="text-white font-medium text-sm sm:text-base">Salary</Label>
             <Input
               id="salary"
               value={parsedData.salary}
@@ -61,13 +61,13 @@ export const JobDetailsForm: React.FC<JobDetailsFormProps> = ({
                 ...prev,
                 salary: e.target.value
               }))}
-              className="mt-1 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 focus-visible:ring-red-500 focus-visible:border-red-500"
+              className="mt-1 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 focus-visible:ring-red-500 focus-visible:border-red-500 text-sm sm:text-base h-10 sm:h-11"
               placeholder="e.g. 45k, ND"
             />
           </div>
 
           <div>
-            <Label htmlFor="workMode" className="text-white font-medium">Work Mode</Label>
+            <Label htmlFor="workMode" className="text-white font-medium text-sm sm:text-base">Work Mode</Label>
             <select
               id="workMode"
               value={parsedData.workMode}
@@ -75,7 +75,7 @@ export const JobDetailsForm: React.FC<JobDetailsFormProps> = ({
                 ...prev,
                 workMode: e.target.value as 'remoto' | 'ibrido' | 'in-presenza' | 'ND'
               }))}
-              className="mt-1 w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-white/10 backdrop-blur-md text-white"
+              className="mt-1 w-full px-3 py-2 sm:py-3 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-white/10 backdrop-blur-md text-white text-sm sm:text-base h-10 sm:h-11"
             >
               <option value="ND" className="bg-gray-800 text-white">Not specified</option>
               <option value="remoto" className="bg-gray-800 text-white">Remote</option>
@@ -86,12 +86,12 @@ export const JobDetailsForm: React.FC<JobDetailsFormProps> = ({
         </div>
 
         <div>
-          <Label htmlFor="status" className="text-white font-medium">Application Status</Label>
+          <Label htmlFor="status" className="text-white font-medium text-sm sm:text-base">Application Status</Label>
           <select
             id="status"
             value={status}
             onChange={(e) => setStatus(e.target.value as JobStatus)}
-            className="mt-1 w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-white/10 backdrop-blur-md text-white"
+            className="mt-1 w-full px-3 py-2 sm:py-3 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-white/10 backdrop-blur-md text-white text-sm sm:text-base h-10 sm:h-11"
           >
             <option value="in-corso" className="bg-gray-800 text-white">In progress</option>
             <option value="primo-colloquio" className="bg-gray-800 text-white">First interview</option>
@@ -106,7 +106,7 @@ export const JobDetailsForm: React.FC<JobDetailsFormProps> = ({
         </div>
 
         <div>
-          <Label htmlFor="roleDescription" className="text-white font-medium">Role Description</Label>
+          <Label htmlFor="roleDescription" className="text-white font-medium text-sm sm:text-base">Role Description</Label>
           <Textarea
             id="roleDescription"
             value={parsedData.roleDescription}
@@ -114,7 +114,7 @@ export const JobDetailsForm: React.FC<JobDetailsFormProps> = ({
               ...prev,
               roleDescription: e.target.value
             }))}
-            className="mt-1 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 resize-none focus-visible:ring-red-500 focus-visible:border-red-500"
+            className="mt-1 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 resize-none focus-visible:ring-red-500 focus-visible:border-red-500 text-sm sm:text-base"
             rows={3}
           />
         </div>
