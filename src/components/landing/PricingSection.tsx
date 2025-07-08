@@ -69,6 +69,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                   </li>
                 ))}
               </ul>
+              <Button 
+                onClick={onGetStarted}
+                className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 transition-all duration-300"
+                variant="outline"
+              >
+                Start for free
+              </Button>
             </CardContent>
           </Card>
 
@@ -95,6 +102,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                   </li>
                 ))}
               </ul>
+              <Button 
+                onClick={onGetStarted}
+                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold transition-all duration-300"
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                Get pro now
+              </Button>
             </CardContent>
           </Card>
         </div>
