@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, List, Grid3X3, LayoutBoard, Crown } from 'lucide-react';
+import { Search, List, Grid3X3, Layout, Crown } from 'lucide-react';
 import { JOB_STATUS_LABELS } from '@/types/job';
 import { useSubscription } from '@/hooks/useSubscription';
 
@@ -96,7 +96,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
                   : 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
               } relative`}
             >
-              <LayoutBoard className="w-4 h-4" />
+              <Layout className="w-4 h-4" />
               <span className="hidden sm:inline ml-2">Kanban</span>
               {!subscribed && (
                 <Crown className="w-3 h-3 absolute -top-1 -right-1 text-yellow-400" />
