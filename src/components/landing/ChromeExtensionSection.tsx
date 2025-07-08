@@ -90,7 +90,7 @@ export const ChromeExtensionSection: React.FC = () => {
               <CardContent className="p-0">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-green-500 rounded-2xl mb-6">
-                    <Chrome className="w-10 h-10 text-white" />
+                    <img src="" />
                   </div>
                   <h4 className="text-2xl font-bold text-white mb-4">
                     TrackZilla Extension
