@@ -41,14 +41,14 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         </div>
         
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* ProZilla button - only show if not subscribed */}
-          {user && !subscribed && (
+          {/* ProZilla button - only show if not subscribed and not on pro page */}
+          {user && !subscribed && activeTab !== 'pro' && (
             <Button
               onClick={handleProClick}
               className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-300 text-white shadow-lg hover:shadow-xl hover:scale-105 rounded-xl px-2 sm:px-3 lg:px-4 flex-shrink-0 text-xs sm:text-sm"
             >
               <Crown className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-              <span className="hidden xs:inline sm:hidden lg:inline">Diventa ProZilla</span>
+              <span className="hidden xs:inline sm:hidden lg:inline">Become ProZilla</span>
               <span className="xs:hidden sm:inline lg:hidden">ProZilla</span>
             </Button>
           )}

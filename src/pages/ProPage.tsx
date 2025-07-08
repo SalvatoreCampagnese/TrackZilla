@@ -18,8 +18,8 @@ const ProPage = () => {
   const handleUpgrade = async () => {
     if (!user) {
       toast({
-        title: "Accesso richiesto",
-        description: "Devi effettuare l'accesso per procedere con l'upgrade.",
+        title: "Login required",
+        description: "You need to log in to proceed with the upgrade.",
         variant: "destructive",
       });
       return;
@@ -41,8 +41,8 @@ const ProPage = () => {
     } catch (error) {
       console.error('Error creating checkout:', error);
       toast({
-        title: "Errore",
-        description: "Si è verificato un errore durante l'avvio del checkout. Riprova.",
+        title: "Error",
+        description: "An error occurred while starting the checkout. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -64,8 +64,8 @@ const ProPage = () => {
     } catch (error) {
       console.error('Error opening customer portal:', error);
       toast({
-        title: "Errore",
-        description: "Impossibile aprire il portale di gestione.",
+        title: "Error",
+        description: "Unable to open the management portal.",
         variant: "destructive",
       });
     }
@@ -74,37 +74,37 @@ const ProPage = () => {
   const features = {
     pro: [{
       icon: <Infinity className="w-5 h-5" />,
-      title: "Candidature illimitate",
-      description: "Tieni traccia di tutte le tue application senza limiti"
+      title: "Unlimited applications",
+      description: "Track all your job applications without limits"
     }, {
       icon: <Kanban className="w-5 h-5" />,
-      title: "Vista Kanban completa",
-      description: "Organizza le tue candidature con drag & drop"
+      title: "Full Kanban view",
+      description: "Organize your applications with drag & drop"
     }, {
       icon: <Eye className="w-5 h-5" />,
-      title: "Domande interview in anticipo",
-      description: "Preparati al meglio per i colloqui"
+      title: "Interview questions in advance",
+      description: "Prepare better for your interviews"
     }, {
       icon: <Zap className="w-5 h-5" />,
-      title: "Risorse consigliate",
-      description: "Accesso esclusivo a contenuti premium"
+      title: "Recommended resources",
+      description: "Exclusive access to premium content"
     }],
     free: [{
       icon: <X className="w-5 h-5 text-red-500" />,
-      title: "Limite 50 candidature",
-      description: "Tracciamento limitato delle application"
+      title: "50 applications limit",
+      description: "Limited application tracking"
     }, {
       icon: <X className="w-5 h-5 text-red-500" />,
-      title: "Vista Kanban bloccata",
-      description: "Solo vista lista disponibile"
+      title: "Kanban view locked",
+      description: "Only list view available"
     }, {
       icon: <X className="w-5 h-5 text-red-500" />,
-      title: "Domande nascoste",
-      description: "Nessuna preparazione anticipata"
+      title: "Questions hidden",
+      description: "No advance preparation"
     }, {
       icon: <X className="w-5 h-5 text-red-500" />,
-      title: "Nessuna risorsa premium",
-      description: "Contenuti base solamente"
+      title: "No premium resources",
+      description: "Basic content only"
     }]
   };
 
@@ -113,7 +113,7 @@ const ProPage = () => {
       <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-500 mx-auto"></div>
-          <p className="mt-4 text-white">Caricamento stato abbonamento...</p>
+          <p className="mt-4 text-white">Loading subscription status...</p>
         </div>
       </div>
     );
@@ -128,14 +128,14 @@ const ProPage = () => {
             <CardHeader className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <CheckCircle className="w-8 h-8 text-green-400" />
-                <h2 className="text-2xl font-bold text-white">Abbonamento Attivo</h2>
+                <h2 className="text-2xl font-bold text-white">Active Subscription</h2>
               </div>
               <Badge className="bg-green-500 text-white">
-                {subscription_tier} - Attivo
+                {subscription_tier} - Active
               </Badge>
               {subscription_end && (
                 <p className="text-green-100 mt-2">
-                  Rinnovo: {new Date(subscription_end).toLocaleDateString('it-IT')}
+                  Renewal: {new Date(subscription_end).toLocaleDateString('en-US')}
                 </p>
               )}
             </CardHeader>
@@ -145,7 +145,7 @@ const ProPage = () => {
                 className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
                 variant="outline"
               >
-                Gestisci Abbonamento
+                Manage Subscription
               </Button>
             </CardContent>
           </Card>
@@ -162,8 +162,8 @@ const ProPage = () => {
         </div>
         <p className="text-xl text-white/80 max-w-2xl mx-auto">
           {subscribed 
-            ? "Stai sfruttando tutto il potenziale del tuo job tracking!"
-            : "Sblocca tutto il potenziale del tuo job tracking. Gestisci infinite candidature con strumenti professionali."
+            ? "You're using the full potential of your job tracking!"
+            : "Unlock the full potential of your job tracking. Manage unlimited applications with professional tools."
           }
         </p>
       </div>
@@ -175,10 +175,10 @@ const ProPage = () => {
           <CardHeader className="text-center pb-8">
             <CardTitle className="text-2xl font-bold text-white/90">Free</CardTitle>
             <div className="text-4xl font-bold text-white mt-4">
-              €0<span className="text-lg font-normal text-white/70">/mese</span>
+              €0<span className="text-lg font-normal text-white/70">/month</span>
             </div>
             <Badge variant="secondary" className="mt-2 bg-white/20 text-white">
-              {!subscribed ? "Attuale" : "Piano Base"}
+              {!subscribed ? "Current" : "Basic Plan"}
             </Badge>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -206,7 +206,7 @@ const ProPage = () => {
                 ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
                 : 'bg-gradient-to-r from-red-500 to-red-600 text-white'
             }`}>
-              {subscribed ? '✅ Attivo' : '🚀 Consigliato'}
+              {subscribed ? '✅ Active' : '🚀 Recommended'}
             </Badge>
           </div>
           <CardHeader className={`text-center pb-8 text-white rounded-t-lg ${
@@ -219,10 +219,10 @@ const ProPage = () => {
               <CardTitle className="text-2xl font-bold">ProZilla</CardTitle>
             </div>
             <div className="text-4xl font-bold mt-4">
-              €4.79<span className="text-lg font-normal opacity-80">/mese</span>
+              €4.79<span className="text-lg font-normal opacity-80">/month</span>
             </div>
             <p className={`mt-2 ${subscribed ? 'text-green-100' : 'text-red-100'}`}>
-              Tutto incluso
+              Everything included
             </p>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
@@ -246,7 +246,7 @@ const ProPage = () => {
                   size="lg"
                 >
                   <Crown className="w-5 h-5 mr-2" />
-                  Gestisci Abbonamento
+                  Manage Subscription
                 </Button>
               ) : (
                 <Button 
@@ -256,7 +256,7 @@ const ProPage = () => {
                   size="lg"
                 >
                   <Crown className="w-5 h-5 mr-2" />
-                  {isLoading ? "Caricamento..." : "Diventa ProZilla Ora"}
+                  {isLoading ? "Loading..." : "Become ProZilla Now"}
                 </Button>
               )}
             </div>
@@ -267,14 +267,14 @@ const ProPage = () => {
       {/* Feature Comparison */}
       <Card className="mb-8 bg-white/10 backdrop-blur-md border-white/20">
         <CardHeader>
-          <CardTitle className="text-center text-2xl text-white">Confronto Dettagliato</CardTitle>
+          <CardTitle className="text-center text-2xl text-white">Detailed Comparison</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/20">
-                  <th className="text-left py-4 px-4 text-white">Funzionalità</th>
+                  <th className="text-left py-4 px-4 text-white">Features</th>
                   <th className="text-center py-4 px-4 text-white">Free</th>
                   <th className="text-center py-4 px-4">
                     <div className="flex items-center justify-center gap-2 text-white">
@@ -286,12 +286,12 @@ const ProPage = () => {
               </thead>
               <tbody>
                 <tr className="border-b border-white/20">
-                  <td className="py-4 px-4 font-medium text-white">Numero candidature</td>
+                  <td className="py-4 px-4 font-medium text-white">Number of applications</td>
                   <td className="text-center py-4 px-4 text-white/70">50 max</td>
-                  <td className="text-center py-4 px-4 text-green-400 font-semibold">Illimitate</td>
+                  <td className="text-center py-4 px-4 text-green-400 font-semibold">Unlimited</td>
                 </tr>
                 <tr className="border-b border-white/20">
-                  <td className="py-4 px-4 font-medium text-white">Vista Kanban</td>
+                  <td className="py-4 px-4 font-medium text-white">Kanban view</td>
                   <td className="text-center py-4 px-4">
                     <X className="w-5 h-5 text-red-500 mx-auto" />
                   </td>
@@ -300,7 +300,7 @@ const ProPage = () => {
                   </td>
                 </tr>
                 <tr className="border-b border-white/20">
-                  <td className="py-4 px-4 font-medium text-white">Domande interview</td>
+                  <td className="py-4 px-4 font-medium text-white">Interview questions</td>
                   <td className="text-center py-4 px-4">
                     <X className="w-5 h-5 text-red-500 mx-auto" />
                   </td>
@@ -309,7 +309,7 @@ const ProPage = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-4 font-medium text-white">Risorse premium</td>
+                  <td className="py-4 px-4 font-medium text-white">Premium resources</td>
                   <td className="text-center py-4 px-4">
                     <X className="w-5 h-5 text-red-500 mx-auto" />
                   </td>
