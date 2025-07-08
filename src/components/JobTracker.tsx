@@ -17,6 +17,7 @@ import { SettingsModal } from './SettingsModal';
 import { AddApplicationModal } from './AddApplicationModal';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import ProPage from '@/pages/ProPage';
 
 export const JobTracker = () => {
   const { user } = useAuth();
@@ -76,8 +77,25 @@ export const JobTracker = () => {
   };
 
   const handleProClick = () => {
-    navigate('/pro');
+    setActiveTab('pro');
   };
+
+  const handleAddApplication = () => {
+    // Check if user has reached the 50 application limit for free users
+    if (!subscribed && applications.length >= 50) {
+      toast({
+        title: "Application limit reached",
+        description: "Free users can only track up to 50 applications. Upgrade to Pro for unlimited tracking.",
+        variant: "destructive",
+      });
+      handleProClick();
+      return;
+    }
+    setShowAddApplication(true);
+  };
+
+  // Check if add button should be disabled
+  const canAddApplication = subscribed || applications.length < 50;
 
   // Filter and sort applications
   const filteredApplications = applications.filter(app => {
@@ -127,7 +145,9 @@ export const JobTracker = () => {
           <div className="flex flex-col h-full">
             <DashboardHeader 
               activeTab={activeTab}
-              onAddApplication={() => setShowAddApplication(true)}
+              onAddApplication={handleAddApplication}
+              onProClick={handleProClick}
+              canAddApplication={canAddApplication}
             />
             
             <div className="flex-1 p-2 sm:p-3 md:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6 overflow-auto">
@@ -147,6 +167,7 @@ export const JobTracker = () => {
                       onFilterStatusChange={setFilterStatus}
                       searchTerm={searchTerm}
                       onSearchTermChange={setSearchTerm}
+                      onProClick={handleProClick}
                     />
                   </div>
 
@@ -177,6 +198,12 @@ export const JobTracker = () => {
               {activeTab === 'subscription' && (
                 <div className="w-full">
                   <SubscriptionContent />
+                </div>
+              )}
+
+              {activeTab === 'pro' && (
+                <div className="w-full">
+                  <ProPage />
                 </div>
               )}
             </div>
