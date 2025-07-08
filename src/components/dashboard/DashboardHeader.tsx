@@ -5,25 +5,27 @@ import { Button } from '@/components/ui/button';
 import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
-import { useNavigate } from 'react-router-dom';
 
 interface DashboardHeaderProps {
   activeTab: string;
   onAddApplication: () => void;
+  onProClick?: () => void;
 }
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   activeTab,
-  onAddApplication
+  onAddApplication,
+  onProClick
 }) => {
   const { state } = useSidebar();
   const { user } = useAuth();
   const { subscribed } = useSubscription();
-  const navigate = useNavigate();
   const isCollapsed = state === 'collapsed';
 
   const handleProClick = () => {
-    navigate('/pro');
+    if (onProClick) {
+      onProClick();
+    }
   };
 
   return (

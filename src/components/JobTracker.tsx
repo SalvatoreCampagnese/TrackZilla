@@ -17,6 +17,7 @@ import { SettingsModal } from './SettingsModal';
 import { AddApplicationModal } from './AddApplicationModal';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import ProPage from '@/pages/ProPage';
 
 export const JobTracker = () => {
   const { user } = useAuth();
@@ -76,7 +77,7 @@ export const JobTracker = () => {
   };
 
   const handleProClick = () => {
-    navigate('/pro');
+    setActiveTab('pro');
   };
 
   // Filter and sort applications
@@ -128,6 +129,7 @@ export const JobTracker = () => {
             <DashboardHeader 
               activeTab={activeTab}
               onAddApplication={() => setShowAddApplication(true)}
+              onProClick={handleProClick}
             />
             
             <div className="flex-1 p-2 sm:p-3 md:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6 overflow-auto">
@@ -177,6 +179,12 @@ export const JobTracker = () => {
               {activeTab === 'subscription' && (
                 <div className="w-full">
                   <SubscriptionContent />
+                </div>
+              )}
+
+              {activeTab === 'pro' && (
+                <div className="w-full">
+                  <ProPage />
                 </div>
               )}
             </div>
