@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useLanguage } from '@/hooks/useLanguage';
+import { Languages } from 'lucide-react';
 
 interface SettingsModalProps {
   open: boolean;
@@ -20,6 +23,7 @@ interface UserProfile {
 }
 
 export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
+  const { t, currentLanguage, changeLanguage, loading: languageLoading } = useLanguage();
   const [ghostingDays, setGhostingDays] = useState(14);
   const [savedGhostingDays, setSavedGhostingDays] = useState(14);
   
@@ -79,15 +83,49 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
       <DialogContent className="sm:max-w-md bg-card border-gray-700 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-foreground">
-            Settings
+            {t('settings.title')}
           </DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
+          {/* Language Settings */}
+          <Card className="bg-gradient-to-br from-card to-gray-800/50 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-base text-foreground flex items-center gap-2">
+                <Languages className="w-4 h-4" />
+                {t('settings.language')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <Label htmlFor="language-select" className="text-foreground">
+                  {t('settings.selectLanguage')}
+                </Label>
+                <Select 
+                  value={currentLanguage} 
+                  onValueChange={(value: 'it' | 'en') => changeLanguage(value)}
+                  disabled={languageLoading}
+                >
+                  <SelectTrigger id="language-select" className="bg-background border-gray-600 text-foreground">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border-gray-600">
+                    <SelectItem value="it" className="text-foreground">
+                      🇮🇹 {t('settings.italian')}
+                    </SelectItem>
+                    <SelectItem value="en" className="text-foreground">
+                      🇬🇧 {t('settings.english')}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Personal Information */}
           <Card className="bg-gradient-to-br from-card to-gray-800/50 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-base text-foreground">Personal Information</CardTitle>
+              <CardTitle className="text-base text-foreground">{t('settings.general')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -193,13 +231,13 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
             onClick={() => onOpenChange(false)}
             className="border-gray-600 hover:bg-accent"
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button 
             onClick={handleSave}
             className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
           >
-            Save Settings
+            {t('common.save')} {t('common.settings')}
           </Button>
         </div>
       </DialogContent>

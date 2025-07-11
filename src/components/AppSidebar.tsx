@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BarChart3, FileText, CreditCard, Settings, LogOut, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter } from '@/components/ui/sidebar';
@@ -21,25 +21,26 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   onSettingsClick,
   onProClick
 }) => {
+  const { t } = useTranslation();
   const { user, signOut } = useAuth();
   const { subscribed } = useSubscription();
 
   const menuItems = [
     {
       id: 'applications',
-      title: 'Applications',
+      title: t('dashboard.applications'),
       icon: FileText,
       onClick: () => onTabChange('applications')
     },
     {
       id: 'statistics',
-      title: 'Statistics',
+      title: t('dashboard.statistics'),
       icon: BarChart3,
       onClick: () => onTabChange('statistics')
     },
     {
       id: 'subscription',
-      title: 'Subscription',
+      title: t('dashboard.subscription'),
       icon: CreditCard,
       onClick: () => onTabChange('subscription')
     }
@@ -49,33 +50,28 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   if (subscribed) {
     menuItems.push({
       id: 'pro',
-      title: 'Pro Features',
+      title: t('dashboard.pro'),
       icon: Plus,
       onClick: () => onTabChange('pro')
     });
   }
 
+  const getUserInitials = (email: string) => {
+    return email.split('@')[0].substring(0, 2).toUpperCase();
+  };
+
   return (
-    <Sidebar className="border-r border-white/10 bg-black/20 backdrop-blur-xl">
-      <SidebarHeader className="p-4 border-b border-white/10">
+    <Sidebar className="border-r border-white/10 bg-gradient-to-b from-gray-900 to-black">
+      <SidebarHeader className="border-b border-white/10 p-4">
         <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10 bg-gradient-to-r from-purple-500 to-pink-500">
-            <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold">
-              {user?.email?.charAt(0).toUpperCase() || 'U'}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">
-              {user?.email}
-            </p>
-            <div className="flex items-center gap-2 mt-1">
-              <Badge className={subscribed 
-                ? "bg-green-500/20 text-green-400 border-green-500/30" 
-                : "bg-gray-500/20 text-gray-400 border-gray-500/30"
-              }>
-                {subscribed ? 'ProZilla' : 'Free'}
-              </Badge>
-            </div>
+          <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">TZ</span>
+          </div>
+          <div>
+            <h2 className="text-white font-semibold text-sm">TrackZilla</h2>
+            {subscribed && (
+              <Badge className="bg-yellow-500/20 text-yellow-400 text-xs">PRO</Badge>
+            )}
           </div>
         </div>
       </SidebarHeader>
@@ -83,18 +79,19 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       <SidebarContent className="p-2">
         <SidebarGroup>
           <SidebarGroupLabel className="text-white/70 text-xs uppercase tracking-wider px-2 mb-2">
-            Navigation
+            {t('dashboard.title')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
+            <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
                     onClick={item.onClick}
-                    className={`w-full justify-start text-left transition-all duration-200 rounded-xl ${
+                    isActive={activeTab === item.id}
+                    className={`w-full justify-start transition-colors ${
                       activeTab === item.id
-                        ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30 shadow-lg'
-                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                        ? 'bg-white/10 text-white'
+                        : 'text-white/70 hover:text-white hover:bg-white/5'
                     }`}
                   >
                     <item.icon className="mr-3 h-4 w-4" />
@@ -107,25 +104,37 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-white/10">
-        <div className="space-y-2">
-          <Button
-            onClick={onSettingsClick}
-            variant="ghost"
-            className="w-full justify-start text-white/70 hover:text-white hover:bg-white/10 rounded-xl"
-          >
-            <Settings className="mr-3 h-4 w-4" />
-            Settings
-          </Button>
-          <Button
-            onClick={signOut}
-            variant="ghost"
-            className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl"
-          >
-            <LogOut className="mr-3 h-4 w-4" />
-            Sign Out
-          </Button>
+      <SidebarFooter className="border-t border-white/10 p-2 space-y-2">
+        <div className="flex items-center gap-3 px-2 py-1">
+          <Avatar className="h-6 w-6">
+            <AvatarFallback className="bg-white/10 text-white text-xs">
+              {user?.email ? getUserInitials(user.email) : 'U'}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-white/90 truncate">{user?.email}</p>
+          </div>
         </div>
+        
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onSettingsClick}
+          className="w-full justify-start text-white/70 hover:text-white hover:bg-white/5"
+        >
+          <Settings className="mr-3 h-4 w-4" />
+          {t('common.settings')}
+        </Button>
+        
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={signOut}
+          className="w-full justify-start text-white/70 hover:text-white hover:bg-white/5"
+        >
+          <LogOut className="mr-3 h-4 w-4" />
+          {t('common.logout')}
+        </Button>
       </SidebarFooter>
     </Sidebar>
   );
