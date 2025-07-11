@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
@@ -12,8 +13,12 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1 animate-slide-up">
-            <div className="card-modern p-4 rounded-3xl">
-              <img alt="Illustration of two monsters facing off, symbolising the challenges and obstacles in the job search process." className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl hover:scale-105 transition-transform duration-500" src="/lovable-uploads/f61d87db-5687-49cc-b7d3-0c015efe390f.png" />
+            <div className="card-modern p-4 rounded-3xl overflow-hidden">
+              <img 
+                alt="Illustration of two monsters facing off, symbolising the challenges and obstacles in the job search process." 
+                className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl transition-all duration-500 hover:object-cover hover:rounded-2xl hover:scale-110" 
+                src="/lovable-uploads/f61d87db-5687-49cc-b7d3-0c015efe390f.png" 
+              />
             </div>
           </div>
           
