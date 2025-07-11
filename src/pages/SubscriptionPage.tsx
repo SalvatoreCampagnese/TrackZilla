@@ -32,6 +32,7 @@ const SubscriptionPage = () => {
 
   // Force language update when component mounts or language changes
   useEffect(() => {
+    console.log(currentLanguage)
     if (currentLanguage && i18n.language !== currentLanguage) {
       i18n.changeLanguage(currentLanguage);
     }
