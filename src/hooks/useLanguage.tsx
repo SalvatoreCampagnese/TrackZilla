@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './useAuth';
@@ -8,14 +9,22 @@ export const useLanguage = () => {
   const { i18n, t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Load user's language preference from profile
   useEffect(() => {
     const loadUserLanguage = async () => {
-      if (!user) return;
+      console.log('Loading user language for user:', user?.id);
+      
+      if (!user) {
+        console.log('No user found, setting loading to false');
+        setLoading(false);
+        return;
+      }
 
       try {
+        setLoading(true);
+        
         const { data: profile, error } = await supabase
           .from('user_profiles')
           .select('language_preference')
@@ -24,14 +33,21 @@ export const useLanguage = () => {
 
         if (error && error.code !== 'PGRST116') {
           console.error('Error loading language preference:', error);
+          setLoading(false);
           return;
         }
 
-        if (profile?.language_preference) {
-          await i18n.changeLanguage(profile.language_preference);
+        const languagePreference = profile?.language_preference || 'en';
+        console.log('Found language preference:', languagePreference);
+        
+        if (languagePreference && i18n.language !== languagePreference) {
+          console.log('Changing language from', i18n.language, 'to', languagePreference);
+          await i18n.changeLanguage(languagePreference);
         }
       } catch (error) {
         console.error('Error loading user language:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
