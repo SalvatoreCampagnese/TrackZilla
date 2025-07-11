@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { BarChart3, FileText, CreditCard, Settings, LogOut, Plus } from 'lucide-react';
@@ -23,7 +24,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 }) => {
   const { t } = useTranslation();
   const { user, signOut } = useAuth();
-  const { subscribed } = useSubscription();
+  const { subscribed, subscription_tier } = useSubscription();
 
   const menuItems = [
     {
@@ -63,14 +64,38 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   return (
     <Sidebar className="border-r border-white/10 bg-gradient-to-b from-gray-900 to-black">
       <SidebarHeader className="border-b border-white/10 p-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">TZ</span>
           </div>
           <div>
             <h2 className="text-white font-semibold text-sm">TrackZilla</h2>
+          </div>
+        </div>
+
+        {/* User Information - Moved to top */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback className="bg-white/10 text-white text-xs">
+                {user?.email ? getUserInitials(user.email) : 'U'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-white/90 truncate">{user?.email}</p>
+            </div>
+          </div>
+          
+          {/* Subscription Status - Right below user */}
+          <div className="flex items-center gap-2">
+            <Badge className={subscribed 
+              ? "bg-green-500/20 text-green-400 text-xs" 
+              : "bg-gray-500/20 text-gray-400 text-xs"
+            }>
+              {subscribed ? subscription_tier || 'PRO' : 'FREE'}
+            </Badge>
             {subscribed && (
-              <Badge className="bg-yellow-500/20 text-yellow-400 text-xs">PRO</Badge>
+              <Badge className="bg-yellow-500/20 text-yellow-400 text-xs">ATTIVO</Badge>
             )}
           </div>
         </div>
@@ -105,17 +130,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </SidebarContent>
 
       <SidebarFooter className="border-t border-white/10 p-2 space-y-2">
-        <div className="flex items-center gap-3 px-2 py-1">
-          <Avatar className="h-6 w-6">
-            <AvatarFallback className="bg-white/10 text-white text-xs">
-              {user?.email ? getUserInitials(user.email) : 'U'}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs text-white/90 truncate">{user?.email}</p>
-          </div>
-        </div>
-        
         <Button
           variant="ghost"
           size="sm"
