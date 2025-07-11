@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { Crown, CreditCard, Mail, AlertTriangle, ExternalLink, RefreshCw } from 'lucide-react';
@@ -15,6 +16,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const SubscriptionPage = () => {
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
   const { subscribed, subscription_tier, subscription_end, loading: subscriptionLoading, checkSubscription } = useSubscription();
@@ -32,8 +34,8 @@ const SubscriptionPage = () => {
     await checkSubscription();
     setIsRefreshing(false);
     toast({
-      title: "Subscription Status Updated",
-      description: "Subscription information has been updated.",
+      title: t('subscription.subscriptionUpdated'),
+      description: t('subscription.subscriptionUpdatedDescription'),
     });
   };
 
@@ -51,8 +53,8 @@ const SubscriptionPage = () => {
     } catch (error) {
       console.error('Error opening customer portal:', error);
       toast({
-        title: "Error",
-        description: "Unable to open customer portal.",
+        title: t('common.error'),
+        description: t('subscription.errorOpeningPortal'),
         variant: "destructive",
       });
     }
@@ -61,8 +63,8 @@ const SubscriptionPage = () => {
   const handleSendSupportEmail = async () => {
     if (!supportForm.subject.trim() || !supportForm.message.trim()) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields.",
+        title: t('common.error'),
+        description: t('subscription.fillAllFields'),
         variant: "destructive",
       });
       return;
@@ -81,14 +83,14 @@ const SubscriptionPage = () => {
       setSupportForm({ subject: '', message: '', email: user?.email || '' });
       
       toast({
-        title: "Email Prepared",
-        description: "The email has been prepared in your mail client.",
+        title: t('subscription.emailPrepared'),
+        description: t('subscription.emailPreparedDescription'),
       });
     } catch (error) {
       console.error('Error preparing support email:', error);
       toast({
-        title: "Error",
-        description: "Error preparing email.",
+        title: t('common.error'),
+        description: t('subscription.errorPreparingEmail'),
         variant: "destructive",
       });
     } finally {
@@ -101,7 +103,7 @@ const SubscriptionPage = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-500 mx-auto"></div>
-          <p className="mt-4 text-white">Loading subscription status...</p>
+          <p className="mt-4 text-white">{t('subscription.loadingSubscription')}</p>
         </div>
       </div>
     );
@@ -114,7 +116,7 @@ const SubscriptionPage = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <Crown className="w-8 h-8 text-red-500" />
-            <h1 className="text-3xl font-bold text-white">Subscription Management</h1>
+            <h1 className="text-3xl font-bold text-white">{t('subscription.title')}</h1>
           </div>
           <Button 
             onClick={handleRefreshSubscription}
@@ -123,7 +125,7 @@ const SubscriptionPage = () => {
             className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
           >
             <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-            Refresh
+            {t('common.refresh')}
           </Button>
         </div>
 
@@ -132,34 +134,34 @@ const SubscriptionPage = () => {
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
-              Subscription Status
+              {t('subscription.status')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <p className="text-white/70 mb-2">Current Plan</p>
+                <p className="text-white/70 mb-2">{t('subscription.currentPlan')}</p>
                 <div className="flex items-center gap-2">
                   <Badge className={subscribed 
                     ? "bg-green-500 text-white" 
                     : "bg-gray-500 text-white"
                   }>
-                    {subscribed ? subscription_tier || 'ProZilla' : 'Free'}
+                    {subscribed ? (subscription_tier || 'ProZilla') : 'Free'}
                   </Badge>
                   {subscribed && <Crown className="w-4 h-4 text-yellow-400" />}
                 </div>
               </div>
               <div>
-                <p className="text-white/70 mb-2">Status</p>
+                <p className="text-white/70 mb-2">{t('subscription.status')}</p>
                 <Badge variant={subscribed ? "default" : "secondary"}>
-                  {subscribed ? 'Active' : 'Inactive'}
+                  {subscribed ? t('subscription.active') : t('subscription.inactive')}
                 </Badge>
               </div>
               {subscription_end && (
                 <div className="md:col-span-2">
-                  <p className="text-white/70 mb-2">Next Renewal</p>
+                  <p className="text-white/70 mb-2">{t('subscription.nextRenewal')}</p>
                   <p className="text-white">
-                    {new Date(subscription_end).toLocaleDateString('en-US', {
+                    {new Date(subscription_end).toLocaleDateString(i18n.language === 'it' ? 'it-IT' : 'en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
@@ -176,10 +178,10 @@ const SubscriptionPage = () => {
                   className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  Manage with Stripe
+                  {t('subscription.manageWithStripe')}
                 </Button>
                 <p className="text-sm text-white/60 mt-2">
-                  Opens Stripe portal to manage payments, invoices and cancellation
+                  {t('subscription.manageDescription')}
                 </p>
               </div>
             )}
@@ -189,13 +191,13 @@ const SubscriptionPage = () => {
         {/* Transaction History Placeholder */}
         <Card className="mb-8 bg-white/10 backdrop-blur-md border-white/20">
           <CardHeader>
-            <CardTitle className="text-white">Transaction History</CardTitle>
+            <CardTitle className="text-white">{t('subscription.transactionHistory')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center py-8">
               <CreditCard className="w-12 h-12 text-white/40 mx-auto mb-4" />
               <p className="text-white/70 mb-4">
-                To view complete transaction history and download invoices
+                {t('subscription.transactionHistoryDescription')}
               </p>
               <Button 
                 onClick={handleManageSubscription}
@@ -203,7 +205,7 @@ const SubscriptionPage = () => {
                 className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Open Stripe Portal
+                {t('subscription.openStripePortal')}
               </Button>
             </div>
           </CardContent>
@@ -214,35 +216,35 @@ const SubscriptionPage = () => {
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Mail className="w-5 h-5" />
-              Support & Claims
+              {t('subscription.supportAndClaims')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <Alert className="mb-6 bg-yellow-500/10 border-yellow-500/20">
               <AlertTriangle className="h-4 w-4 text-yellow-500" />
               <AlertDescription className="text-yellow-100">
-                <strong>Response time:</strong> We respond to all claims and refund requests within 72 business hours.
+                {t('subscription.responseTime')}
               </AlertDescription>
             </Alert>
             
             <p className="text-white/70 mb-6">
-              Having issues with your subscription or need a refund? Contact us directly.
+              {t('subscription.supportDescription')}
             </p>
             
             <Dialog open={supportDialogOpen} onOpenChange={setSupportDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
                   <Mail className="w-4 h-4 mr-2" />
-                  Contact Support
+                  {t('subscription.contactSupport')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="bg-gray-800 border-white/20 text-white">
                 <DialogHeader>
-                  <DialogTitle>Contact Support</DialogTitle>
+                  <DialogTitle>{t('subscription.contactSupport')}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="email">Your Email</Label>
+                    <Label htmlFor="email">{t('subscription.yourEmail')}</Label>
                     <Input 
                       id="email"
                       value={supportForm.email}
@@ -252,22 +254,22 @@ const SubscriptionPage = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="subject">Subject *</Label>
+                    <Label htmlFor="subject">{t('subscription.subject')} *</Label>
                     <Input 
                       id="subject"
                       value={supportForm.subject}
                       onChange={(e) => setSupportForm({...supportForm, subject: e.target.value})}
-                      placeholder="e.g. Subscription refund request"
+                      placeholder={t('subscription.subjectPlaceholder')}
                       className="bg-white/10 border-white/20 text-white"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="message">Message *</Label>
+                    <Label htmlFor="message">{t('subscription.message')} *</Label>
                     <Textarea 
                       id="message"
                       value={supportForm.message}
                       onChange={(e) => setSupportForm({...supportForm, message: e.target.value})}
-                      placeholder="Describe your problem or request in detail..."
+                      placeholder={t('subscription.messagePlaceholder')}
                       className="bg-white/10 border-white/20 text-white min-h-[120px]"
                     />
                   </div>
@@ -277,14 +279,14 @@ const SubscriptionPage = () => {
                       disabled={isSendingSupport}
                       className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                     >
-                      {isSendingSupport ? "Preparing..." : "Send Email"}
+                      {isSendingSupport ? t('subscription.preparing') : t('subscription.sendEmail')}
                     </Button>
                     <Button 
                       onClick={() => setSupportDialogOpen(false)}
                       variant="outline"
                       className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
                     >
-                      Cancel
+                      {t('common.cancel')}
                     </Button>
                   </div>
                 </div>
