@@ -183,6 +183,7 @@ export const JobTracker = () => {
                         applications={sortedApplications}
                         onUpdateStatus={handleUpdateStatus}
                         onDelete={handleDelete}
+                        viewMode={viewMode}
                       />
                     )}
                   </div>

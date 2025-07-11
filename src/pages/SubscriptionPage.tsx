@@ -32,8 +32,8 @@ const SubscriptionPage = () => {
     await checkSubscription();
     setIsRefreshing(false);
     toast({
-      title: "Stato abbonamento aggiornato",
-      description: "Le informazioni dell'abbonamento sono state aggiornate.",
+      title: "Subscription Status Updated",
+      description: "Subscription information has been updated.",
     });
   };
 
@@ -51,8 +51,8 @@ const SubscriptionPage = () => {
     } catch (error) {
       console.error('Error opening customer portal:', error);
       toast({
-        title: "Errore",
-        description: "Impossibile aprire il portale di gestione.",
+        title: "Error",
+        description: "Unable to open customer portal.",
         variant: "destructive",
       });
     }
@@ -61,8 +61,8 @@ const SubscriptionPage = () => {
   const handleSendSupportEmail = async () => {
     if (!supportForm.subject.trim() || !supportForm.message.trim()) {
       toast({
-        title: "Errore",
-        description: "Compila tutti i campi richiesti.",
+        title: "Error",
+        description: "Please fill in all required fields.",
         variant: "destructive",
       });
       return;
@@ -81,14 +81,14 @@ const SubscriptionPage = () => {
       setSupportForm({ subject: '', message: '', email: user?.email || '' });
       
       toast({
-        title: "Email preparata",
-        description: "L'email è stata preparata nel tuo client di posta.",
+        title: "Email Prepared",
+        description: "The email has been prepared in your mail client.",
       });
     } catch (error) {
       console.error('Error preparing support email:', error);
       toast({
-        title: "Errore",
-        description: "Errore durante la preparazione dell'email.",
+        title: "Error",
+        description: "Error preparing email.",
         variant: "destructive",
       });
     } finally {
@@ -101,7 +101,7 @@ const SubscriptionPage = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-500 mx-auto"></div>
-          <p className="mt-4 text-white">Caricamento stato abbonamento...</p>
+          <p className="mt-4 text-white">Loading subscription status...</p>
         </div>
       </div>
     );
@@ -114,7 +114,7 @@ const SubscriptionPage = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <Crown className="w-8 h-8 text-red-500" />
-            <h1 className="text-3xl font-bold text-white">Gestione Abbonamento</h1>
+            <h1 className="text-3xl font-bold text-white">Subscription Management</h1>
           </div>
           <Button 
             onClick={handleRefreshSubscription}
@@ -123,7 +123,7 @@ const SubscriptionPage = () => {
             className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
           >
             <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-            Aggiorna
+            Refresh
           </Button>
         </div>
 
@@ -132,13 +132,13 @@ const SubscriptionPage = () => {
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
-              Stato Abbonamento
+              Subscription Status
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <p className="text-white/70 mb-2">Piano Attuale</p>
+                <p className="text-white/70 mb-2">Current Plan</p>
                 <div className="flex items-center gap-2">
                   <Badge className={subscribed 
                     ? "bg-green-500 text-white" 
@@ -150,16 +150,16 @@ const SubscriptionPage = () => {
                 </div>
               </div>
               <div>
-                <p className="text-white/70 mb-2">Stato</p>
+                <p className="text-white/70 mb-2">Status</p>
                 <Badge variant={subscribed ? "default" : "secondary"}>
-                  {subscribed ? 'Attivo' : 'Non Attivo'}
+                  {subscribed ? 'Active' : 'Inactive'}
                 </Badge>
               </div>
               {subscription_end && (
                 <div className="md:col-span-2">
-                  <p className="text-white/70 mb-2">Prossimo Rinnovo</p>
+                  <p className="text-white/70 mb-2">Next Renewal</p>
                   <p className="text-white">
-                    {new Date(subscription_end).toLocaleDateString('it-IT', {
+                    {new Date(subscription_end).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
@@ -176,10 +176,10 @@ const SubscriptionPage = () => {
                   className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  Gestisci con Stripe
+                  Manage with Stripe
                 </Button>
                 <p className="text-sm text-white/60 mt-2">
-                  Apre il portale Stripe per gestire pagamenti, fatture e cancellazione
+                  Opens Stripe portal to manage payments, invoices and cancellation
                 </p>
               </div>
             )}
@@ -189,13 +189,13 @@ const SubscriptionPage = () => {
         {/* Transaction History Placeholder */}
         <Card className="mb-8 bg-white/10 backdrop-blur-md border-white/20">
           <CardHeader>
-            <CardTitle className="text-white">Cronologia Transazioni</CardTitle>
+            <CardTitle className="text-white">Transaction History</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center py-8">
               <CreditCard className="w-12 h-12 text-white/40 mx-auto mb-4" />
               <p className="text-white/70 mb-4">
-                Per visualizzare la cronologia completa delle transazioni e scaricare le fatture
+                To view complete transaction history and download invoices
               </p>
               <Button 
                 onClick={handleManageSubscription}
@@ -203,7 +203,7 @@ const SubscriptionPage = () => {
                 className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Apri Portale Stripe
+                Open Stripe Portal
               </Button>
             </div>
           </CardContent>
@@ -214,35 +214,35 @@ const SubscriptionPage = () => {
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Mail className="w-5 h-5" />
-              Supporto e Reclami
+              Support & Claims
             </CardTitle>
           </CardHeader>
           <CardContent>
             <Alert className="mb-6 bg-yellow-500/10 border-yellow-500/20">
               <AlertTriangle className="h-4 w-4 text-yellow-500" />
               <AlertDescription className="text-yellow-100">
-                <strong>Tempo di risposta:</strong> Rispondiamo a tutti i reclami e richieste di refund entro 72 ore lavorative.
+                <strong>Response time:</strong> We respond to all claims and refund requests within 72 business hours.
               </AlertDescription>
             </Alert>
             
             <p className="text-white/70 mb-6">
-              Hai problemi con il tuo abbonamento o hai bisogno di un refund? Contattaci direttamente.
+              Having issues with your subscription or need a refund? Contact us directly.
             </p>
             
             <Dialog open={supportDialogOpen} onOpenChange={setSupportDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
                   <Mail className="w-4 h-4 mr-2" />
-                  Contatta Supporto
+                  Contact Support
                 </Button>
               </DialogTrigger>
               <DialogContent className="bg-gray-800 border-white/20 text-white">
                 <DialogHeader>
-                  <DialogTitle>Contatta il Supporto</DialogTitle>
+                  <DialogTitle>Contact Support</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="email">La tua Email</Label>
+                    <Label htmlFor="email">Your Email</Label>
                     <Input 
                       id="email"
                       value={supportForm.email}
@@ -252,22 +252,22 @@ const SubscriptionPage = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="subject">Oggetto *</Label>
+                    <Label htmlFor="subject">Subject *</Label>
                     <Input 
                       id="subject"
                       value={supportForm.subject}
                       onChange={(e) => setSupportForm({...supportForm, subject: e.target.value})}
-                      placeholder="Es: Richiesta refund abbonamento"
+                      placeholder="e.g. Subscription refund request"
                       className="bg-white/10 border-white/20 text-white"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="message">Messaggio *</Label>
+                    <Label htmlFor="message">Message *</Label>
                     <Textarea 
                       id="message"
                       value={supportForm.message}
                       onChange={(e) => setSupportForm({...supportForm, message: e.target.value})}
-                      placeholder="Descrivi il tuo problema o la tua richiesta in dettaglio..."
+                      placeholder="Describe your problem or request in detail..."
                       className="bg-white/10 border-white/20 text-white min-h-[120px]"
                     />
                   </div>
@@ -277,14 +277,14 @@ const SubscriptionPage = () => {
                       disabled={isSendingSupport}
                       className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                     >
-                      {isSendingSupport ? "Preparazione..." : "Invia Email"}
+                      {isSendingSupport ? "Preparing..." : "Send Email"}
                     </Button>
                     <Button 
                       onClick={() => setSupportDialogOpen(false)}
                       variant="outline"
                       className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
                     >
-                      Annulla
+                      Cancel
                     </Button>
                   </div>
                 </div>

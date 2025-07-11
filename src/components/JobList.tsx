@@ -13,12 +13,14 @@ interface JobListProps {
   applications: JobApplication[];
   onUpdateStatus: (id: string, status: JobStatus) => void;
   onDelete: (id: string) => void;
+  viewMode?: 'list' | 'grid';
 }
 
 export const JobList: React.FC<JobListProps> = ({ 
   applications, 
   onUpdateStatus, 
-  onDelete 
+  onDelete,
+  viewMode = 'list'
 }) => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<JobStatus | 'all'>('all');
@@ -86,7 +88,9 @@ export const JobList: React.FC<JobListProps> = ({
   return (
     <div className="w-full">
       {/* Applications Grid - Mobile optimized */}
-      <div className="grid gap-3 sm:gap-4 md:gap-6 w-full">
+      <div className={`grid gap-3 sm:gap-4 md:gap-6 w-full ${
+        viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''
+      }`}>
         {filteredApplications.map((application) => (
           <Card key={application.id} className="hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-800 to-gray-900 border-white/30 w-full overflow-hidden">
             <CardHeader className="pb-3 px-3 sm:px-6">
