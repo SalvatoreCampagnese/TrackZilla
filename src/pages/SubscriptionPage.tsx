@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/hooks/useLanguage';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { Crown, CreditCard, Mail, AlertTriangle, ExternalLink, RefreshCw } from 'lucide-react';
@@ -17,6 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const SubscriptionPage = () => {
   const { t, i18n } = useTranslation();
+  useLanguage(); // This will load the user's language preference
   const { user } = useAuth();
   const { toast } = useToast();
   const { subscribed, subscription_tier, subscription_end, loading: subscriptionLoading, checkSubscription } = useSubscription();
