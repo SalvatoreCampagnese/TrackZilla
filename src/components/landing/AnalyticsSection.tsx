@@ -13,7 +13,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1 animate-slide-up">
             <div className="card-modern p-4 rounded-3xl">
-              <img alt="Job application analytics dashboard" className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl hover:scale-105 transition-transform duration-500" src="/lovable-uploads/f61d87db-5687-49cc-b7d3-0c015efe390f.png" />
+              <img alt="Illustration of two monsters facing off, symbolising the challenges and obstacles in the job search process." className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl hover:scale-105 transition-transform duration-500" src="/lovable-uploads/f61d87db-5687-49cc-b7d3-0c015efe390f.png" />
             </div>
           </div>
           
