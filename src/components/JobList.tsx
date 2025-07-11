@@ -1,7 +1,9 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { JobApplication, JOB_STATUS_LABELS, JobStatus } from '@/types/job';
+import { useTranslation } from 'react-i18next';
+import { JobApplication, JobStatus } from '@/types/job';
+import { useTranslatedLabels } from '@/hooks/useTranslatedLabels';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,13 +15,17 @@ interface JobListProps {
   applications: JobApplication[];
   onUpdateStatus: (id: string, status: JobStatus) => void;
   onDelete: (id: string) => void;
+  viewMode?: 'list' | 'grid';
 }
 
 export const JobList: React.FC<JobListProps> = ({ 
   applications, 
   onUpdateStatus, 
-  onDelete 
+  onDelete,
+  viewMode = 'list'
 }) => {
+  const { t } = useTranslation();
+  const { getJobStatusLabel, jobStatusOptions, getWorkModeLabel } = useTranslatedLabels();
   const navigate = useNavigate();
   const [filter, setFilter] = useState<JobStatus | 'all'>('all');
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; application: JobApplication | null }>({
@@ -77,8 +83,8 @@ export const JobList: React.FC<JobListProps> = ({
         <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-4 bg-gray-100 dark:bg-red-800/50 rounded-full flex items-center justify-center">
           <Building2 className="w-8 h-8 sm:w-12 sm:h-12 text-gray-400 dark:text-red-300" />
         </div>
-        <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">No applications</h3>
-        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-300">Add your first application to start tracking</p>
+        <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">{t('applications.noApplications')}</h3>
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-300">{t('applications.addFirstApplication')}</p>
       </div>
     );
   }
@@ -86,7 +92,9 @@ export const JobList: React.FC<JobListProps> = ({
   return (
     <div className="w-full">
       {/* Applications Grid - Mobile optimized */}
-      <div className="grid gap-3 sm:gap-4 md:gap-6 w-full">
+      <div className={`grid gap-3 sm:gap-4 md:gap-6 w-full ${
+        viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''
+      }`}>
         {filteredApplications.map((application) => (
           <Card key={application.id} className="hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-gray-800 to-gray-900 border-white/30 w-full overflow-hidden">
             <CardHeader className="pb-3 px-3 sm:px-6">
@@ -98,7 +106,7 @@ export const JobList: React.FC<JobListProps> = ({
                         {application.companyName}
                       </h3>
                       <Badge className={`${getStatusColor(application.status)} text-xs whitespace-nowrap self-start`}>
-                        {JOB_STATUS_LABELS[application.status]}
+                        {getJobStatusLabel(application.status)}
                       </Badge>
                     </div>
                   </div>
@@ -147,7 +155,7 @@ export const JobList: React.FC<JobListProps> = ({
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-200 min-w-0">
                     <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                     <span className="truncate">
-                      {getWorkModeIcon(application.workMode)} {application.workMode}
+                      {getWorkModeIcon(application.workMode)} {getWorkModeLabel(application.workMode)}
                     </span>
                   </div>
 
@@ -160,9 +168,9 @@ export const JobList: React.FC<JobListProps> = ({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
-                        {Object.entries(JOB_STATUS_LABELS).map(([key, label]) => (
-                          <SelectItem key={key} value={key} className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-xs">
-                            {label}
+                        {jobStatusOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value} className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-xs">
+                            {option.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -175,7 +183,7 @@ export const JobList: React.FC<JobListProps> = ({
               <details className="group">
                 <summary className="flex items-center gap-2 text-xs sm:text-sm text-white dark:text-white cursor-pointer hover:text-gray-200 dark:hover:text-gray-200">
                   <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-open:rotate-180 flex-shrink-0" />
-                  <span className="truncate">View full job description</span>
+                  <span className="truncate">{t('applications.viewFullDescription')}</span>
                 </summary>
                 <div className="mt-3 p-2 sm:p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-xs sm:text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap break-words max-h-40 overflow-y-auto">
                   {application.jobDescription}

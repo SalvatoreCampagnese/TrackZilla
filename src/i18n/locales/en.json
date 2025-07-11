@@ -1,0 +1,226 @@
+{
+  "common": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "search": "Search",
+    "filter": "Filter",
+    "refresh": "Refresh",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "loginWithMagicLink": "Sign in with Magic Link",
+    "sendMagicLink": "Send Magic Link",
+    "checkEmail": "Check your email",
+    "loginRequired": "Please log in to continue",
+    "welcome": "Welcome",
+    "createAccount": "Create an account",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "applications": "Applications",
+    "statistics": "Statistics",
+    "subscription": "Subscription",
+    "pro": "Pro",
+    "addApplication": "Add Application",
+    "totalApplications": "Total Applications",
+    "thisMonth": "This Month",
+    "pending": "Pending",
+    "interviews": "Interviews"
+  },
+  "applications": {
+    "title": "Applications",
+    "company": "Company",
+    "role": "Role",
+    "status": "Status",
+    "date": "Date",
+    "salary": "Salary",
+    "workMode": "Work Mode",
+    "description": "Description",
+    "jobDescription": "Job Description",
+    "viewDetails": "View Details",
+    "editApplication": "Edit Application",
+    "deleteApplication": "Delete Application",
+    "noApplications": "No applications",
+    "addFirstApplication": "Add your first application to start tracking",
+    "viewFullDescription": "View full job description",
+    "applicationLimit": "Application limit reached",
+    "applicationLimitMessage": "Free users can only track up to 50 applications. Upgrade to Pro for unlimited tracking."
+  },
+  "jobStatus": {
+    "in-corso": "In Progress",
+    "ghosting": "Ghosting",
+    "primo-colloquio": "First Interview",
+    "secondo-colloquio": "Second Interview",
+    "colloquio-tecnico": "Technical Interview",
+    "colloquio-finale": "Final Interview",
+    "offerta-ricevuta": "Offer Received",
+    "rifiutato": "Rejected",
+    "ritirato": "Withdrawn"
+  },
+  "workMode": {
+    "remoto": "Remote",
+    "ibrido": "Hybrid",
+    "in-presenza": "On-site",
+    "ND": "Not Defined"
+  },
+  "viewMode": {
+    "list": "List",
+    "grid": "Grid",
+    "kanban": "Kanban"
+  },
+  "sortBy": {
+    "date": "Date",
+    "company": "Company",
+    "status": "Status"
+  },
+  "statistics": {
+    "title": "Statistics",
+    "overview": "Overview",
+    "monthlyTrend": "Monthly Trend",
+    "statusDistribution": "Status Distribution",
+    "responseRate": "Response Rate"
+  },
+  "subscription": {
+    "title": "Subscription Management",
+    "currentPlan": "Current Plan",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "nextRenewal": "Next Renewal",
+    "manageWithStripe": "Manage with Stripe",
+    "manageDescription": "Opens Stripe portal to manage payments, invoices and cancellation",
+    "transactionHistory": "Transaction History",
+    "transactionHistoryDescription": "To view complete transaction history and download invoices",
+    "openStripePortal": "Open Stripe Portal",
+    "supportAndClaims": "Support & Claims",
+    "responseTime": "Response time: We respond to all claims and refund requests within 72 business hours.",
+    "supportDescription": "Having issues with your subscription or need a refund? Contact us directly.",
+    "contactSupport": "Contact Support",
+    "yourEmail": "Your Email",
+    "subject": "Subject",
+    "message": "Message",
+    "subjectPlaceholder": "e.g. Subscription refund request",
+    "messagePlaceholder": "Describe your problem or request in detail...",
+    "sendEmail": "Send Email",
+    "preparing": "Preparing...",
+    "subscriptionUpdated": "Subscription Status Updated",
+    "subscriptionUpdatedDescription": "Subscription information has been updated.",
+    "loadingSubscription": "Loading subscription status...",
+    "errorOpeningPortal": "Unable to open customer portal.",
+    "fillAllFields": "Please fill in all required fields.",
+    "emailPrepared": "Email Prepared",
+    "emailPreparedDescription": "The email has been prepared in your mail client.",
+    "errorPreparingEmail": "Error preparing email."
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "language": "Language",
+    "selectLanguage": "Select Language",
+    "italian": "Italiano",
+    "english": "English",
+    "languageUpdated": "Language Updated",
+    "languageUpdatedDescription": "Language has been changed successfully.",
+    "errorUpdatingLanguage": "Error updating language."
+  },
+  "pro": {
+    "title": "TrackZilla Pro",
+    "unlimitedApplications": "Unlimited Applications",
+    "advancedAnalytics": "Advanced Analytics",
+    "prioritySupport": "Priority Support",
+    "upgrade": "Upgrade to Pro"
+  },
+  "addJob": {
+    "title": "Add Application",
+    "companyName": "Company Name",
+    "roleDescription": "Role Description",
+    "jobDescription": "Job Description",
+    "applicationDate": "Application Date",
+    "salary": "Salary",
+    "workMode": "Work Mode",
+    "status": "Status",
+    "addApplication": "Add Application",
+    "applicationAdded": "Application added",
+    "applicationAddedDescription": "Application has been added successfully.",
+    "errorAddingApplication": "Failed to add application."
+  },
+  "deleteConfirmation": {
+    "title": "Confirm Deletion",
+    "message": "Are you sure you want to delete {{itemName}}? This action cannot be undone.",
+    "confirmDelete": "Delete",
+    "applicationDeleted": "Application deleted",
+    "applicationDeletedDescription": "Job application has been deleted successfully.",
+    "errorDeletingApplication": "Failed to delete application."
+  },
+  "filters": {
+    "all": "All",
+    "searchPlaceholder": "Search by company or role..."
+  },
+  "landing": {
+    "hero": {
+      "title": "Track your job applications with ease",
+      "subtitle": "Organize, monitor, and analyze your job applications in one place. Never miss an opportunity again.",
+      "cta": "Get Started Free",
+      "watchDemo": "Watch Demo"
+    },
+    "features": {
+      "title": "Everything you need for job hunting",
+      "kanban": {
+        "title": "Kanban View",
+        "description": "Organize your applications with an intuitive kanban board"
+      },
+      "analytics": {
+        "title": "Advanced Analytics",
+        "description": "Get insights into your application patterns and success rates"
+      },
+      "tracking": {
+        "title": "Complete Tracking",
+        "description": "Monitor every stage of your application process"
+      }
+    },
+    "pricing": {
+      "title": "Choose the perfect plan for you",
+      "free": {
+        "title": "Free",
+        "price": "€0",
+        "period": "/month",
+        "features": [
+          "Up to 50 applications",
+          "Kanban view",
+          "Basic statistics"
+        ]
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "€9.99",
+        "period": "/month",
+        "features": [
+          "Unlimited applications",
+          "Advanced analytics",
+          "Priority support",
+          "Data export"
+        ]
+      }
+    }
+  }
+}

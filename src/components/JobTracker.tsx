@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -20,6 +21,7 @@ import { useToast } from '@/hooks/use-toast';
 import ProPage from '@/pages/ProPage';
 
 export const JobTracker = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -46,14 +48,14 @@ export const JobTracker = () => {
     try {
       await updateApplicationStatus(id, status);
       toast({
-        title: "Status updated",
-        description: "Application status has been updated successfully.",
+        title: t('applications.applicationAdded'),
+        description: t('applications.applicationAddedDescription'),
       });
     } catch (error) {
       console.error('Error updating status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update application status.",
+        title: t('common.error'),
+        description: t('applications.errorAddingApplication'),
         variant: "destructive",
       });
     }
@@ -63,14 +65,14 @@ export const JobTracker = () => {
     try {
       await deleteApplication(id);
       toast({
-        title: "Application deleted",
-        description: "Job application has been deleted successfully.",
+        title: t('deleteConfirmation.applicationDeleted'),
+        description: t('deleteConfirmation.applicationDeletedDescription'),
       });
     } catch (error) {
       console.error('Error deleting application:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete application.",
+        title: t('common.error'),
+        description: t('deleteConfirmation.errorDeletingApplication'),
         variant: "destructive",
       });
     }
@@ -84,8 +86,8 @@ export const JobTracker = () => {
     // Check if user has reached the 50 application limit for free users
     if (!subscribed && applications.length >= 50) {
       toast({
-        title: "Application limit reached",
-        description: "Free users can only track up to 50 applications. Upgrade to Pro for unlimited tracking.",
+        title: t('applications.applicationLimit'),
+        description: t('applications.applicationLimitMessage'),
         variant: "destructive",
       });
       handleProClick();
@@ -121,13 +123,13 @@ export const JobTracker = () => {
 
   if (!user) {
     return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="text-white">Please log in to continue</div>
+      <div className="text-white">{t('auth.loginRequired')}</div>
     </div>;
   }
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="text-white">Loading...</div>
+      <div className="text-white">{t('common.loading')}</div>
     </div>;
   }
 
@@ -183,6 +185,7 @@ export const JobTracker = () => {
                         applications={sortedApplications}
                         onUpdateStatus={handleUpdateStatus}
                         onDelete={handleDelete}
+                        viewMode={viewMode}
                       />
                     )}
                   </div>

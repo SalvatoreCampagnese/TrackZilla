@@ -187,6 +187,7 @@ export type Database = {
           current_company: string | null
           first_name: string | null
           id: string
+          language_preference: string | null
           last_name: string | null
           middle_name: string | null
           role: string | null
@@ -198,6 +199,7 @@ export type Database = {
           current_company?: string | null
           first_name?: string | null
           id?: string
+          language_preference?: string | null
           last_name?: string | null
           middle_name?: string | null
           role?: string | null
@@ -209,6 +211,7 @@ export type Database = {
           current_company?: string | null
           first_name?: string | null
           id?: string
+          language_preference?: string | null
           last_name?: string | null
           middle_name?: string | null
           role?: string | null
