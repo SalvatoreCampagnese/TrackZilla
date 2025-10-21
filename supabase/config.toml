@@ -1,1 +1,77 @@
-project_id = "uaejwbglfmvdetvevygn"
+
+project_id = "8babf163-7b89-4788-b1a7-fec8313ceb19"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.pooler]
+enabled = false
+port = 54329
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+[realtime]
+enabled = true
+ip_version = "ipv6"
+port = 54323
+max_header_length = 4096
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1:54321"
+openai_api_key = "env(OPENAI_API_KEY)"
+
+[inbucket]
+enabled = true
+port = 54324
+pop3_port = 54325
+smtp_port = 54326
+
+[functions]
+verify_jwt = true
+
+[functions.stripe-webhook]
+verify_jwt = false
+
+[auth]
+enabled = true
+port = 9999
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["https://127.0.0.1:3000"]
+jwt_expiry = 3600
+enable_signup = true
+enable_confirmations = false
+enable_recovery = true
+enable_email_change_confirmation = false
+enable_phone_change_confirmation = false
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+template = {}
+
+[auth.sms]
+enable_signup = false
+enable_confirmations = false
+template = "Your code is {{ .Code }}"
+
+[edge_runtime]
+enabled = true
+port = 54288
+
+[analytics]
+enabled = false
+port = 54327
+vector_port = 54328

@@ -3,6 +3,8 @@ import React from 'react';
 import { LandingHeader } from './landing/LandingHeader';
 import { HeroSection } from './landing/HeroSection';
 import { FeaturesSection } from './landing/FeaturesSection';
+import { ChromeExtensionSection } from './landing/ChromeExtensionSection';
+import { PricingSection } from './landing/PricingSection';
 import { AnalyticsSection } from './landing/AnalyticsSection';
 import { CTASection } from './landing/CTASection';
 import { LandingFooter } from './landing/LandingFooter';
@@ -22,6 +24,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
       />
       <HeroSection onGetStarted={onGetStarted} />
       <FeaturesSection />
+      <ChromeExtensionSection />
+      <PricingSection onGetStarted={onGetStarted} />
       <AnalyticsSection onGetStarted={onGetStarted} />
       <CTASection onGetStarted={onGetStarted} />
       <LandingFooter />

@@ -1,0 +1,226 @@
+{
+  "common": {
+    "add": "Aggiungi",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "close": "Chiudi",
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo",
+    "confirm": "Conferma",
+    "search": "Cerca",
+    "filter": "Filtra",
+    "refresh": "Aggiorna",
+    "back": "Indietro",
+    "next": "Avanti",
+    "previous": "Precedente",
+    "settings": "Impostazioni",
+    "logout": "Esci"
+  },
+  "auth": {
+    "login": "Accedi",
+    "register": "Registrati",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Conferma Password",
+    "forgotPassword": "Password dimenticata?",
+    "loginWithMagicLink": "Accedi con Magic Link",
+    "sendMagicLink": "Invia Magic Link",
+    "checkEmail": "Controlla la tua email",
+    "loginRequired": "Effettua l'accesso per continuare",
+    "welcome": "Benvenuto",
+    "createAccount": "Crea un account",
+    "alreadyHaveAccount": "Hai già un account?",
+    "dontHaveAccount": "Non hai un account?"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "applications": "Candidature",
+    "statistics": "Statistiche",
+    "subscription": "Abbonamento",
+    "pro": "Pro",
+    "addApplication": "Aggiungi Candidatura",
+    "totalApplications": "Totale Candidature",
+    "thisMonth": "Questo Mese",
+    "pending": "In Attesa",
+    "interviews": "Colloqui"
+  },
+  "applications": {
+    "title": "Candidature",
+    "company": "Azienda",
+    "role": "Ruolo",
+    "status": "Stato",
+    "date": "Data",
+    "salary": "Stipendio",
+    "workMode": "Modalità Lavoro",
+    "description": "Descrizione",
+    "jobDescription": "Descrizione Lavoro",
+    "viewDetails": "Visualizza Dettagli",
+    "editApplication": "Modifica Candidatura",
+    "deleteApplication": "Elimina Candidatura",
+    "noApplications": "Nessuna candidatura",
+    "addFirstApplication": "Aggiungi la tua prima candidatura per iniziare a tracciare",
+    "viewFullDescription": "Visualizza descrizione completa",
+    "applicationLimit": "Limite candidature raggiunto",
+    "applicationLimitMessage": "Gli utenti gratuiti possono tracciare fino a 50 candidature. Passa a Pro per tracciamento illimitato."
+  },
+  "jobStatus": {
+    "in-corso": "In Corso",
+    "ghosting": "Ghosting",
+    "primo-colloquio": "Primo Colloquio",
+    "secondo-colloquio": "Secondo Colloquio",
+    "colloquio-tecnico": "Colloquio Tecnico",
+    "colloquio-finale": "Colloquio Finale",
+    "offerta-ricevuta": "Offerta Ricevuta",
+    "rifiutato": "Rifiutato",
+    "ritirato": "Ritirato"
+  },
+  "workMode": {
+    "remoto": "Remoto",
+    "ibrido": "Ibrido",
+    "in-presenza": "In Presenza",
+    "ND": "Non Definito"
+  },
+  "viewMode": {
+    "list": "Lista",
+    "grid": "Griglia",
+    "kanban": "Kanban"
+  },
+  "sortBy": {
+    "date": "Data",
+    "company": "Azienda",
+    "status": "Stato"
+  },
+  "statistics": {
+    "title": "Statistiche",
+    "overview": "Panoramica",
+    "monthlyTrend": "Trend Mensile",
+    "statusDistribution": "Distribuzione Stati",
+    "responseRate": "Tasso di Risposta"
+  },
+  "subscription": {
+    "title": "Gestione Abbonamento",
+    "currentPlan": "Piano Attuale",
+    "status": "Stato",
+    "active": "Attivo",
+    "inactive": "Non Attivo",
+    "nextRenewal": "Prossimo Rinnovo",
+    "manageWithStripe": "Gestisci con Stripe",
+    "manageDescription": "Apre il portale Stripe per gestire pagamenti, fatture e cancellazione",
+    "transactionHistory": "Cronologia Transazioni",
+    "transactionHistoryDescription": "Per visualizzare la cronologia completa delle transazioni e scaricare le fatture",
+    "openStripePortal": "Apri Portale Stripe",
+    "supportAndClaims": "Supporto e Reclami",
+    "responseTime": "Tempo di risposta: Rispondiamo a tutti i reclami e richieste di refund entro 72 ore lavorative.",
+    "supportDescription": "Hai problemi con il tuo abbonamento o hai bisogno di un refund? Contattaci direttamente.",
+    "contactSupport": "Contatta Supporto",
+    "yourEmail": "La tua Email",
+    "subject": "Oggetto",
+    "message": "Messaggio",
+    "subjectPlaceholder": "Es: Richiesta refund abbonamento",
+    "messagePlaceholder": "Descrivi il tuo problema o la tua richiesta in dettaglio...",
+    "sendEmail": "Invia Email",
+    "preparing": "Preparazione...",
+    "subscriptionUpdated": "Stato abbonamento aggiornato",
+    "subscriptionUpdatedDescription": "Le informazioni dell'abbonamento sono state aggiornate.",
+    "loadingSubscription": "Caricamento stato abbonamento...",
+    "errorOpeningPortal": "Impossibile aprire il portale di gestione.",
+    "fillAllFields": "Compila tutti i campi richiesti.",
+    "emailPrepared": "Email preparata",
+    "emailPreparedDescription": "L'email è stata preparata nel tuo client di posta.",
+    "errorPreparingEmail": "Errore durante la preparazione dell'email."
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "general": "Generale",
+    "language": "Lingua",
+    "selectLanguage": "Seleziona Lingua",
+    "italian": "Italiano",
+    "english": "English",
+    "languageUpdated": "Lingua aggiornata",
+    "languageUpdatedDescription": "La lingua è stata cambiata con successo.",
+    "errorUpdatingLanguage": "Errore durante l'aggiornamento della lingua."
+  },
+  "pro": {
+    "title": "TrackZilla Pro",
+    "unlimitedApplications": "Candidature Illimitate",
+    "advancedAnalytics": "Analisi Avanzate",
+    "prioritySupport": "Supporto Prioritario",
+    "upgrade": "Passa a Pro"
+  },
+  "addJob": {
+    "title": "Aggiungi Candidatura",
+    "companyName": "Nome Azienda",
+    "roleDescription": "Descrizione Ruolo",
+    "jobDescription": "Descrizione Lavoro",
+    "applicationDate": "Data Candidatura",
+    "salary": "Stipendio",
+    "workMode": "Modalità Lavoro",
+    "status": "Stato",
+    "addApplication": "Aggiungi Candidatura",
+    "applicationAdded": "Candidatura aggiunta",
+    "applicationAddedDescription": "La candidatura è stata aggiunta con successo.",
+    "errorAddingApplication": "Errore durante l'aggiunta della candidatura."
+  },
+  "deleteConfirmation": {
+    "title": "Conferma Eliminazione",
+    "message": "Sei sicuro di voler eliminare {{itemName}}? Questa azione non può essere annullata.",
+    "confirmDelete": "Elimina",
+    "applicationDeleted": "Candidatura eliminata",
+    "applicationDeletedDescription": "La candidatura è stata eliminata con successo.",
+    "errorDeletingApplication": "Errore durante l'eliminazione della candidatura."
+  },
+  "filters": {
+    "all": "Tutti",
+    "searchPlaceholder": "Cerca per azienda o ruolo..."
+  },
+  "landing": {
+    "hero": {
+      "title": "Traccia le tue candidature di lavoro con facilità",
+      "subtitle": "Organizza, monitora e analizza le tue candidature di lavoro in un unico posto. Non perdere mai più un'opportunità.",
+      "cta": "Inizia Gratis",
+      "watchDemo": "Guarda Demo"
+    },
+    "features": {
+      "title": "Tutto quello di cui hai bisogno per il tuo job hunting",
+      "kanban": {
+        "title": "Vista Kanban",
+        "description": "Organizza le tue candidature con una vista kanban intuitiva"
+      },
+      "analytics": {
+        "title": "Analytics Avanzate",
+        "description": "Ottieni insights sui tuoi pattern di candidatura e tassi di successo"
+      },
+      "tracking": {
+        "title": "Tracciamento Completo",
+        "description": "Monitora ogni fase del processo di candidatura"
+      }
+    },
+    "pricing": {
+      "title": "Scegli il piano perfetto per te",
+      "free": {
+        "title": "Gratuito",
+        "price": "€0",
+        "period": "/mese",
+        "features": [
+          "Fino a 50 candidature",
+          "Vista Kanban",
+          "Statistiche di base"
+        ]
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "€9,99",
+        "period": "/mese",
+        "features": [
+          "Candidature illimitate",
+          "Analytics avanzate",
+          "Supporto prioritario",
+          "Export dati"
+        ]
+      }
+    }
+  }
+}

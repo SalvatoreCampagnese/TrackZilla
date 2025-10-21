@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { JobApplication, JobStatus } from '@/types/job';
 import { parseJobDescription } from '@/utils/jobParser';
@@ -121,14 +122,14 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 sm:p-6 shadow-xl">
-        {/* Header with step indicator */}
-        <div className="mb-6">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 sm:p-4 md:p-6 shadow-xl">
+        {/* Header with step indicator - Mobile optimized */}
+        <div className="mb-4 sm:mb-6">
           <StepIndicator currentStep={step} />
         </div>
 
         {/* Form content */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {step === 'extract' && (
             <JobExtractionStep
               jobDescription={jobDescription}
@@ -139,7 +140,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
           )}
 
           {step === 'details' && (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <JobDetailsForm
                 parsedData={parsedData}
                 setParsedData={setParsedData}
@@ -157,22 +158,22 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
           )}
         </div>
 
-        {/* Footer buttons */}
-        <div className="pt-6 border-t border-white/20 mt-6">
+        {/* Footer buttons - Mobile optimized */}
+        <div className="pt-4 sm:pt-6 border-t border-white/20 mt-4 sm:mt-6">
           {step === 'extract' ? (
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
-                className="w-full sm:flex-1 text-white border-white/20 hover:bg-white/20 h-11 rounded-full order-2 sm:order-1"
+                className="w-full sm:flex-1 text-white border-white/20 hover:bg-white/20 h-10 sm:h-11 rounded-full order-2 sm:order-1 text-sm sm:text-base"
               >
                 Cancel
               </Button>
               <Button
                 type="button"
                 onClick={handleParseJob}
-                className="w-full sm:flex-1 bg-red-600 hover:bg-red-700 text-white h-11 rounded-full order-1 sm:order-2"
+                className="w-full sm:flex-1 bg-red-600 hover:bg-red-700 text-white h-10 sm:h-11 rounded-full order-1 sm:order-2 text-sm sm:text-base"
                 disabled={!jobDescription.trim()}
               >
                 <Wand2 className="w-4 h-4 mr-2" />
@@ -186,13 +187,13 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
                 type="button"
                 variant="outline"
                 onClick={() => setStep('extract')}
-                className="w-full sm:flex-1 text-white border-white/20 hover:bg-white/20 h-11 rounded-full order-2 sm:order-1"
+                className="w-full sm:flex-1 text-white border-white/20 hover:bg-white/20 h-10 sm:h-11 rounded-full order-2 sm:order-1 text-sm sm:text-base"
               >
                 Back
               </Button>
               <Button
                 onClick={handleSubmit}
-                className="bg-red-600 hover:bg-red-700 text-white w-full sm:flex-1 h-11 rounded-full order-1 sm:order-2"
+                className="bg-red-600 hover:bg-red-700 text-white w-full sm:flex-1 h-10 sm:h-11 rounded-full order-1 sm:order-2 text-sm sm:text-base"
               >
                 Add Application
               </Button>
