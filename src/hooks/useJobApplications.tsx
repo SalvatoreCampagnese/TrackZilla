@@ -144,43 +144,30 @@ export const useJobApplications = () => {
     return { inserted, failed: newApplications.length - inserted };
   };
 
+  // Throws on failure; callers are responsible for showing feedback to the user.
   const updateApplication = async (id: string, updates: Partial<JobApplication>) => {
-    try {
-      const { error } = await supabase
-        .from('job_applications')
-        .update({
-          ...(updates.status && { status: updates.status }),
-          ...(updates.jobDescription && { job_description: updates.jobDescription }),
-          ...(updates.companyName && { company_name: updates.companyName }),
-          ...(updates.roleDescription && { role_description: updates.roleDescription }),
-          ...(updates.salary && { salary: updates.salary }),
-          ...(updates.workMode && { work_mode: updates.workMode }),
-          ...(updates.applicationDate && { application_date: updates.applicationDate }),
-          ...(updates.tags && { tags: updates.tags }),
-        })
-        .eq('id', id)
-        .eq('deleted', false);
+    const { error } = await supabase
+      .from('job_applications')
+      .update({
+        ...(updates.status && { status: updates.status }),
+        ...(updates.jobDescription && { job_description: updates.jobDescription }),
+        ...(updates.companyName && { company_name: updates.companyName }),
+        ...(updates.roleDescription && { role_description: updates.roleDescription }),
+        ...(updates.salary && { salary: updates.salary }),
+        ...(updates.workMode && { work_mode: updates.workMode }),
+        ...(updates.applicationDate && { application_date: updates.applicationDate }),
+        ...(updates.tags && { tags: updates.tags }),
+      })
+      .eq('id', id)
+      .eq('deleted', false);
 
-      if (error) throw error;
+    if (error) throw error;
 
-      setApplications(prev => 
-        prev.map(app => 
-          app.id === id ? { ...app, ...updates } : app
-        )
-      );
-
-      toast({
-        title: "Candidatura aggiornata",
-        description: "La candidatura è stata aggiornata con successo"
-      });
-    } catch (error) {
-      console.error('Error updating application:', error);
-      toast({
-        title: "Errore nell'aggiornamento",
-        description: "Impossibile aggiornare la candidatura",
-        variant: "destructive"
-      });
-    }
+    setApplications(prev => 
+      prev.map(app => 
+        app.id === id ? { ...app, ...updates } : app
+      )
+    );
   };
 
   const updateApplicationStatus = async (id: string, status: JobStatus) => {

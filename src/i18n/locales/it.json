@@ -64,7 +64,10 @@
     "addFirstApplication": "Aggiungi la tua prima candidatura per iniziare a tracciare",
     "viewFullDescription": "Visualizza descrizione completa",
     "applicationLimit": "Limite candidature raggiunto",
-    "applicationLimitMessage": "Gli utenti gratuiti possono tracciare fino a 50 candidature. Passa a Pro per tracciamento illimitato."
+    "applicationLimitMessage": "Gli utenti gratuiti possono tracciare fino a 50 candidature. Passa a Pro per tracciamento illimitato.",
+    "statusUpdated": "Stato aggiornato",
+    "statusUpdatedDescription": "Candidatura spostata in \"{{status}}\".",
+    "errorUpdatingStatus": "Impossibile aggiornare lo stato della candidatura."
   },
   "jobStatus": {
     "in-corso": "In Corso",

@@ -64,7 +64,10 @@
     "addFirstApplication": "Add your first application to start tracking",
     "viewFullDescription": "View full job description",
     "applicationLimit": "Application limit reached",
-    "applicationLimitMessage": "Free users can only track up to 50 applications. Upgrade to Pro for unlimited tracking."
+    "applicationLimitMessage": "Free users can only track up to 50 applications. Upgrade to Pro for unlimited tracking.",
+    "statusUpdated": "Status updated",
+    "statusUpdatedDescription": "Application moved to \"{{status}}\".",
+    "errorUpdatingStatus": "Failed to update the application status."
   },
   "jobStatus": {
     "in-corso": "In Progress",
