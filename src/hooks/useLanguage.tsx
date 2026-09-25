@@ -14,10 +14,7 @@ export const useLanguage = () => {
   // Load user's language preference from profile
   useEffect(() => {
     const loadUserLanguage = async () => {
-      console.log('Loading user language for user:', user?.id);
-      
       if (!user) {
-        console.log('No user found, setting loading to false');
         setLoading(false);
         return;
       }
@@ -37,11 +34,11 @@ export const useLanguage = () => {
           return;
         }
 
-        const languagePreference = profile?.language_preference || 'en';
-        console.log('Found language preference:', languagePreference);
+        // Without a saved preference keep the language already in use
+        // (previous choice or browser language) instead of forcing one.
+        const languagePreference = profile?.language_preference;
         
-        if (languagePreference && i18n.language !== languagePreference) {
-          console.log('Changing language from', i18n.language, 'to', languagePreference);
+        if (languagePreference && i18n.resolvedLanguage !== languagePreference) {
           await i18n.changeLanguage(languagePreference);
         }
       } catch (error) {
@@ -98,7 +95,7 @@ export const useLanguage = () => {
   };
 
   return {
-    currentLanguage: i18n.language as 'it' | 'en',
+    currentLanguage: (i18n.resolvedLanguage === 'en' ? 'en' : 'it') as 'it' | 'en',
     changeLanguage,
     loading,
     t

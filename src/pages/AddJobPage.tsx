@@ -6,9 +6,11 @@ import { AddJobForm } from '@/components/AddJobForm';
 import { JobApplication } from '@/types/job';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 const AddJobPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const { addApplication } = useJobApplications();
   
@@ -33,13 +35,14 @@ const AddJobPage = () => {
             onClick={handleCancel}
             variant="ghost"
             size="icon"
+            aria-label={t('common.back')}
             className="text-white hover:bg-white/10 h-8 w-8 sm:h-10 sm:w-10"
           >
             <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
           <div>
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">Add New Application</h1>
-            <p className="text-xs sm:text-sm text-white/70 hidden sm:block">Track your job applications effortlessly</p>
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">{t('addJob.addNewApplication')}</h1>
+            <p className="text-xs sm:text-sm text-white/70 hidden sm:block">{t('addJob.pageSubtitle')}</p>
           </div>
         </div>
       </header>

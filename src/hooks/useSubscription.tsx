@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface SubscriptionData {
   subscribed: boolean;
@@ -14,6 +15,7 @@ interface SubscriptionData {
 export const useSubscription = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [subscriptionData, setSubscriptionData] = useState<SubscriptionData>({
     subscribed: false,
     subscription_tier: null,
@@ -49,8 +51,8 @@ export const useSubscription = () => {
     } catch (error) {
       console.error('Error checking subscription:', error);
       toast({
-        title: "Errore",
-        description: "Impossibile verificare lo stato dell'abbonamento.",
+        title: t('common.error'),
+        description: t('subscriptionCheck.error'),
         variant: "destructive",
       });
     } finally {

@@ -5,8 +5,10 @@ import { CheckCircle, Crown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useTranslation } from 'react-i18next';
 
 const SuccessPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { checkSubscription } = useSubscription();
 
@@ -25,10 +27,10 @@ const SuccessPage = () => {
             </div>
           </div>
           <CardTitle className="text-3xl font-bold text-white mb-4">
-            🎉 Congratulazioni!
+            {t('success.title')}
           </CardTitle>
           <p className="text-xl text-green-100">
-            Il tuo abbonamento è stato attivato con successo
+            {t('success.subtitle')}
           </p>
         </CardHeader>
         
@@ -36,28 +38,18 @@ const SuccessPage = () => {
           <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Crown className="w-6 h-6 text-yellow-400" />
-              <h3 className="text-xl font-semibold text-white">Benvenuto in ProZilla!</h3>
+              <h3 className="text-xl font-semibold text-white">{t('success.welcome')}</h3>
             </div>
             <p className="text-green-100 mb-4">
-              Ora hai accesso a tutte le funzionalità premium di TrackZilla:
+              {t('success.accessIntro')}
             </p>
             <ul className="text-left text-green-100 space-y-2 max-w-md mx-auto">
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                Candidature illimitate
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                Vista Kanban completa
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                Domande interview in anticipo
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                Risorse consigliate premium
-              </li>
+              {(t('success.features', { returnObjects: true }) as string[]).map((feature) => (
+                <li key={feature} className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                  {feature}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -68,7 +60,7 @@ const SuccessPage = () => {
               size="lg"
             >
               <ArrowRight className="w-5 h-5 mr-2" />
-              Inizia a usare TrackZilla
+              {t('success.startUsing')}
             </Button>
             <Button 
               onClick={() => navigate('/subscription')}
@@ -76,12 +68,12 @@ const SuccessPage = () => {
               className="border-green-500 text-green-400 hover:bg-green-500/10"
               size="lg"
             >
-              Gestisci Abbonamento
+              {t('success.manageSubscription')}
             </Button>
           </div>
 
           <div className="text-sm text-green-200 mt-8">
-            <p>Il tuo abbonamento è ora attivo. Potrai gestire tutti i dettagli dalla pagina del tuo account.</p>
+            <p>{t('success.footer')}</p>
           </div>
         </CardContent>
       </Card>

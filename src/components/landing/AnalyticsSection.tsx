@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
 interface AnalyticsSectionProps {
@@ -8,14 +9,15 @@ interface AnalyticsSectionProps {
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
   onGetStarted
 }) => {
-  const benefits = ["Automatic response time tracking (because who has time to count days?)", "Identify the most responsive companies (find the keepers!)", "Smart suggestions to level up your approach (like having a job hunt mentor)"];
+  const { t } = useTranslation();
+  const benefits = t('landing.analytics.benefits', { returnObjects: true }) as string[];
   return <section className="relative py-24 lg:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1 animate-slide-up">
             <div className="card-modern p-4 rounded-3xl overflow-hidden">
               <img 
-                alt="Illustration of two monsters facing off, symbolising the challenges and obstacles in the job search process." 
+                alt={t('landing.analytics.imageAlt')} 
                 className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl shadow-xl transition-all duration-500 hover:object-cover hover:rounded-2xl hover:scale-110" 
                 src="/lovable-uploads/f61d87db-5687-49cc-b7d3-0c015efe390f.png" 
               />
@@ -24,16 +26,15 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
           
           <div className="order-1 lg:order-2 animate-fade-in">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium text-white/90 mb-6">
-              📊 Analytics & Insights
+              {t('landing.analytics.badge')}
             </div>
             
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
-              Monster-Slaying 101
+              {t('landing.analytics.title')}
             </h2>
             
             <p className="text-xl text-white/70 mb-8 leading-relaxed font-light">
-              TrackZilla gives you detailed insights into your response rates, helps you spot success patterns, 
-              and optimizes your job hunting strategy. It's like having analytics superpowers for your career! 📊
+              {t('landing.analytics.description')}
             </p>
             
             <ul className="space-y-4 mb-8">
@@ -48,7 +49,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
             </ul>
             
             <Button onClick={onGetStarted} size="lg" className="bg-white text-gray-900 hover:bg-white/90 px-8 py-4 rounded-2xl font-semibold shadow-2xl transition-all duration-300 hover:scale-105">
-              Hunt now with TrackZilla
+              {t('landing.analytics.cta')}
             </Button>
           </div>
         </div>

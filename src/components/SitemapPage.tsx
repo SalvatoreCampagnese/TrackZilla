@@ -1,8 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const SitemapPage = () => {
+  const { t } = useTranslation();
   const [sitemapData, setSitemapData] = useState(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
@@ -64,7 +66,7 @@ const SitemapPage = () => {
   };
 
   if (loading) {
-    return <div className="p-4">Loading sitemap...</div>;
+    return <div className="p-4">{t('sitemap.loading')}</div>;
   }
 
   if (isXmlRoute) {
@@ -76,7 +78,7 @@ const SitemapPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Sitemap</h1>
+        <h1 className="text-2xl font-bold mb-4">{t('sitemap.title')}</h1>
         <pre className="bg-white p-4 rounded shadow overflow-auto">
           {JSON.stringify(sitemapData, null, 2)}
         </pre>

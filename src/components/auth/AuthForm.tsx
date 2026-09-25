@@ -7,6 +7,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AuthHeader } from './AuthHeader';
 import { AuthTabs } from './AuthTabs';
+import { useTranslation } from 'react-i18next';
 
 interface AuthFormProps {
   onBack: () => void;
@@ -21,12 +22,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onBack, activeTab, setActive
   const [magicLinkLoading, setMagicLinkLoading] = useState(false);
   const { signIn, signUp, signInWithMagicLink } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleAuth = async (type: 'signin' | 'signup') => {
     if (!email || !password) {
       toast({
-        title: "Error",
-        description: "Please enter email and password",
+        title: t('common.error'),
+        description: t('auth.enterEmailAndPassword'),
         variant: "destructive",
       });
       return;
@@ -40,14 +42,14 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onBack, activeTab, setActive
           // Check if it's an invalid credentials error
           if (error.message.includes('Invalid login credentials') || error.message.includes('Email not confirmed')) {
             toast({
-              title: "Login Failed",
-              description: "Account not found. Please sign up first or check your credentials.",
+              title: t('auth.loginFailed'),
+              description: t('auth.accountNotFound'),
               variant: "destructive",
             });
           } else {
             toast({
-              title: "Error",
-              description: error.message || "An error occurred during login",
+              title: t('common.error'),
+              description: error.message || t('auth.loginError'),
               variant: "destructive",
             });
           }
@@ -56,21 +58,21 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onBack, activeTab, setActive
         const { error } = await signUp(email, password);
         if (error) {
           toast({
-            title: "Error",
-            description: error.message || "An error occurred during registration",
+            title: t('common.error'),
+            description: error.message || t('auth.registrationError'),
             variant: "destructive",
           });
         } else {
           toast({
-            title: "Registration completed",
-            description: "Check your email to confirm your account",
+            title: t('auth.registrationCompleted'),
+            description: t('auth.confirmEmailDescription'),
           });
         }
       }
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message || "An error occurred",
+        title: t('common.error'),
+        description: error.message || t('auth.genericError'),
         variant: "destructive",
       });
     } finally {
@@ -81,8 +83,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onBack, activeTab, setActive
   const handleMagicLink = async () => {
     if (!email) {
       toast({
-        title: "Error",
-        description: "Please enter your email in the field above",
+        title: t('common.error'),
+        description: t('auth.enterEmailAbove'),
         variant: "destructive",
       });
       return;
@@ -92,13 +94,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onBack, activeTab, setActive
     try {
       await signInWithMagicLink(email);
       toast({
-        title: "Magic Link sent",
-        description: "Check your email for the login link",
+        title: t('auth.magicLinkSent'),
+        description: t('auth.magicLinkSentDescription'),
       });
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message || "An error occurred",
+        title: t('common.error'),
+        description: error.message || t('auth.genericError'),
         variant: "destructive",
       });
     } finally {
@@ -120,7 +122,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onBack, activeTab, setActive
           className="mb-4 text-white/70 hover:text-white hover:bg-white/10 rounded-xl"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to home
+          {t('auth.backToHome')}
         </Button>
 
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">

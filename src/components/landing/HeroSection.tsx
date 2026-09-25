@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 interface HeroSectionProps {
   onGetStarted: () => void;
@@ -6,6 +7,7 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onGetStarted
 }) => {
+  const { t } = useTranslation();
   return <section className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-12">
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -17,25 +19,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Left side - Text content */}
         <div className="max-w-2xl animate-fade-in">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium text-white/90 mb-8">
-            🚀 Now in Beta - Start tracking for free
+            {t('landing.hero.badge')}
           </div>
           
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-            TAME THE JOB HUNT{' '}
+            {t('landing.hero.headline')}{' '}
             <span className="relative inline-block">
-              <span className="text-white">Grrrawww!</span>
+              <span className="text-white">{t('landing.hero.roar')}</span>
               <svg className="absolute -bottom-2 left-0 w-full h-3" viewBox="0 0 400 20" fill="none">
                 <path d="M10 15 Q200 5 390 15" stroke="#ffffff" strokeWidth="4" fill="none" strokeLinecap="round" />
               </svg>
             </span>
           </h1>
           
-          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light">Job hunt got you feeling like you're fighting a <a className="text-red-500 underline" href="https://www.youtube.com/watch?v=YQX2CsMCB9M" target="_blank">Gila monster</a> with a spoon?</p>
-          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light mt-2">Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.</p>
+          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light"><Trans i18nKey="landing.hero.gilaMonster" components={{ link: <a className="text-red-500 underline" href="https://www.youtube.com/watch?v=YQX2CsMCB9M" target="_blank" /> }} /></p>
+          <p className="text-xl text-white/80 mb-8 max-w-lg leading-relaxed font-light mt-2">{t('landing.hero.meet')}</p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <Button onClick={onGetStarted} size="lg" className="bg-white text-gray-900 hover:bg-white/90 px-8 py-4 text-lg rounded-2xl font-semibold shadow-2xl transition-all duration-300 hover:scale-105">
-              Start the hunt now
+              {t('landing.hero.startHunt')}
             </Button>
           </div>
         </div>
@@ -45,7 +47,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="card-modern p-8 max-w-md mx-auto">
             <div className="flex justify-center">
               <div className="w-full h-80 rounded-xl overflow-hidden shadow-2xl">
-                <img alt="TrackZilla Dashboard" src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" className="w-full h-full object-contain hover:scale-105 transition-transform duration-500" />
+                <img alt={t('landing.hero.dashboardAlt')} src="/lovable-uploads/dc85d098-e320-47c7-af56-a63300bf46ae.png" className="w-full h-full object-contain hover:scale-105 transition-transform duration-500" />
               </div>
             </div>
           </div>

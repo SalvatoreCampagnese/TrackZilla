@@ -33,7 +33,30 @@
     "welcome": "Welcome",
     "createAccount": "Create an account",
     "alreadyHaveAccount": "Already have an account?",
-    "dontHaveAccount": "Don't have an account?"
+    "dontHaveAccount": "Don't have an account?",
+    "tagline": "Sign in to your account to start tracking your job applications",
+    "logoAlt": "TrackZilla logo",
+    "backToHome": "Back to home",
+    "enterEmailAndPassword": "Please enter email and password",
+    "loginFailed": "Login failed",
+    "accountNotFound": "Account not found. Please sign up first or check your credentials.",
+    "loginError": "An error occurred during login",
+    "registrationError": "An error occurred during registration",
+    "genericError": "An error occurred",
+    "registrationCompleted": "Registration completed",
+    "confirmEmailDescription": "Check your email to confirm your account",
+    "enterEmailAbove": "Please enter your email in the field above",
+    "magicLinkSent": "Magic Link sent",
+    "magicLinkSentDescription": "Check your email for the login link",
+    "emailPlaceholder": "enter your email",
+    "passwordPlaceholder": "enter your password",
+    "createPasswordPlaceholder": "create a password",
+    "signingIn": "Signing in...",
+    "creatingAccount": "Creating account...",
+    "or": "or",
+    "sendingMagicLink": "Sending Magic Link...",
+    "termsNotice": "By continuing, you accept our",
+    "termsLink": "Terms & Conditions and Privacy Policy"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -45,7 +68,11 @@
     "totalApplications": "Total Applications",
     "thisMonth": "This Month",
     "pending": "Pending",
-    "interviews": "Interviews"
+    "interviews": "Interviews",
+    "becomeProZilla": "Become ProZilla",
+    "total": "Total",
+    "avgTime": "Avg Time",
+    "daysShort": "{{count}}d"
   },
   "applications": {
     "title": "Applications",
@@ -64,7 +91,13 @@
     "addFirstApplication": "Add your first application to start tracking",
     "viewFullDescription": "View full job description",
     "applicationLimit": "Application limit reached",
-    "applicationLimitMessage": "Free users can only track up to 50 applications. Upgrade to Pro for unlimited tracking."
+    "applicationLimitMessage": "Free users can only track up to 50 applications. Upgrade to Pro for unlimited tracking.",
+    "statusUpdated": "Status updated",
+    "statusUpdatedDescription": "Application moved to \"{{status}}\".",
+    "errorUpdatingStatus": "Failed to update the application status.",
+    "errorLoadingTitle": "Loading failed",
+    "errorLoadingDescription": "Unable to load your applications.",
+    "applicationAddedFor": "Application for {{company}} saved successfully."
   },
   "jobStatus": {
     "in-corso": "In Progress",
@@ -98,7 +131,34 @@
     "overview": "Overview",
     "monthlyTrend": "Monthly Trend",
     "statusDistribution": "Status Distribution",
-    "responseRate": "Response Rate"
+    "responseRate": "Response Rate",
+    "noApplications": "No applications found",
+    "noApplicationsDescription": "Add some job applications to see statistics",
+    "unknownCompany": "Unknown",
+    "outOf": "{{count}} out of {{total}}",
+    "interviewRate": "Interview Rate",
+    "percentOfTotal": "{{percentage}}% of total",
+    "successRate": "Success Rate",
+    "offersReceived_one": "{{count}} offer received",
+    "offersReceived_other": "{{count}} offers received",
+    "avgFeedbackTime": "Avg Feedback Time",
+    "days": "days",
+    "timeToInterview": "Time to Interview",
+    "avgDays": "avg days",
+    "weeklyApplications": "Weekly Applications",
+    "last4Weeks": "last 4 weeks",
+    "activeCompanies": "Active Companies",
+    "companiesAppliedTo": "companies applied to",
+    "workModeDistribution": "Work Mode Distribution",
+    "noData": "No data available",
+    "applicationStatus": "Application Status",
+    "topCompanies": "Top Companies by Applications",
+    "applicationCount_one": "{{count}} application",
+    "applicationCount_other": "{{count}} applications",
+    "noCompaniesData": "No companies data available",
+    "mostAdvancedStages": "Most Advanced Interview Stages",
+    "appliedOn": "Applied: {{date}}",
+    "noInterviewData": "No interview data available"
   },
   "subscription": {
     "title": "Subscription Management",
@@ -130,7 +190,10 @@
     "fillAllFields": "Please fill in all required fields.",
     "emailPrepared": "Email Prepared",
     "emailPreparedDescription": "The email has been prepared in your mail client.",
-    "errorPreparingEmail": "Error preparing email."
+    "errorPreparingEmail": "Error preparing email.",
+    "freePlan": "Free",
+    "responseTimeLabel": "Response time:",
+    "responseTimeBody": "We respond to all claims and refund requests within 72 business hours."
   },
   "settings": {
     "title": "Settings",
@@ -141,14 +204,85 @@
     "english": "English",
     "languageUpdated": "Language Updated",
     "languageUpdatedDescription": "Language has been changed successfully.",
-    "errorUpdatingLanguage": "Error updating language."
+    "errorUpdatingLanguage": "Error updating language.",
+    "subtitle": "Manage your account preferences",
+    "personalInfo": "Personal Information",
+    "firstName": "First Name",
+    "middleName": "Middle Name",
+    "lastName": "Last Name",
+    "role": "Role",
+    "currentCompany": "Current Company",
+    "firstNamePlaceholder": "Your first name",
+    "middleNamePlaceholder": "Your middle name",
+    "lastNamePlaceholder": "Your last name",
+    "rolePlaceholder": "e.g., Software Engineer, Product Manager",
+    "currentCompanyPlaceholder": "Your current company",
+    "ghostedApplications": "Ghosted Applications",
+    "applicationSettings": "Application Settings",
+    "ghostingDaysLabel": "Days after which an application is considered \"ghosted\"",
+    "currentlyDays_one": "Currently: {{count}} day",
+    "currentlyDays_other": "Currently: {{count}} days",
+    "privacySecurity": "Privacy & Security",
+    "privacyDescription": "Your data is securely stored and encrypted. Only you have access to your job application data.",
+    "saveSettings": "Save Settings",
+    "backToHome": "Back to home"
   },
   "pro": {
     "title": "TrackZilla Pro",
     "unlimitedApplications": "Unlimited Applications",
     "advancedAnalytics": "Advanced Analytics",
     "prioritySupport": "Priority Support",
-    "upgrade": "Upgrade to Pro"
+    "upgrade": "Upgrade to Pro",
+    "loginRequiredTitle": "Login required",
+    "loginRequiredDescription": "You need to log in to proceed with the upgrade.",
+    "checkoutError": "An error occurred while starting the checkout. Please try again.",
+    "portalError": "Unable to open the management portal.",
+    "activeSubscription": "Active Subscription",
+    "tierActive": "{{tier}} - Active",
+    "renewal": "Renewal: {{date}}",
+    "manageSubscription": "Manage Subscription",
+    "subtitleSubscribed": "You're using the full potential of your job tracking!",
+    "subtitleFree": "Unlock the full potential of your job tracking. Manage unlimited applications with professional tools.",
+    "freePlan": "Free",
+    "perMonth": "/month",
+    "currentPlan": "Current",
+    "basicPlan": "Basic Plan",
+    "activeBadge": "✅ Active",
+    "recommendedBadge": "🚀 Recommended",
+    "everythingIncluded": "Everything included",
+    "becomePro": "Become ProZilla Now",
+    "features": {
+      "pro": {
+        "unlimitedTitle": "Unlimited applications",
+        "unlimitedDescription": "Track all your job applications without limits",
+        "kanbanTitle": "Full Kanban view",
+        "kanbanDescription": "Organize your applications with drag & drop",
+        "questionsTitle": "Interview questions in advance",
+        "questionsDescription": "Prepare better for your interviews",
+        "resourcesTitle": "Recommended resources",
+        "resourcesDescription": "Exclusive access to premium content"
+      },
+      "free": {
+        "limitTitle": "50 applications limit",
+        "limitDescription": "Limited application tracking",
+        "kanbanTitle": "Kanban view locked",
+        "kanbanDescription": "Only list view available",
+        "questionsTitle": "Questions hidden",
+        "questionsDescription": "No advance preparation",
+        "resourcesTitle": "No premium resources",
+        "resourcesDescription": "Basic content only"
+      }
+    },
+    "comparison": {
+      "title": "Detailed Comparison",
+      "features": "Features",
+      "applicationsCount": "Number of applications",
+      "maxApplications": "50 max",
+      "unlimited": "Unlimited",
+      "kanbanView": "Kanban view",
+      "interviewQuestions": "Interview questions",
+      "premiumResources": "Premium resources"
+    }
   },
   "addJob": {
     "title": "Add Application",
@@ -162,7 +296,39 @@
     "addApplication": "Add Application",
     "applicationAdded": "Application added",
     "applicationAddedDescription": "Application has been added successfully.",
-    "errorAddingApplication": "Failed to add application."
+    "errorAddingApplication": "Failed to add application.",
+    "addNewApplication": "Add New Application",
+    "headerSubtitle": "Track your job application progress",
+    "pageSubtitle": "Track your job applications effortlessly",
+    "logoAlt": "TrackZilla logo",
+    "enterDescriptionFirst": "Please enter the job description first",
+    "dataExtracted": "Data extracted!",
+    "dataExtractedDescription": "Data has been automatically extracted. Now complete the details.",
+    "companyNameRequired": "Company name is required",
+    "extractAndContinue": "Extract Data and Continue",
+    "extractData": "Extract Data",
+    "stepExtraction": "Extraction",
+    "stepDetails": "Details",
+    "extractedDataEditable": "Extracted Data (editable)",
+    "salaryPlaceholder": "e.g. 45k, ND",
+    "applicationStatus": "Application Status",
+    "jobDescriptionPlaceholder": "Paste the complete job description here...",
+    "jobDescriptionHint": "Paste the entire job description to automatically extract the main data",
+    "customTags": "Custom Tags",
+    "predefinedTags": "Predefined tags:",
+    "addCustomTagPlaceholder": "Add custom tag...",
+    "addTag": "Add tag",
+    "removeTag": "Remove tag {{tag}}",
+    "predefinedTagList": {
+      "dreamJob": "Dream Job",
+      "startup": "Startup",
+      "important": "Important",
+      "interestingSalary": "Interesting Salary",
+      "referral": "Referral",
+      "remoteFriendly": "Remote Friendly",
+      "bigCompany": "Big Company",
+      "growthOpportunity": "Growth Opportunity"
+    }
   },
   "csv": {
     "export": "Export CSV",
@@ -221,18 +387,34 @@
     "confirmDelete": "Delete",
     "applicationDeleted": "Application deleted",
     "applicationDeletedDescription": "Job application has been deleted successfully.",
-    "errorDeletingApplication": "Failed to delete application."
+    "errorDeletingApplication": "Failed to delete application.",
+    "typeToConfirmDescription": "This action cannot be undone. To confirm, type the {{itemType}} name \"{{itemName}}\" below.",
+    "typeToConfirmPlaceholder": "Type the {{itemType}} name to confirm",
+    "deleteItem": "Delete {{itemType}}",
+    "itemTypes": {
+      "application": "application"
+    }
   },
   "filters": {
     "all": "All",
-    "searchPlaceholder": "Search by company or role..."
+    "searchPlaceholder": "Search by company or role...",
+    "filterByStatus": "Filter by status",
+    "allStatuses": "All statuses",
+    "sortBy": "Sort by"
   },
   "landing": {
     "hero": {
       "title": "Track your job applications with ease",
       "subtitle": "Organize, monitor, and analyze your job applications in one place. Never miss an opportunity again.",
       "cta": "Get Started Free",
-      "watchDemo": "Watch Demo"
+      "watchDemo": "Watch Demo",
+      "badge": "🚀 Now in Beta - Start tracking for free",
+      "headline": "TAME THE JOB HUNT",
+      "roar": "Grrrawww!",
+      "gilaMonster": "Job hunt got you feeling like you're fighting a <link>Gila monster</link> with a spoon?",
+      "meet": "Meet Trackzilla: your beast-taming, chaos-crushing, job-tracking sidekick.",
+      "startHunt": "Start the hunt now",
+      "dashboardAlt": "TrackZilla Dashboard"
     },
     "features": {
       "title": "Everything you need for job hunting",
@@ -247,6 +429,35 @@
       "tracking": {
         "title": "Complete Tracking",
         "description": "Monitor every stage of your application process"
+      },
+      "badge": "⚡ Powerful Features",
+      "heading": "Everything you need for epic job hunting",
+      "subtitle": "Because job hunting is a multi-headed hydra and your memory is not a database.",
+      "items": {
+        "track": {
+          "title": "Track every application",
+          "description": "No job shall escape! Trackzilla logs every role you go after, complete with timestamps, notes, and juicy details. 🦖 RAWR! Application tracked!"
+        },
+        "analytics": {
+          "title": "Advanced analytics",
+          "description": "Want to know which companies ghost you faster than a vampire in sunlight? We've got cold-blooded stats. Trackzilla sees all. Even your self-doubt. 👁️"
+        },
+        "followUps": {
+          "title": "Automatic follow-ups",
+          "description": "Never let a ghosted app get away. Trackzilla remembers what you forget and roars when it's time to ping. 💌 Grrrrrr... where's my interview?!"
+        },
+        "dashboard": {
+          "title": "Intuitive dashboard",
+          "description": "See your quest progress with shiny charts and tasty metrics. So easy, even a cave troll could use it. ✨ Oooh, bars go up!"
+        },
+        "statuses": {
+          "title": "Customizable statuses",
+          "description": "Application? Interview? Waiting in eternal silence? Customize your workflow like a true monster master. 🧌 You roll for control."
+        },
+        "summon": {
+          "title": "Summon in seconds",
+          "description": "No tutorials. No rituals. Just click and boom, your job-hunting lair is live. ⚡️ Trackzilla has entered the chat."
+        }
       }
     },
     "pricing": {
@@ -271,7 +482,236 @@
           "Priority support",
           "Data export"
         ]
+      },
+      "badge": "💰 Simple Pricing",
+      "heading": "Choose your hunting power level",
+      "subtitle": "Start free, upgrade when you're ready to unleash the full beast",
+      "perMonth": "/month",
+      "freePlan": {
+        "features": [
+          "Track up to 50 applications",
+          "Basic analytics dashboard",
+          "Manual status updates",
+          "Basic export functionality"
+        ],
+        "cta": "Start for free"
+      },
+      "proPlan": {
+        "features": [
+          "Unlimited applications tracking",
+          "Kanban board for Jobs",
+          "Advanced analytics & insights",
+          "Interview questions history",
+          "Company reviews database"
+        ],
+        "cta": "Get pro now"
       }
+    },
+    "header": {
+      "logoAlt": "TrackZilla Logo",
+      "signIn": "Sign In",
+      "huntNow": "Hunt now!"
+    },
+    "extension": {
+      "badge": "Chrome Extension",
+      "titleStart": "LinkedIn automation on",
+      "titleHighlight": "steroids",
+      "subtitle": "Transform your LinkedIn browsing into a job-tracking powerhouse. One click to rule them all!",
+      "stopTitle": "Stop the copy-paste madness",
+      "description": "Our Chrome extension transforms LinkedIn into your personal job-tracking command center. See a job you like? BAM! It's tracked. Company details? BOOM! Auto-extracted. Status updates? ZAP! Done without leaving the page.",
+      "features": [
+        "One-click application tracking from LinkedIn",
+        "Auto-extract job details and company info",
+        "Instant status updates without leaving LinkedIn",
+        "Smart job description parsing",
+        "Automatic follow-up reminders",
+        "Seamless sync with your dashboard"
+      ],
+      "install": "Install Extension",
+      "compatibility": "Free • Works with Chrome & Edge",
+      "cardAlt": "TrackZilla Extension",
+      "cardTitle": "TrackZilla Extension",
+      "cardDescription": "The ultimate LinkedIn job tracking companion that makes your browser 10x smarter",
+      "mockDetected": "✅ Job detected: Senior React Developer",
+      "mockExtracted": "📊 Auto-extracted: €50k-70k, Remote",
+      "mockAdded": "🚀 Added to dashboard in 0.2s"
+    },
+    "analytics": {
+      "badge": "📊 Analytics & Insights",
+      "title": "Monster-Slaying 101",
+      "description": "TrackZilla gives you detailed insights into your response rates, helps you spot success patterns, and optimizes your job hunting strategy. It's like having analytics superpowers for your career! 📊",
+      "benefits": [
+        "Automatic response time tracking (because who has time to count days?)",
+        "Identify the most responsive companies (find the keepers!)",
+        "Smart suggestions to level up your approach (like having a job hunt mentor)"
+      ],
+      "imageAlt": "Illustration of two monsters facing off, symbolising the challenges and obstacles in the job search process.",
+      "cta": "Hunt now with TrackZilla"
+    },
+    "cta": {
+      "badge": "🎯 Ready to dominate?",
+      "title": "Ready to level up your job hunting game?",
+      "subtitle": "Time to become the apex predator of the job market! 🦖",
+      "button": "Start hunting for free"
+    },
+    "footer": {
+      "madeWith": "Made with love (and Lovable) by <guido>Guido Penta</guido> and <salvatore>Salvatore Campagnese</salvatore>",
+      "copyright": "© 2025 TrackZilla. Supercharge your job hunt like a boss! 🚀",
+      "openSource": "This is an Open Source Project, come and contribute"
     }
+  },
+  "success": {
+    "title": "🎉 Congratulations!",
+    "subtitle": "Your subscription has been activated successfully",
+    "welcome": "Welcome to ProZilla!",
+    "accessIntro": "You now have access to all of TrackZilla's premium features:",
+    "features": [
+      "Unlimited applications",
+      "Full Kanban view",
+      "Interview questions in advance",
+      "Premium recommended resources"
+    ],
+    "startUsing": "Start using TrackZilla",
+    "manageSubscription": "Manage Subscription",
+    "footer": "Your subscription is now active. You can manage all the details from your account page."
+  },
+  "notFound": {
+    "message": "Oops! Page not found",
+    "backHome": "Return to Home"
+  },
+  "sitemap": {
+    "loading": "Loading sitemap...",
+    "title": "Sitemap"
+  },
+  "terms": {
+    "redirecting": "Redirecting to Terms & Privacy Policy..."
+  },
+  "importPage": {
+    "processing": "Processing..."
+  },
+  "applicationDetail": {
+    "errorLoading": "Error loading application",
+    "errorLoadingDescription": "Could not load application details",
+    "proFeature": "Pro Feature",
+    "proFeatureToast": "Interview questions and company reviews are only available for Pro users.",
+    "notFound": "Application not found",
+    "goBackToDashboard": "Go back to dashboard",
+    "backToDashboard": "Back to Dashboard",
+    "jobDescriptionLabel": "Job Description:",
+    "viewLess": "View less",
+    "viewMore": "View more",
+    "interviewQuestionsTab": "Interview Questions",
+    "companyReviewsTab": "Company Reviews",
+    "interviewQuestionsLocked": "Interview questions are only available for Pro users. Upgrade to unlock this feature and more!",
+    "companyReviewsLocked": "Company reviews are only available for Pro users. Upgrade to unlock this feature and more!"
+  },
+  "interviewQuestions": {
+    "title": "Interview Questions",
+    "loading": "Loading questions...",
+    "errorLoading": "Error loading questions",
+    "errorLoadingDescription": "Could not load interview questions",
+    "questionAdded": "Question added",
+    "questionAddedDescription": "Interview question has been saved successfully",
+    "errorAdding": "Error adding question",
+    "errorAddingDescription": "Could not save the interview question",
+    "addInterviewQuestion": "Add Interview Question",
+    "question": "Question",
+    "questionPlaceholder": "Enter the interview question...",
+    "roleOptional": "Role (Optional)",
+    "rolePlaceholder": "e.g., Frontend Developer",
+    "technologiesOptional": "Technologies (Optional)",
+    "technologiesPlaceholder": "e.g., React, Node.js, Python",
+    "roundOptional": "Interview Round (Optional)",
+    "selectRound": "Select interview round",
+    "rounds": {
+      "first": "First Interview",
+      "second": "Second Interview",
+      "technical": "Technical Interview",
+      "final": "Final Interview",
+      "hr": "HR Interview"
+    },
+    "adding": "Adding...",
+    "addQuestion": "Add Question",
+    "emptyTitle": "No interview questions yet",
+    "emptyDescription": "Be the first to add a question!"
+  },
+  "companyReviews": {
+    "title": "{{companyName}} Reviews",
+    "loading": "Loading reviews...",
+    "errorLoading": "Error loading reviews",
+    "errorLoadingDescription": "Could not load company reviews",
+    "reviewUpdated": "Review updated",
+    "reviewUpdatedDescription": "Your company review has been updated successfully",
+    "reviewAdded": "Review added",
+    "reviewAddedDescription": "Your company review has been saved successfully",
+    "errorSaving": "Error saving review",
+    "errorSavingDescription": "Could not save your company review",
+    "reviewCount_one": "{{count}} review",
+    "reviewCount_other": "{{count}} reviews",
+    "addReview": "Add Review",
+    "editYourReview": "Edit Your Review",
+    "rating": "Rating",
+    "commentOptional": "Comment (Optional)",
+    "commentPlaceholder": "Share your experience with this company...",
+    "saving": "Saving...",
+    "updateReview": "Update Review",
+    "emptyTitle": "No reviews yet",
+    "emptyDescription": "Be the first to review this company!",
+    "yourReview": "Your Review"
+  },
+  "alerts": {
+    "title": "Manage Alerts - {{companyName}}",
+    "interviewDate": "Interview Date",
+    "deadline": "Deadline",
+    "addInterviewAlert": "Add Interview Alert",
+    "addDeadlineAlert": "Add Deadline Alert",
+    "activeAlerts": "Active Alerts",
+    "types": {
+      "interview": "Interview Alert",
+      "deadline": "Deadline Alert"
+    },
+    "removeAlert": "Remove alert",
+    "alertBefore": "Alert Before",
+    "units": {
+      "minutes": "Minutes",
+      "hours": "Hours",
+      "days": "Days"
+    },
+    "repeatAfter": "Repeat After",
+    "recurring": "Recurring",
+    "active": "Active",
+    "saveAlerts": "Save Alerts"
+  },
+  "kanban": {
+    "dropHere": "Drop applications here",
+    "statusValues": "Status values",
+    "addStatus": "Add status",
+    "color": "Color",
+    "colors": {
+      "blue": "Blue",
+      "green": "Green",
+      "yellow": "Yellow",
+      "orange": "Orange",
+      "red": "Red",
+      "purple": "Purple",
+      "pink": "Pink",
+      "indigo": "Indigo",
+      "gray": "Gray"
+    }
+  },
+  "sidebar": {
+    "freeBadge": "FREE",
+    "activeBadge": "ACTIVE"
+  },
+  "ghosting": {
+    "updatedTitle": "Applications updated",
+    "updatedDescription_one": "{{count}} application was automatically marked as \"ghosting\".",
+    "updatedDescription_other": "{{count}} applications were automatically marked as \"ghosting\".",
+    "errorTitle": "Update failed",
+    "errorDescription_one": "Unable to update {{count}} application.",
+    "errorDescription_other": "Unable to update {{count}} applications."
+  },
+  "subscriptionCheck": {
+    "error": "Unable to verify your subscription status."
   }
 }

@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Bell, Plus, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 interface AlertsManagerProps {
   open: boolean;
@@ -23,6 +24,7 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
   application,
   onSave
 }) => {
+  const { t } = useTranslation();
   const [alerts, setAlerts] = useState<JobAlert[]>(application.alerts || []);
   const [interviewDate, setInterviewDate] = useState(application.interviewDate || '');
   const [deadline, setDeadline] = useState(application.deadline || '');
@@ -89,7 +91,7 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Bell className="w-5 h-5" />
-            Manage Alerts - {application.companyName}
+            {t('alerts.title', { companyName: application.companyName })}
           </DialogTitle>
         </DialogHeader>
 
@@ -97,7 +99,7 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
           {/* Date Settings */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="interview-date">Interview Date</Label>
+              <Label htmlFor="interview-date">{t('alerts.interviewDate')}</Label>
               <Input
                 id="interview-date"
                 type="datetime-local"
@@ -107,7 +109,7 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="deadline">Deadline</Label>
+              <Label htmlFor="deadline">{t('alerts.deadline')}</Label>
               <Input
                 id="deadline"
                 type="datetime-local"
@@ -128,7 +130,7 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
               className="border-blue-500 text-blue-400 hover:bg-blue-500/20"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Interview Alert
+              {t('alerts.addInterviewAlert')}
             </Button>
             <Button
               onClick={() => addAlert('deadline')}
@@ -138,23 +140,24 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
               className="border-orange-500 text-orange-400 hover:bg-orange-500/20"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Deadline Alert
+              {t('alerts.addDeadlineAlert')}
             </Button>
           </div>
 
           {/* Existing Alerts */}
           {alerts.length > 0 && (
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold">Active Alerts</h3>
+              <h3 className="text-lg font-semibold">{t('alerts.activeAlerts')}</h3>
               {alerts.map((alert) => (
                 <Card key={alert.id} className="bg-gray-800 border-gray-600">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm flex items-center justify-between">
-                      <span className="capitalize">{alert.type} Alert</span>
+                      <span className="capitalize">{t(`alerts.types.${alert.type}`)}</span>
                       <Button
                         onClick={() => removeAlert(alert.id)}
                         variant="ghost"
                         size="sm"
+                        aria-label={t('alerts.removeAlert')}
                         className="text-red-400 hover:text-red-300 hover:bg-red-500/20"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -164,7 +167,7 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label>Alert Before</Label>
+                        <Label>{t('alerts.alertBefore')}</Label>
                         <div className="flex gap-2">
                           <Input
                             type="number"
@@ -183,9 +186,9 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="bg-gray-800 border-gray-600">
-                              <SelectItem value="minutes">Minutes</SelectItem>
-                              <SelectItem value="hours">Hours</SelectItem>
-                              <SelectItem value="days">Days</SelectItem>
+                              <SelectItem value="minutes">{t('alerts.units.minutes')}</SelectItem>
+                              <SelectItem value="hours">{t('alerts.units.hours')}</SelectItem>
+                              <SelectItem value="days">{t('alerts.units.days')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -198,7 +201,7 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
                           onCheckedChange={(checked) => updateAlert(alert.id, { recurring: checked })}
                         />
                         <Label>
-                          {alert.type === 'interview' ? 'Repeat After' : 'Recurring'}
+                          {alert.type === 'interview' ? t('alerts.repeatAfter') : t('alerts.recurring')}
                         </Label>
                       </div>
                       <div className="flex items-center gap-2">
@@ -206,7 +209,7 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
                           checked={alert.isActive}
                           onCheckedChange={(checked) => updateAlert(alert.id, { isActive: checked })}
                         />
-                        <Label>Active</Label>
+                        <Label>{t('alerts.active')}</Label>
                       </div>
                     </div>
                   </CardContent>
@@ -222,13 +225,13 @@ export const AlertsManager: React.FC<AlertsManagerProps> = ({
               variant="outline"
               className="border-gray-600 text-gray-300 hover:bg-gray-800"
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               onClick={handleSave}
               className="bg-red-500 hover:bg-red-600 text-white"
             >
-              Save Alerts
+              {t('alerts.saveAlerts')}
             </Button>
           </div>
         </div>

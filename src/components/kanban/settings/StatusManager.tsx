@@ -1,6 +1,8 @@
 
 import React from 'react';
-import { JobStatus, JOB_STATUS_LABELS } from '@/types/job';
+import { useTranslation } from 'react-i18next';
+import { JobStatus } from '@/types/job';
+import { useTranslatedLabels } from '@/hooks/useTranslatedLabels';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -21,10 +23,12 @@ export const StatusManager: React.FC<StatusManagerProps> = ({
   onRemoveStatus,
   onUpdateStatus
 }) => {
+  const { t } = useTranslation();
+  const { getJobStatusLabel, jobStatusOptions } = useTranslatedLabels();
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <Label className="text-foreground">Status Values</Label>
+        <Label className="text-foreground">{t('kanban.statusValues')}</Label>
         {!isDefault && (
           <Button
             onClick={onAddStatus}
@@ -32,7 +36,7 @@ export const StatusManager: React.FC<StatusManagerProps> = ({
             size="sm"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Status
+            {t('kanban.addStatus')}
           </Button>
         )}
       </div>
@@ -42,7 +46,7 @@ export const StatusManager: React.FC<StatusManagerProps> = ({
           <div key={statusIndex} className="flex items-center gap-2">
             {isDefault ? (
               <div className="flex-1 p-2 bg-muted border border-border rounded text-sm text-foreground font-medium">
-                {JOB_STATUS_LABELS[status as JobStatus] || status}
+                {jobStatusOptions.some(option => option.value === status) ? getJobStatusLabel(status as JobStatus) : status}
               </div>
             ) : (
               <>
@@ -54,9 +58,9 @@ export const StatusManager: React.FC<StatusManagerProps> = ({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-background border-border">
-                    {Object.entries(JOB_STATUS_LABELS).map(([key, label]) => (
-                      <SelectItem key={key} value={key}>
-                        {label}
+                    {jobStatusOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>

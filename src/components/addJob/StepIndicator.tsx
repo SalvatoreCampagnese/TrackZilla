@@ -1,11 +1,13 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface StepIndicatorProps {
   currentStep: 'extract' | 'details';
 }
 
 export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep }) => {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center gap-2 mb-4">
       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
@@ -16,7 +18,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep }) => 
       <span className={`text-sm ${
         currentStep === 'extract' ? 'text-red-600 font-medium' : 'text-green-600'
       }`}>
-        Extraction
+        {t('addJob.stepExtraction')}
       </span>
       <div className="w-8 h-0.5 bg-white/20"></div>
       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
@@ -27,7 +29,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep }) => 
       <span className={`text-sm ${
         currentStep === 'details' ? 'text-red-600 font-medium' : 'text-white/60'
       }`}>
-        Details
+        {t('addJob.stepDetails')}
       </span>
     </div>
   );

@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/hooks/useLanguage';
+import { LanguageSelector } from '@/components/common/LanguageSelector';
 import { Languages } from 'lucide-react';
 
 interface SettingsModalProps {
@@ -23,7 +23,7 @@ interface UserProfile {
 }
 
 export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
-  const { t, currentLanguage, changeLanguage, loading: languageLoading } = useLanguage();
+  const { t } = useLanguage();
   const [ghostingDays, setGhostingDays] = useState(14);
   const [savedGhostingDays, setSavedGhostingDays] = useState(14);
   
@@ -101,23 +101,7 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                 <Label htmlFor="language-select" className="text-foreground">
                   {t('settings.selectLanguage')}
                 </Label>
-                <Select 
-                  value={currentLanguage} 
-                  onValueChange={(value: 'it' | 'en') => changeLanguage(value)}
-                  disabled={languageLoading}
-                >
-                  <SelectTrigger id="language-select" className="bg-background border-gray-600 text-foreground">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background border-gray-600">
-                    <SelectItem value="it" className="text-foreground">
-                      🇮🇹 {t('settings.italian')}
-                    </SelectItem>
-                    <SelectItem value="en" className="text-foreground">
-                      🇬🇧 {t('settings.english')}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                <LanguageSelector />
               </div>
             </CardContent>
           </Card>
@@ -131,7 +115,7 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="first-name" className="text-foreground">
-                    First Name
+                    {t('settings.firstName')}
                   </Label>
                   <Input
                     id="first-name"
@@ -139,12 +123,12 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                     value={userProfile.firstName || ''}
                     onChange={(e) => handleProfileChange('firstName', e.target.value)}
                     className="bg-background border-gray-600 text-foreground"
-                    placeholder="Your first name"
+                    placeholder={t('settings.firstNamePlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="middle-name" className="text-foreground">
-                    Middle Name
+                    {t('settings.middleName')}
                   </Label>
                   <Input
                     id="middle-name"
@@ -152,13 +136,13 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                     value={userProfile.middleName || ''}
                     onChange={(e) => handleProfileChange('middleName', e.target.value)}
                     className="bg-background border-gray-600 text-foreground"
-                    placeholder="Your middle name"
+                    placeholder={t('settings.middleNamePlaceholder')}
                   />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="last-name" className="text-foreground">
-                  Last Name
+                  {t('settings.lastName')}
                 </Label>
                 <Input
                   id="last-name"
@@ -166,12 +150,12 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                   value={userProfile.lastName || ''}
                   onChange={(e) => handleProfileChange('lastName', e.target.value)}
                   className="bg-background border-gray-600 text-foreground"
-                  placeholder="Your last name"
+                  placeholder={t('settings.lastNamePlaceholder')}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="role" className="text-foreground">
-                  Role
+                  {t('settings.role')}
                 </Label>
                 <Input
                   id="role"
@@ -179,12 +163,12 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                   value={userProfile.role || ''}
                   onChange={(e) => handleProfileChange('role', e.target.value)}
                   className="bg-background border-gray-600 text-foreground"
-                  placeholder="e.g., Software Engineer, Product Manager"
+                  placeholder={t('settings.rolePlaceholder')}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="current-company" className="text-foreground">
-                  Current Company
+                  {t('settings.currentCompany')}
                 </Label>
                 <Input
                   id="current-company"
@@ -192,7 +176,7 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                   value={userProfile.currentCompany || ''}
                   onChange={(e) => handleProfileChange('currentCompany', e.target.value)}
                   className="bg-background border-gray-600 text-foreground"
-                  placeholder="Your current company"
+                  placeholder={t('settings.currentCompanyPlaceholder')}
                 />
               </div>
             </CardContent>
@@ -201,12 +185,12 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
           {/* Ghosting days setting */}
           <Card className="bg-gradient-to-br from-card to-gray-800/50 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-base text-foreground">Ghosted Applications</CardTitle>
+              <CardTitle className="text-base text-foreground">{t('settings.ghostedApplications')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 <Label htmlFor="ghosting-days" className="text-foreground">
-                  Days after which an application is considered "ghosted"
+                  {t('settings.ghostingDaysLabel')}
                 </Label>
                 <Input
                   id="ghosting-days"
@@ -218,7 +202,7 @@ export const SettingsModal = ({ open, onOpenChange }: SettingsModalProps) => {
                   className="w-full bg-background border-gray-600 text-foreground"
                 />
                 <p className="text-sm text-muted-foreground">
-                  Currently: {savedGhostingDays} days
+                  {t('settings.currentlyDays', { count: savedGhostingDays })}
                 </p>
               </div>
             </CardContent>

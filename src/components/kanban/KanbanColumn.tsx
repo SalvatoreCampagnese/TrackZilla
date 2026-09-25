@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
+import { useTranslation } from 'react-i18next';
 import { JobApplication, JobStatus } from '@/types/job';
 import { KanbanCard } from './KanbanCard';
 
@@ -17,6 +18,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
   applications,
   onDelete,
 }) => {
+  const { t } = useTranslation();
   const { setNodeRef, isOver } = useDroppable({
     id: id,
   });
@@ -70,7 +72,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
         ))}
         {applications.length === 0 && (
           <div className="flex items-center justify-center h-32 text-white/50 text-sm font-medium">
-            Drop applications here
+            {t('kanban.dropHere')}
           </div>
         )}
       </div>

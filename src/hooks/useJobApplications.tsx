@@ -4,8 +4,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { JobApplication, JobStatus } from '@/types/job';
 import { toast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export const useJobApplications = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,8 +48,8 @@ export const useJobApplications = () => {
       console.error('Error fetching applications:', error);
       setError(error);
       toast({
-        title: "Errore nel caricamento",
-        description: "Impossibile caricare le candidature",
+        title: t('applications.errorLoadingTitle'),
+        description: t('applications.errorLoadingDescription'),
         variant: "destructive"
       });
     } finally {
@@ -94,14 +96,14 @@ export const useJobApplications = () => {
       setApplications(prev => [newApplication, ...prev]);
       
       toast({
-        title: "Candidatura aggiunta",
-        description: `Candidatura per ${application.companyName} salvata con successo`
+        title: t('addJob.applicationAdded'),
+        description: t('applications.applicationAddedFor', { company: application.companyName })
       });
     } catch (error) {
       console.error('Error adding application:', error);
       toast({
-        title: "Errore nel salvataggio",
-        description: "Impossibile salvare la candidatura",
+        title: t('common.error'),
+        description: t('addJob.errorAddingApplication'),
         variant: "destructive"
       });
     }
@@ -144,72 +146,46 @@ export const useJobApplications = () => {
     return { inserted, failed: newApplications.length - inserted };
   };
 
+  // Throws on failure; callers are responsible for showing feedback to the user.
   const updateApplication = async (id: string, updates: Partial<JobApplication>) => {
-    try {
-      const { error } = await supabase
-        .from('job_applications')
-        .update({
-          ...(updates.status && { status: updates.status }),
-          ...(updates.jobDescription && { job_description: updates.jobDescription }),
-          ...(updates.companyName && { company_name: updates.companyName }),
-          ...(updates.roleDescription && { role_description: updates.roleDescription }),
-          ...(updates.salary && { salary: updates.salary }),
-          ...(updates.workMode && { work_mode: updates.workMode }),
-          ...(updates.applicationDate && { application_date: updates.applicationDate }),
-          ...(updates.tags && { tags: updates.tags }),
-        })
-        .eq('id', id)
-        .eq('deleted', false);
+    const { error } = await supabase
+      .from('job_applications')
+      .update({
+        ...(updates.status && { status: updates.status }),
+        ...(updates.jobDescription && { job_description: updates.jobDescription }),
+        ...(updates.companyName && { company_name: updates.companyName }),
+        ...(updates.roleDescription && { role_description: updates.roleDescription }),
+        ...(updates.salary && { salary: updates.salary }),
+        ...(updates.workMode && { work_mode: updates.workMode }),
+        ...(updates.applicationDate && { application_date: updates.applicationDate }),
+        ...(updates.tags && { tags: updates.tags }),
+      })
+      .eq('id', id)
+      .eq('deleted', false);
 
-      if (error) throw error;
+    if (error) throw error;
 
-      setApplications(prev => 
-        prev.map(app => 
-          app.id === id ? { ...app, ...updates } : app
-        )
-      );
-
-      toast({
-        title: "Candidatura aggiornata",
-        description: "La candidatura è stata aggiornata con successo"
-      });
-    } catch (error) {
-      console.error('Error updating application:', error);
-      toast({
-        title: "Errore nell'aggiornamento",
-        description: "Impossibile aggiornare la candidatura",
-        variant: "destructive"
-      });
-    }
+    setApplications(prev => 
+      prev.map(app => 
+        app.id === id ? { ...app, ...updates } : app
+      )
+    );
   };
 
   const updateApplicationStatus = async (id: string, status: JobStatus) => {
     await updateApplication(id, { status });
   };
 
+  // Throws on failure; callers are responsible for showing feedback to the user.
   const deleteApplication = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('job_applications')
-        .update({ deleted: true })
-        .eq('id', id);
+    const { error } = await supabase
+      .from('job_applications')
+      .update({ deleted: true })
+      .eq('id', id);
 
-      if (error) throw error;
+    if (error) throw error;
 
-      setApplications(prev => prev.filter(app => app.id !== id));
-      
-      toast({
-        title: "Candidatura eliminata",
-        description: "La candidatura è stata eliminata con successo"
-      });
-    } catch (error) {
-      console.error('Error deleting application:', error);
-      toast({
-        title: "Errore nell'eliminazione",
-        description: "Impossibile eliminare la candidatura",
-        variant: "destructive"
-      });
-    }
+    setApplications(prev => prev.filter(app => app.id !== id));
   };
 
   useEffect(() => {

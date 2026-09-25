@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { JobApplication, JobStatus } from '@/types/job';
+import { useTranslation } from 'react-i18next';
+import { useTranslatedLabels } from '@/hooks/useTranslatedLabels';
 
 interface AddApplicationModalProps {
   open: boolean;
@@ -19,6 +21,8 @@ export const AddApplicationModal: React.FC<AddApplicationModalProps> = ({
   onOpenChange,
   onAddApplication
 }) => {
+  const { t } = useTranslation();
+  const { workModeOptions } = useTranslatedLabels();
   const [formData, setFormData] = useState({
     companyName: '',
     roleDescription: '',
@@ -50,11 +54,11 @@ export const AddApplicationModal: React.FC<AddApplicationModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Add New Application</DialogTitle>
+          <DialogTitle>{t('addJob.addNewApplication')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="companyName">Company Name</Label>
+            <Label htmlFor="companyName">{t('addJob.companyName')}</Label>
             <Input
               id="companyName"
               value={formData.companyName}
@@ -64,7 +68,7 @@ export const AddApplicationModal: React.FC<AddApplicationModalProps> = ({
           </div>
           
           <div>
-            <Label htmlFor="roleDescription">Role</Label>
+            <Label htmlFor="roleDescription">{t('applications.role')}</Label>
             <Input
               id="roleDescription"
               value={formData.roleDescription}
@@ -74,7 +78,7 @@ export const AddApplicationModal: React.FC<AddApplicationModalProps> = ({
           </div>
           
           <div>
-            <Label htmlFor="jobDescription">Job Description</Label>
+            <Label htmlFor="jobDescription">{t('addJob.jobDescription')}</Label>
             <Textarea
               id="jobDescription"
               value={formData.jobDescription}
@@ -84,7 +88,7 @@ export const AddApplicationModal: React.FC<AddApplicationModalProps> = ({
           </div>
           
           <div>
-            <Label htmlFor="salary">Salary</Label>
+            <Label htmlFor="salary">{t('addJob.salary')}</Label>
             <Input
               id="salary"
               value={formData.salary}
@@ -93,22 +97,21 @@ export const AddApplicationModal: React.FC<AddApplicationModalProps> = ({
           </div>
           
           <div>
-            <Label htmlFor="workMode">Work Mode</Label>
+            <Label htmlFor="workMode">{t('addJob.workMode')}</Label>
             <Select value={formData.workMode} onValueChange={(value) => setFormData(prev => ({ ...prev, workMode: value as JobApplication['workMode'] }))}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="remoto">Remote</SelectItem>
-                <SelectItem value="ibrido">Hybrid</SelectItem>
-                <SelectItem value="in-presenza">On-site</SelectItem>
-                <SelectItem value="ND">Not specified</SelectItem>
+                {workModeOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
           
           <div>
-            <Label htmlFor="applicationDate">Application Date</Label>
+            <Label htmlFor="applicationDate">{t('addJob.applicationDate')}</Label>
             <Input
               id="applicationDate"
               type="date"
@@ -120,9 +123,9 @@ export const AddApplicationModal: React.FC<AddApplicationModalProps> = ({
           
           <div className="flex gap-2">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('common.cancel')}
             </Button>
-            <Button type="submit">Add Application</Button>
+            <Button type="submit">{t('addJob.addApplication')}</Button>
           </div>
         </form>
       </DialogContent>

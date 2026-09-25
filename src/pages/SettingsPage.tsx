@@ -1,12 +1,14 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, Clock, Shield } from 'lucide-react';
+import { ArrowLeft, User, Clock, Shield, Languages } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { LanguageSelector } from '@/components/common/LanguageSelector';
 
 interface UserProfile {
   firstName?: string;
@@ -17,6 +19,7 @@ interface UserProfile {
 }
 
 const SettingsPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [ghostingDays, setGhostingDays] = useState(14);
   const [savedGhostingDays, setSavedGhostingDays] = useState(14);
@@ -80,12 +83,13 @@ const SettingsPage = () => {
             variant="ghost"
             size="icon"
             className="text-white hover:bg-white/10"
+            aria-label={t('settings.backToHome')}
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">Settings</h1>
-            <p className="text-sm text-white/70">Manage your account preferences</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">{t('settings.title')}</h1>
+            <p className="text-sm text-white/70">{t('settings.subtitle')}</p>
           </div>
         </div>
       </header>
@@ -97,14 +101,14 @@ const SettingsPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
                 <User className="w-5 h-5" />
-                Personal Information
+                {t('settings.personalInfo')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="first-name" className="text-white/90">
-                    First Name
+                    {t('settings.firstName')}
                   </Label>
                   <Input
                     id="first-name"
@@ -112,12 +116,12 @@ const SettingsPage = () => {
                     value={userProfile.firstName || ''}
                     onChange={(e) => handleProfileChange('firstName', e.target.value)}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                    placeholder="Your first name"
+                    placeholder={t('settings.firstNamePlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="middle-name" className="text-white/90">
-                    Middle Name
+                    {t('settings.middleName')}
                   </Label>
                   <Input
                     id="middle-name"
@@ -125,13 +129,13 @@ const SettingsPage = () => {
                     value={userProfile.middleName || ''}
                     onChange={(e) => handleProfileChange('middleName', e.target.value)}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                    placeholder="Your middle name"
+                    placeholder={t('settings.middleNamePlaceholder')}
                   />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="last-name" className="text-white/90">
-                  Last Name
+                  {t('settings.lastName')}
                 </Label>
                 <Input
                   id="last-name"
@@ -139,12 +143,12 @@ const SettingsPage = () => {
                   value={userProfile.lastName || ''}
                   onChange={(e) => handleProfileChange('lastName', e.target.value)}
                   className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                  placeholder="Your last name"
+                  placeholder={t('settings.lastNamePlaceholder')}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="role" className="text-white/90">
-                  Role
+                  {t('settings.role')}
                 </Label>
                 <Input
                   id="role"
@@ -152,12 +156,12 @@ const SettingsPage = () => {
                   value={userProfile.role || ''}
                   onChange={(e) => handleProfileChange('role', e.target.value)}
                   className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                  placeholder="e.g., Software Engineer, Product Manager"
+                  placeholder={t('settings.rolePlaceholder')}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="current-company" className="text-white/90">
-                  Current Company
+                  {t('settings.currentCompany')}
                 </Label>
                 <Input
                   id="current-company"
@@ -165,7 +169,7 @@ const SettingsPage = () => {
                   value={userProfile.currentCompany || ''}
                   onChange={(e) => handleProfileChange('currentCompany', e.target.value)}
                   className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                  placeholder="Your current company"
+                  placeholder={t('settings.currentCompanyPlaceholder')}
                 />
               </div>
             </CardContent>
@@ -178,14 +182,14 @@ const SettingsPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
                 <Clock className="w-5 h-5" />
-                Application Settings
+                {t('settings.applicationSettings')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="ghosting-days" className="text-white/90">
-                    Days after which an application is considered "ghosted"
+                    {t('settings.ghostingDaysLabel')}
                   </Label>
                   <Input
                     id="ghosting-days"
@@ -197,9 +201,29 @@ const SettingsPage = () => {
                     className="bg-white/10 border-white/20 text-white w-32"
                   />
                   <p className="text-sm text-white/60">
-                    Currently: {savedGhostingDays} days
+                    {t('settings.currentlyDays', { count: savedGhostingDays })}
                   </p>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Separator className="bg-white/20" />
+
+          {/* Language */}
+          <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-white">
+                <Languages className="w-5 h-5" />
+                {t('settings.language')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <Label htmlFor="language-select" className="text-white/90">
+                  {t('settings.selectLanguage')}
+                </Label>
+                <LanguageSelector className="bg-white/10 border-white/20 text-white w-full md:w-64" />
               </div>
             </CardContent>
           </Card>
@@ -211,12 +235,12 @@ const SettingsPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
                 <Shield className="w-5 h-5" />
-                Privacy & Security
+                {t('settings.privacySecurity')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-white/70 text-sm">
-                Your data is securely stored and encrypted. Only you have access to your job application data.
+                {t('settings.privacyDescription')}
               </p>
             </CardContent>
           </Card>
@@ -227,7 +251,7 @@ const SettingsPage = () => {
               onClick={handleSave}
               className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8"
             >
-              Save Settings
+              {t('settings.saveSettings')}
             </Button>
           </div>
         </div>

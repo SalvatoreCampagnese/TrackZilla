@@ -5,6 +5,7 @@ import { parseJobDescription } from '@/utils/jobParser';
 import { Button } from '@/components/ui/button';
 import { Wand2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 import { StepIndicator } from './addJob/StepIndicator';
 import { JobExtractionStep } from './addJob/JobExtractionStep';
 import { JobDetailsForm } from './addJob/JobDetailsForm';
@@ -23,6 +24,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
   open,
   initialDescription = ''
 }) => {
+  const { t } = useTranslation();
   const [step, setStep] = useState<'extract' | 'details'>('extract');
   const [jobDescription, setJobDescription] = useState('');
   const [applicationDate, setApplicationDate] = useState(new Date().toISOString().split('T')[0]);
@@ -51,8 +53,8 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
   const handleParseJob = useCallback(() => {
     if (!jobDescription.trim()) {
       toast({
-        title: "Error",
-        description: "Please enter the job description first",
+        title: t('common.error'),
+        description: t('addJob.enterDescriptionFirst'),
         variant: "destructive"
       });
       return;
@@ -61,8 +63,8 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
     setParsedData(parsed);
     setStep('details');
     toast({
-      title: "Data extracted!",
-      description: "Data has been automatically extracted. Now complete the details."
+      title: t('addJob.dataExtracted'),
+      description: t('addJob.dataExtractedDescription')
     });
     // Auto-dismiss toast faster for better UX
     setTimeout(() => {
@@ -71,14 +73,14 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
         (toastElement as any).click?.();
       }
     }, 1500);
-  }, [jobDescription]);
+  }, [jobDescription, t]);
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (!parsedData.companyName.trim()) {
       toast({
-        title: "Error",
-        description: "Company name is required",
+        title: t('common.error'),
+        description: t('addJob.companyNameRequired'),
         variant: "destructive"
       });
       return;
@@ -97,10 +99,10 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
     };
     onAdd(application);
     toast({
-      title: "Application added!",
-      description: "The application has been successfully saved"
+      title: t('addJob.applicationAdded'),
+      description: t('addJob.applicationAddedDescription')
     });
-  }, [parsedData, jobDescription, applicationDate, status, tags, onAdd]);
+  }, [parsedData, jobDescription, applicationDate, status, tags, onAdd, t]);
 
   const handleClose = useCallback(() => {
     setStep('extract');
@@ -168,7 +170,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
                 onClick={handleClose}
                 className="w-full sm:flex-1 text-white border-white/20 hover:bg-white/20 h-10 sm:h-11 rounded-full order-2 sm:order-1 text-sm sm:text-base"
               >
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button
                 type="button"
@@ -177,8 +179,8 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
                 disabled={!jobDescription.trim()}
               >
                 <Wand2 className="w-4 h-4 mr-2" />
-                <span className="hidden sm:inline">Extract Data and Continue</span>
-                <span className="sm:hidden">Extract Data</span>
+                <span className="hidden sm:inline">{t('addJob.extractAndContinue')}</span>
+                <span className="sm:hidden">{t('addJob.extractData')}</span>
               </Button>
             </div>
           ) : (
@@ -189,13 +191,13 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({
                 onClick={() => setStep('extract')}
                 className="w-full sm:flex-1 text-white border-white/20 hover:bg-white/20 h-10 sm:h-11 rounded-full order-2 sm:order-1 text-sm sm:text-base"
               >
-                Back
+                {t('common.back')}
               </Button>
               <Button
                 onClick={handleSubmit}
                 className="bg-red-600 hover:bg-red-700 text-white w-full sm:flex-1 h-10 sm:h-11 rounded-full order-1 sm:order-2 text-sm sm:text-base"
               >
-                Add Application
+                {t('addJob.addApplication')}
               </Button>
             </div>
           )}

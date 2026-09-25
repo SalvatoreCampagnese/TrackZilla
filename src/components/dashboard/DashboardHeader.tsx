@@ -64,7 +64,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-300 text-white shadow-lg hover:shadow-xl hover:scale-105 rounded-xl px-2 sm:px-3 lg:px-4 flex-shrink-0 text-xs sm:text-sm"
             >
               <Crown className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-              <span className="hidden xs:inline sm:hidden lg:inline">Become ProZilla</span>
+              <span className="hidden xs:inline sm:hidden lg:inline">{t('dashboard.becomeProZilla')}</span>
               <span className="xs:hidden sm:inline lg:hidden">ProZilla</span>
             </Button>
           )}
@@ -108,8 +108,8 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                 } transition-all duration-300 text-white shadow-lg hover:shadow-xl hover:scale-105 rounded-xl px-3 sm:px-4 lg:px-6 flex-shrink-0 text-sm sm:text-base relative`}
               >
                 <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
-                <span className="hidden xs:inline sm:hidden lg:inline">Add Application</span>
-                <span className="xs:hidden sm:inline lg:hidden">Add</span>
+                <span className="hidden xs:inline sm:hidden lg:inline">{t('dashboard.addApplication')}</span>
+                <span className="xs:hidden sm:inline lg:hidden">{t('common.add')}</span>
                 {!canAddApplication && !subscribed && (
                   <Crown className="w-3 h-3 absolute -top-1 -right-1 text-yellow-400" />
                 )}

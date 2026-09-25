@@ -53,14 +53,14 @@ export const JobTracker = () => {
     try {
       await updateApplicationStatus(id, status);
       toast({
-        title: t('applications.applicationAdded'),
-        description: t('applications.applicationAddedDescription'),
+        title: t('applications.statusUpdated'),
+        description: t('applications.statusUpdatedDescription', { status: t(`jobStatus.${status}`) }),
       });
     } catch (error) {
       console.error('Error updating status:', error);
       toast({
         title: t('common.error'),
-        description: t('applications.errorAddingApplication'),
+        description: t('applications.errorUpdatingStatus'),
         variant: "destructive",
       });
     }
