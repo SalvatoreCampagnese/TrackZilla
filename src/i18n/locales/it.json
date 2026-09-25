@@ -164,6 +164,57 @@
     "applicationAddedDescription": "La candidatura è stata aggiunta con successo.",
     "errorAddingApplication": "Errore durante l'aggiunta della candidatura."
   },
+  "csv": {
+    "export": "Esporta CSV",
+    "import": "Importa CSV",
+    "exportDone": "Esportazione completata",
+    "exportDoneDescription": "{{count}} candidature esportate in {{fileName}}",
+    "exportEmpty": "Niente da esportare",
+    "exportEmptyDescription": "Non hai ancora nessuna candidatura.",
+    "importTitle": "Importa candidature da CSV",
+    "importDescription": "Usa lo stesso formato dell'esportazione: una riga di intestazione con le colonne qui sotto, una candidatura per riga. I tag sono separati da \";\". Le date devono essere AAAA-MM-GG.",
+    "requiredColumns": "Obbligatorie: company_name, role_description. Stato e modalità di lavoro devono usare i valori dell'app, altrimenti diventano in-corso / ND.",
+    "chooseFile": "Scegli un file CSV",
+    "readError": "Impossibile leggere il file.",
+    "fileErrors": {
+      "empty": "Il file è vuoto.",
+      "missingColumns": "Mancano le colonne obbligatorie: {{columns}}",
+      "unterminatedQuote": "Il file non è un CSV valido (un campo tra virgolette non viene mai chiuso)."
+    },
+    "summary": {
+      "rows": "{{count}} righe lette",
+      "ready": "{{count}} verranno importate",
+      "invalid": "{{count}} con errori (saltate)",
+      "skippedByLimit": "{{count}} oltre il limite del piano gratuito di {{limit}} candidature (saltate)",
+      "warnings": "{{count}} importate con valori predefiniti"
+    },
+    "table": {
+      "line": "Riga",
+      "company": "Azienda",
+      "role": "Ruolo",
+      "date": "Data",
+      "status": "Stato",
+      "result": "Esito",
+      "ok": "OK"
+    },
+    "issues": {
+      "missingCompany": "company_name è obbligatorio",
+      "missingRole": "role_description è obbligatorio",
+      "invalidDate": "data non valida \"{{value}}\" (usa AAAA-MM-GG)",
+      "missingDate": "data assente, verrà usata quella di oggi ({{value}})",
+      "invalidStatus": "stato sconosciuto \"{{value}}\", verrà usato in-corso",
+      "invalidWorkMode": "modalità di lavoro sconosciuta \"{{value}}\", verrà usato ND",
+      "duplicateExisting": "già presente tra le tue candidature",
+      "duplicateInFile": "duplicato di una riga precedente"
+    },
+    "confirm": "Importa {{count}} candidature",
+    "importing": "Importazione in corso...",
+    "importDone": "Importazione completata",
+    "importDoneDescription": "{{inserted}} candidature importate, {{skipped}} saltate.",
+    "importFailed": "Importazione non riuscita",
+    "importFailedDescription": "{{inserted}} candidature importate, {{failed}} non salvate. Riprova.",
+    "limitUpgrade": "Passa a Pro per importarle tutte."
+  },
   "deleteConfirmation": {
     "title": "Conferma Eliminazione",
     "message": "Sei sicuro di voler eliminare {{itemName}}? Questa azione non può essere annullata.",
