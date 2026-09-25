@@ -164,6 +164,57 @@
     "applicationAddedDescription": "Application has been added successfully.",
     "errorAddingApplication": "Failed to add application."
   },
+  "csv": {
+    "export": "Export CSV",
+    "import": "Import CSV",
+    "exportDone": "Export completed",
+    "exportDoneDescription": "{{count}} applications exported to {{fileName}}",
+    "exportEmpty": "Nothing to export",
+    "exportEmptyDescription": "You don't have any applications yet.",
+    "importTitle": "Import applications from CSV",
+    "importDescription": "Use the same format as the export: a header row with the columns below, one application per row. Tags are separated by \";\". Dates must be YYYY-MM-DD.",
+    "requiredColumns": "Required: company_name, role_description. Status and work mode must use the app's values, otherwise they default to in-corso / ND.",
+    "chooseFile": "Choose a CSV file",
+    "readError": "Could not read the file.",
+    "fileErrors": {
+      "empty": "The file is empty.",
+      "missingColumns": "Missing required columns: {{columns}}",
+      "unterminatedQuote": "The file is not a valid CSV (a quoted field is never closed)."
+    },
+    "summary": {
+      "rows": "{{count}} rows read",
+      "ready": "{{count}} will be imported",
+      "invalid": "{{count}} with errors (skipped)",
+      "skippedByLimit": "{{count}} over the free plan limit of {{limit}} applications (skipped)",
+      "warnings": "{{count}} imported with default values"
+    },
+    "table": {
+      "line": "Line",
+      "company": "Company",
+      "role": "Role",
+      "date": "Date",
+      "status": "Status",
+      "result": "Result",
+      "ok": "OK"
+    },
+    "issues": {
+      "missingCompany": "company_name is required",
+      "missingRole": "role_description is required",
+      "invalidDate": "invalid date \"{{value}}\" (use YYYY-MM-DD)",
+      "missingDate": "no date, today will be used ({{value}})",
+      "invalidStatus": "unknown status \"{{value}}\", in-corso will be used",
+      "invalidWorkMode": "unknown work mode \"{{value}}\", ND will be used",
+      "duplicateExisting": "already in your applications",
+      "duplicateInFile": "duplicate of a previous row"
+    },
+    "confirm": "Import {{count}} applications",
+    "importing": "Importing...",
+    "importDone": "Import completed",
+    "importDoneDescription": "{{inserted}} applications imported, {{skipped}} skipped.",
+    "importFailed": "Import failed",
+    "importFailedDescription": "{{inserted}} applications imported, {{failed}} could not be saved. Please try again.",
+    "limitUpgrade": "Upgrade to Pro to import all of them."
+  },
   "deleteConfirmation": {
     "title": "Confirm Deletion",
     "message": "Are you sure you want to delete {{itemName}}? This action cannot be undone.",

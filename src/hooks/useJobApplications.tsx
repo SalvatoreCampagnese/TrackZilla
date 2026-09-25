@@ -107,6 +107,43 @@ export const useJobApplications = () => {
     }
   };
 
+  // Bulk insert used by the CSV import. Inserts in chunks, returns how many rows were saved.
+  // Validation, duplicate detection and the plan limit are handled by the caller
+  // (see src/lib/applicationsCsv.ts). Rows are always owned by the current user (RLS).
+  const importApplications = async (
+    newApplications: Omit<JobApplication, 'id' | 'createdAt'>[]
+  ): Promise<{ inserted: number; failed: number }> => {
+    if (!user || newApplications.length === 0) return { inserted: 0, failed: newApplications.length };
+
+    const CHUNK_SIZE = 100;
+    let inserted = 0;
+    for (let i = 0; i < newApplications.length; i += CHUNK_SIZE) {
+      const chunk = newApplications.slice(i, i + CHUNK_SIZE);
+      const { error } = await supabase.from('job_applications').insert(
+        chunk.map(application => ({
+          user_id: user.id,
+          job_description: application.jobDescription,
+          application_date: application.applicationDate,
+          company_name: application.companyName,
+          role_description: application.roleDescription,
+          salary: application.salary,
+          work_mode: application.workMode,
+          status: application.status,
+          tags: application.tags,
+          deleted: false
+        }))
+      );
+      if (error) {
+        console.error('Error importing applications:', error);
+        break;
+      }
+      inserted += chunk.length;
+    }
+
+    await fetchApplications();
+    return { inserted, failed: newApplications.length - inserted };
+  };
+
   const updateApplication = async (id: string, updates: Partial<JobApplication>) => {
     try {
       const { error } = await supabase
@@ -211,6 +248,7 @@ export const useJobApplications = () => {
     loading,
     error,
     addApplication,
+    importApplications,
     updateApplication,
     updateApplicationStatus,
     deleteApplication,

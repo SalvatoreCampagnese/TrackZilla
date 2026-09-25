@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Plus, Crown } from 'lucide-react';
+import { Plus, Crown, Download, Upload } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,14 +12,19 @@ interface DashboardHeaderProps {
   onAddApplication: () => void;
   onProClick?: () => void;
   canAddApplication?: boolean;
+  onExportCsv?: () => void;
+  onImportCsv?: () => void;
 }
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   activeTab,
   onAddApplication,
   onProClick,
-  canAddApplication = true
+  canAddApplication = true,
+  onExportCsv,
+  onImportCsv
 }) => {
+  const { t } = useTranslation();
   const { state } = useSidebar();
   const { user } = useAuth();
   const { subscribed } = useSubscription();
@@ -63,6 +69,32 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             </Button>
           )}
           
+          {/* CSV import / export */}
+          {activeTab === 'applications' && onImportCsv && (
+            <Button
+              variant="outline"
+              onClick={onImportCsv}
+              title={t('csv.import')}
+              aria-label={t('csv.import')}
+              className="border-white/20 bg-white/10 hover:bg-white/20 text-white hover:text-white rounded-xl px-2 sm:px-3 flex-shrink-0 text-xs sm:text-sm"
+            >
+              <Upload className="w-4 h-4" />
+              <span className="hidden lg:inline ml-2">{t('csv.import')}</span>
+            </Button>
+          )}
+          {activeTab === 'applications' && onExportCsv && (
+            <Button
+              variant="outline"
+              onClick={onExportCsv}
+              title={t('csv.export')}
+              aria-label={t('csv.export')}
+              className="border-white/20 bg-white/10 hover:bg-white/20 text-white hover:text-white rounded-xl px-2 sm:px-3 flex-shrink-0 text-xs sm:text-sm"
+            >
+              <Download className="w-4 h-4" />
+              <span className="hidden lg:inline ml-2">{t('csv.export')}</span>
+            </Button>
+          )}
+
           {/* Add Application button */}
           {activeTab === 'applications' && (
             <div className="relative">

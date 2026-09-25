@@ -1,4 +1,7 @@
 
+/** Maximum number of (non-deleted) applications on the free plan. */
+export const FREE_PLAN_APPLICATION_LIMIT = 50;
+
 export interface JobApplication {
   id: string;
   jobDescription: string;

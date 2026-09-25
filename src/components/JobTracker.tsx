@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobApplications } from '@/hooks/useJobApplications';
 import { useSubscription } from '@/hooks/useSubscription';
-import { JobApplication, JobStatus } from '@/types/job';
+import { JobApplication, JobStatus, FREE_PLAN_APPLICATION_LIMIT } from '@/types/job';
 import { JobList } from './JobList';
 import { Statistics } from './Statistics';
 import { SubscriptionContent } from './SubscriptionContent';
@@ -16,6 +16,9 @@ import { FilterControls } from './dashboard/FilterControls';
 import { QuickStats } from './dashboard/QuickStats';
 import { SettingsModal } from './SettingsModal';
 import { AddApplicationModal } from './AddApplicationModal';
+import { CsvImportDialog } from './import/CsvImportDialog';
+import { applicationsToCsv, exportFileName } from '@/lib/applicationsCsv';
+import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import ProPage from '@/pages/ProPage';
@@ -30,6 +33,7 @@ export const JobTracker = () => {
   const [activeTab, setActiveTab] = useState<string>('applications');
   const [showSettings, setShowSettings] = useState(false);
   const [showAddApplication, setShowAddApplication] = useState(false);
+  const [showCsvImport, setShowCsvImport] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'grid' | 'kanban'>('list');
   const [sortBy, setSortBy] = useState<'date' | 'company' | 'status'>('date');
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -39,6 +43,7 @@ export const JobTracker = () => {
     applications,
     loading,
     addApplication,
+    importApplications,
     updateApplicationStatus,
     deleteApplication,
     refetch
@@ -84,7 +89,7 @@ export const JobTracker = () => {
 
   const handleAddApplication = () => {
     // Check if user has reached the 50 application limit for free users
-    if (!subscribed && applications.length >= 50) {
+    if (!subscribed && applications.length >= FREE_PLAN_APPLICATION_LIMIT) {
       toast({
         title: t('applications.applicationLimit'),
         description: t('applications.applicationLimitMessage'),
@@ -96,8 +101,38 @@ export const JobTracker = () => {
     setShowAddApplication(true);
   };
 
+  // Export all the user's (non-deleted) applications, regardless of the current filters.
+  const handleExportCsv = () => {
+    if (applications.length === 0) {
+      toast({
+        title: t('csv.exportEmpty'),
+        description: t('csv.exportEmptyDescription'),
+      });
+      return;
+    }
+    const fileName = exportFileName(format(new Date(), 'yyyy-MM-dd'));
+    const blob = new Blob([applicationsToCsv(applications)], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    toast({
+      title: t('csv.exportDone'),
+      description: t('csv.exportDoneDescription', { count: applications.length, fileName }),
+    });
+  };
+
+  // How many applications a free user can still add; null = no limit (Pro).
+  const remainingApplications = subscribed
+    ? null
+    : Math.max(0, FREE_PLAN_APPLICATION_LIMIT - applications.length);
+
   // Check if add button should be disabled
-  const canAddApplication = subscribed || applications.length < 50;
+  const canAddApplication = subscribed || applications.length < FREE_PLAN_APPLICATION_LIMIT;
 
   // Filter and sort applications
   const filteredApplications = applications.filter(app => {
@@ -150,6 +185,8 @@ export const JobTracker = () => {
               onAddApplication={handleAddApplication}
               onProClick={handleProClick}
               canAddApplication={canAddApplication}
+              onExportCsv={handleExportCsv}
+              onImportCsv={() => setShowCsvImport(true)}
             />
             
             <div className="flex-1 p-2 sm:p-3 md:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6 overflow-auto">
@@ -222,6 +259,15 @@ export const JobTracker = () => {
           open={showAddApplication}
           onOpenChange={setShowAddApplication}
           onAddApplication={addApplication}
+        />
+
+        <CsvImportDialog
+          open={showCsvImport}
+          onOpenChange={setShowCsvImport}
+          existingApplications={applications}
+          remaining={remainingApplications}
+          onImport={importApplications}
+          onUpgrade={handleProClick}
         />
       </div>
     </SidebarProvider>
