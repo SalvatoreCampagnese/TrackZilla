@@ -1,16 +1,22 @@
 
 import React from 'react';
-import { JobApplication } from '@/types/job';
+import { JobApplication, JobStatus } from '@/types/job';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, TrendingUp, Users, CheckCircle, Award, Target, Calendar, Building2 } from 'lucide-react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { useTranslation } from 'react-i18next';
+import { useTranslatedLabels } from '@/hooks/useTranslatedLabels';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 
 interface StatisticsProps {
   applications: JobApplication[];
 }
 
 export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
+  const { t } = useTranslation();
+  const { getJobStatusLabel, getWorkModeLabel } = useTranslatedLabels();
+  const { formatDate } = useDateFormatter();
   console.log('Statistics component rendered with applications:', applications);
 
   // Early return with fallback if no applications
@@ -18,8 +24,8 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
     return (
       <div className="space-y-6">
         <div className="text-center py-12">
-          <div className="text-white/70 text-lg mb-4">No applications found</div>
-          <div className="text-white/50 text-sm">Add some job applications to see statistics</div>
+          <div className="text-white/70 text-lg mb-4">{t('statistics.noApplications')}</div>
+          <div className="text-white/50 text-sm">{t('statistics.noApplicationsDescription')}</div>
         </div>
       </div>
     );
@@ -69,10 +75,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
   }, {} as Record<string, number>);
 
   const workModeData = Object.entries(workModeDistribution).map(([mode, count]) => ({
-    name: mode === 'ND' ? 'Not Specified' : 
-          mode === 'remoto' ? 'Remote' :
-          mode === 'ibrido' ? 'Hybrid' :
-          mode === 'in-presenza' ? 'On-site' : mode,
+    name: ['ND', 'remoto', 'ibrido', 'in-presenza'].includes(mode) ? getWorkModeLabel(mode) : mode,
     value: count,
     percentage: totalApplications > 0 ? Math.round((count / totalApplications) * 100) : 0
   }));
@@ -83,21 +86,13 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
   }, {} as Record<string, number>);
 
   const statusData = Object.entries(statusDistribution).map(([status, count]) => ({
-    name: status === 'in-corso' ? 'In Progress' :
-          status === 'primo-colloquio' ? 'First Interview' :
-          status === 'secondo-colloquio' ? 'Second Interview' :
-          status === 'colloquio-tecnico' ? 'Technical Interview' :
-          status === 'colloquio-finale' ? 'Final Interview' :
-          status === 'offerta-ricevuta' ? 'Offer Received' :
-          status === 'rifiutato' ? 'Rejected' :
-          status === 'ghosting' ? 'Ghosting' :
-          status === 'ritirato' ? 'Withdrawn' : status,
+    name: getJobStatusLabel(status as JobStatus),
     value: count,
     percentage: totalApplications > 0 ? Math.round((count / totalApplications) * 100) : 0
   }));
 
   const companyCount = applications.reduce((acc, app) => {
-    const company = app.companyName || 'Unknown';
+    const company = app.companyName || t('statistics.unknownCompany');
     acc[company] = (acc[company] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
@@ -118,18 +113,10 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         'offerta-ricevuta': 5
       }[app.status] || 0;
 
-      const stageLabels = {
-        'primo-colloquio': 'First Interview',
-        'secondo-colloquio': 'Second Interview',
-        'colloquio-tecnico': 'Technical Interview',
-        'colloquio-finale': 'Final Interview',
-        'offerta-ricevuta': 'Offer Received'
-      };
-
       return {
         company: app.companyName,
         role: app.roleDescription,
-        stage: stageLabels[app.status as keyof typeof stageLabels] || app.status,
+        stage: getJobStatusLabel(app.status),
         stageScore,
         applicationDate: app.applicationDate
       };
@@ -145,7 +132,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Total Applications</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">{t('dashboard.totalApplications')}</CardTitle>
             <Users className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
@@ -155,39 +142,39 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Response Rate</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">{t('statistics.responseRate')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{responseRate.toFixed(1)}%</div>
             <p className="text-xs text-white/70">
-              {responsesReceived} out of {totalApplications}
+              {t('statistics.outOf', { count: responsesReceived, total: totalApplications })}
             </p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Interview Rate</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">{t('statistics.interviewRate')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{interviewsObtained}</div>
             <p className="text-xs text-white/70">
-              {totalApplications > 0 ? ((interviewsObtained / totalApplications) * 100).toFixed(1) : 0}% of total
+              {t('statistics.percentOfTotal', { percentage: totalApplications > 0 ? ((interviewsObtained / totalApplications) * 100).toFixed(1) : 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Success Rate</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">{t('statistics.successRate')}</CardTitle>
             <Target className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{successRate.toFixed(1)}%</div>
             <p className="text-xs text-white/70">
-              {offersReceived} offers received
+              {t('statistics.offersReceived', { count: offersReceived })}
             </p>
           </CardContent>
         </Card>
@@ -197,45 +184,45 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Avg Feedback Time</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">{t('statistics.avgFeedbackTime')}</CardTitle>
             <Clock className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{avgFeedbackTime}</div>
-            <p className="text-xs text-white/70">days</p>
+            <p className="text-xs text-white/70">{t('statistics.days')}</p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Time to Interview</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">{t('statistics.timeToInterview')}</CardTitle>
             <Calendar className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{avgTimeToInterview}</div>
-            <p className="text-xs text-white/70">avg days</p>
+            <p className="text-xs text-white/70">{t('statistics.avgDays')}</p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Weekly Applications</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">{t('statistics.weeklyApplications')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{applicationsPerWeek.toFixed(1)}</div>
-            <p className="text-xs text-white/70">last 4 weeks</p>
+            <p className="text-xs text-white/70">{t('statistics.last4Weeks')}</p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Active Companies</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">{t('statistics.activeCompanies')}</CardTitle>
             <Building2 className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{Object.keys(companyCount).length}</div>
-            <p className="text-xs text-white/70">companies applied to</p>
+            <p className="text-xs text-white/70">{t('statistics.companiesAppliedTo')}</p>
           </CardContent>
         </Card>
       </div>
@@ -246,7 +233,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              Work Mode Distribution
+              {t('statistics.workModeDistribution')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -299,7 +286,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
               </div>
             ) : (
               <div className="h-[300px] flex items-center justify-center text-white/70">
-                No data available
+                {t('statistics.noData')}
               </div>
             )}
           </CardContent>
@@ -309,7 +296,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-white/30">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              Application Status
+              {t('statistics.applicationStatus')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -342,7 +329,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
               </div>
             ) : (
               <div className="h-[300px] flex items-center justify-center text-white/70">
-                No data available
+                {t('statistics.noData')}
               </div>
             )}
           </CardContent>
@@ -354,7 +341,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Building2 className="w-5 h-5" />
-            Top Companies by Applications
+            {t('statistics.topCompanies')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -372,14 +359,14 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
                     <span className="font-medium text-white">{item.company}</span>
                   </div>
                   <span className="text-sm font-medium text-white/90">
-                    {item.count} application{item.count > 1 ? 's' : ''}
+                    {t('statistics.applicationCount', { count: item.count })}
                   </span>
                 </div>
               ))}
             </div>
           ) : (
             <div className="h-[200px] flex items-center justify-center text-white/70">
-              No companies data available
+              {t('statistics.noCompaniesData')}
             </div>
           )}
         </CardContent>
@@ -390,7 +377,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Award className="w-5 h-5" />
-            Most Advanced Interview Stages
+            {t('statistics.mostAdvancedStages')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -409,7 +396,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
                       {item.role}
                     </div>
                     <div className="text-xs text-white/50">
-                      Applied: {new Date(item.applicationDate).toLocaleDateString()}
+                      {t('statistics.appliedOn', { date: formatDate(item.applicationDate) })}
                     </div>
                   </div>
                   <div className="flex items-center gap-2 ml-4">
@@ -425,7 +412,7 @@ export const Statistics: React.FC<StatisticsProps> = ({ applications }) => {
             </div>
           ) : (
             <div className="h-[300px] flex items-center justify-center text-white/70">
-              No interview data available
+              {t('statistics.noInterviewData')}
             </div>
           )}
         </CardContent>

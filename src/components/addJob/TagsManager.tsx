@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tag, Plus, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface TagsManagerProps {
   tags: string[];
@@ -18,7 +19,17 @@ export const TagsManager: React.FC<TagsManagerProps> = ({
   newTag,
   setNewTag
 }) => {
-  const predefinedTags = ['Dream Job', 'Startup', 'Important', 'Interesting Salary', 'Referral', 'Remote Friendly', 'Big Company', 'Growth Opportunity'];
+  const { t } = useTranslation();
+  const predefinedTags = [
+    t('addJob.predefinedTagList.dreamJob'),
+    t('addJob.predefinedTagList.startup'),
+    t('addJob.predefinedTagList.important'),
+    t('addJob.predefinedTagList.interestingSalary'),
+    t('addJob.predefinedTagList.referral'),
+    t('addJob.predefinedTagList.remoteFriendly'),
+    t('addJob.predefinedTagList.bigCompany'),
+    t('addJob.predefinedTagList.growthOpportunity'),
+  ];
 
   const handleAddTag = useCallback((tag: string) => {
     if (tag && !tags.includes(tag)) {
@@ -41,7 +52,7 @@ export const TagsManager: React.FC<TagsManagerProps> = ({
     <div className="space-y-3 sm:space-y-4">
       <Label className="flex items-center gap-2 text-white font-medium">
         <Tag className="w-4 h-4" />
-        Custom Tags
+        {t('addJob.customTags')}
       </Label>
       
       {/* Selected Tags */}
@@ -57,6 +68,7 @@ export const TagsManager: React.FC<TagsManagerProps> = ({
               <button
                 type="button"
                 onClick={() => handleRemoveTag(tag)}
+                aria-label={t('addJob.removeTag', { tag })}
                 className="ml-1 text-red-300 hover:text-red-100"
               >
                 <X className="w-3 h-3" />
@@ -68,7 +80,7 @@ export const TagsManager: React.FC<TagsManagerProps> = ({
 
       {/* Predefined Tags */}
       <div className="space-y-2">
-        <p className="text-xs sm:text-sm text-white/70">Predefined tags:</p>
+        <p className="text-xs sm:text-sm text-white/70">{t('addJob.predefinedTags')}</p>
         <div className="flex flex-wrap gap-2">
           {predefinedTags.filter(tag => !tags.includes(tag)).map(tag => (
             <button
@@ -89,7 +101,7 @@ export const TagsManager: React.FC<TagsManagerProps> = ({
         <Input
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
-          placeholder="Add custom tag..."
+          placeholder={t('addJob.addCustomTagPlaceholder')}
           className="flex-1 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/50 text-sm focus-visible:ring-red-500 focus-visible:border-red-500"
           onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCustomTag())}
         />
@@ -99,6 +111,7 @@ export const TagsManager: React.FC<TagsManagerProps> = ({
           variant="outline"
           size="sm"
           disabled={!newTag.trim()}
+          aria-label={t('addJob.addTag')}
           className="text-white border-white/20 hover:bg-white/20 px-3 rounded-full"
         >
           <Plus className="w-4 h-4" />

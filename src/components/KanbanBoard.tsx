@@ -15,7 +15,8 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { JobApplication, JobStatus, JOB_STATUS_LABELS } from '@/types/job';
+import { JobApplication, JobStatus } from '@/types/job';
+import { useTranslatedLabels } from '@/hooks/useTranslatedLabels';
 import { KanbanColumn } from './kanban/KanbanColumn';
 
 interface KanbanBoardProps {
@@ -29,6 +30,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   onUpdateStatus,
   onDelete,
 }) => {
+  const { getJobStatusLabel } = useTranslatedLabels();
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -114,7 +116,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
               <KanbanColumn
                 key={status}
                 id={status}
-                title={JOB_STATUS_LABELS[status]}
+                title={getJobStatusLabel(status)}
                 applications={getApplicationsByStatus(status)}
                 onDelete={onDelete}
               />

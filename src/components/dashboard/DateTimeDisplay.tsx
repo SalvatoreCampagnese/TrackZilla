@@ -1,8 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock } from 'lucide-react';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 
 export const DateTimeDisplay = () => {
+  const { formatDate: formatLocalizedDate, intlLocale } = useDateFormatter();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   useEffect(() => {
@@ -14,7 +16,7 @@ export const DateTimeDisplay = () => {
   }, []);
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', {
+    return formatLocalizedDate(date, {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -23,7 +25,7 @@ export const DateTimeDisplay = () => {
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', {
+    return date.toLocaleTimeString(intlLocale, {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit'

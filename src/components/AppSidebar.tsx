@@ -92,10 +92,10 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               ? "bg-green-500/20 text-green-400 text-xs" 
               : "bg-gray-500/20 text-gray-400 text-xs"
             }>
-              {subscribed ? subscription_tier || 'PRO' : 'FREE'}
+              {subscribed ? subscription_tier || 'PRO' : t('sidebar.freeBadge')}
             </Badge>
             {subscribed && (
-              <Badge className="bg-yellow-500/20 text-yellow-400 text-xs">ATTIVO</Badge>
+              <Badge className="bg-yellow-500/20 text-yellow-400 text-xs">{t('sidebar.activeBadge')}</Badge>
             )}
           </div>
         </div>

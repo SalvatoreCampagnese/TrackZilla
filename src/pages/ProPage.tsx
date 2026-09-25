@@ -7,7 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 const ProPage = () => {
+  const { t } = useTranslation();
+  const { formatDate } = useDateFormatter();
   const {
     user
   } = useAuth();
@@ -24,8 +28,8 @@ const ProPage = () => {
   const handleUpgrade = async () => {
     if (!user) {
       toast({
-        title: "Login required",
-        description: "You need to log in to proceed with the upgrade.",
+        title: t('pro.loginRequiredTitle'),
+        description: t('pro.loginRequiredDescription'),
         variant: "destructive"
       });
       return;
@@ -47,8 +51,8 @@ const ProPage = () => {
     } catch (error) {
       console.error('Error creating checkout:', error);
       toast({
-        title: "Error",
-        description: "An error occurred while starting the checkout. Please try again.",
+        title: t('common.error'),
+        description: t('pro.checkoutError'),
         variant: "destructive"
       });
     } finally {
@@ -69,8 +73,8 @@ const ProPage = () => {
     } catch (error) {
       console.error('Error opening customer portal:', error);
       toast({
-        title: "Error",
-        description: "Unable to open the management portal.",
+        title: t('common.error'),
+        description: t('pro.portalError'),
         variant: "destructive"
       });
     }
@@ -78,44 +82,44 @@ const ProPage = () => {
   const features = {
     pro: [{
       icon: <Infinity className="w-5 h-5" />,
-      title: "Unlimited applications",
-      description: "Track all your job applications without limits"
+      title: t('pro.features.pro.unlimitedTitle'),
+      description: t('pro.features.pro.unlimitedDescription')
     }, {
       icon: <Kanban className="w-5 h-5" />,
-      title: "Full Kanban view",
-      description: "Organize your applications with drag & drop"
+      title: t('pro.features.pro.kanbanTitle'),
+      description: t('pro.features.pro.kanbanDescription')
     }, {
       icon: <Eye className="w-5 h-5" />,
-      title: "Interview questions in advance",
-      description: "Prepare better for your interviews"
+      title: t('pro.features.pro.questionsTitle'),
+      description: t('pro.features.pro.questionsDescription')
     }, {
       icon: <Zap className="w-5 h-5" />,
-      title: "Recommended resources",
-      description: "Exclusive access to premium content"
+      title: t('pro.features.pro.resourcesTitle'),
+      description: t('pro.features.pro.resourcesDescription')
     }],
     free: [{
       icon: <X className="w-5 h-5 text-red-500" />,
-      title: "50 applications limit",
-      description: "Limited application tracking"
+      title: t('pro.features.free.limitTitle'),
+      description: t('pro.features.free.limitDescription')
     }, {
       icon: <X className="w-5 h-5 text-red-500" />,
-      title: "Kanban view locked",
-      description: "Only list view available"
+      title: t('pro.features.free.kanbanTitle'),
+      description: t('pro.features.free.kanbanDescription')
     }, {
       icon: <X className="w-5 h-5 text-red-500" />,
-      title: "Questions hidden",
-      description: "No advance preparation"
+      title: t('pro.features.free.questionsTitle'),
+      description: t('pro.features.free.questionsDescription')
     }, {
       icon: <X className="w-5 h-5 text-red-500" />,
-      title: "No premium resources",
-      description: "Basic content only"
+      title: t('pro.features.free.resourcesTitle'),
+      description: t('pro.features.free.resourcesDescription')
     }]
   };
   if (subscriptionLoading) {
     return <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-full">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-500 mx-auto"></div>
-          <p className="mt-4 text-white">Loading subscription status...</p>
+          <p className="mt-4 text-white">{t('subscription.loadingSubscription')}</p>
         </div>
       </div>;
   }
@@ -126,18 +130,18 @@ const ProPage = () => {
             <CardHeader className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <CheckCircle className="w-8 h-8 text-green-400" />
-                <h2 className="text-2xl font-bold text-white">Active Subscription</h2>
+                <h2 className="text-2xl font-bold text-white">{t('pro.activeSubscription')}</h2>
               </div>
               <Badge className="bg-green-500 text-white">
-                {subscription_tier} - Active
+                {t('pro.tierActive', { tier: subscription_tier })}
               </Badge>
               {subscription_end && <p className="text-green-100 mt-2">
-                  Renewal: {new Date(subscription_end).toLocaleDateString('en-US')}
+                  {t('pro.renewal', { date: formatDate(subscription_end) })}
                 </p>}
             </CardHeader>
             <CardContent className="text-center">
               <Button onClick={handleManageSubscription} className="bg-white/20 hover:bg-white/30 text-white border border-white/30" variant="outline">
-                Manage Subscription
+                {t('pro.manageSubscription')}
               </Button>
             </CardContent>
           </Card>
@@ -152,7 +156,7 @@ const ProPage = () => {
           </h1>
         </div>
         <p className="text-xl text-white/80 max-w-2xl mx-auto">
-          {subscribed ? "You're using the full potential of your job tracking!" : "Unlock the full potential of your job tracking. Manage unlimited applications with professional tools."}
+          {subscribed ? t('pro.subtitleSubscribed') : t('pro.subtitleFree')}
         </p>
       </div>
 
@@ -161,12 +165,12 @@ const ProPage = () => {
         {/* Free Plan */}
         <Card className="relative border-2 border-white/20 bg-white/10 backdrop-blur-md">
           <CardHeader className="text-center pb-8">
-            <CardTitle className="text-2xl font-bold text-white/90">Free</CardTitle>
+            <CardTitle className="text-2xl font-bold text-white/90">{t('pro.freePlan')}</CardTitle>
             <div className="text-4xl font-bold text-white mt-4">
-              €0<span className="text-lg font-normal text-white/70">/month</span>
+              €0<span className="text-lg font-normal text-white/70">{t('pro.perMonth')}</span>
             </div>
             <Badge variant="secondary" className="mt-2 bg-white/20 text-white w-fit self-center">
-              {!subscribed ? "Current" : "Basic Plan"}
+              {!subscribed ? t('pro.currentPlan') : t('pro.basicPlan')}
             </Badge>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -184,7 +188,7 @@ const ProPage = () => {
         <Card className={`relative border-2 shadow-2xl backdrop-blur-md ${subscribed ? 'border-green-500 bg-gradient-to-br from-green-900/20 to-green-800/20 scale-105' : 'border-red-500 bg-gradient-to-br from-red-900/20 to-red-800/20 scale-105'}`}>
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
             <Badge className={`px-4 py-1 ${subscribed ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' : 'bg-gradient-to-r from-red-500 to-red-600 text-white'}`}>
-              {subscribed ? '✅ Active' : '🚀 Recommended'}
+              {subscribed ? t('pro.activeBadge') : t('pro.recommendedBadge')}
             </Badge>
           </div>
           <CardHeader className={`text-center pb-8 text-white rounded-t-lg ${subscribed ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-red-500 to-red-600'}`}>
@@ -193,10 +197,10 @@ const ProPage = () => {
               <CardTitle className="text-2xl font-bold">ProZilla</CardTitle>
             </div>
             <div className="text-4xl font-bold mt-4">
-              €4.79<span className="text-lg font-normal opacity-80">/month</span>
+              €4.79<span className="text-lg font-normal opacity-80">{t('pro.perMonth')}</span>
             </div>
             <p className={`mt-2 ${subscribed ? 'text-green-100' : 'text-red-100'}`}>
-              Everything included
+              {t('pro.everythingIncluded')}
             </p>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
@@ -213,10 +217,10 @@ const ProPage = () => {
             <div className="pt-6">
               {subscribed ? <Button onClick={handleManageSubscription} className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 text-lg" size="lg">
                   <Crown className="w-5 h-5 mr-2" />
-                  Manage Subscription
+                  {t('pro.manageSubscription')}
                 </Button> : <Button onClick={handleUpgrade} disabled={isLoading} className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 text-lg" size="lg">
                   <Crown className="w-5 h-5 mr-2" />
-                  {isLoading ? "Loading..." : "Become ProZilla Now"}
+                  {isLoading ? t('common.loading') : t('pro.becomePro')}
                 </Button>}
             </div>
           </CardContent>
@@ -226,15 +230,15 @@ const ProPage = () => {
       {/* Feature Comparison */}
       <Card className="mb-8 bg-white/10 backdrop-blur-md border-white/20">
         <CardHeader>
-          <CardTitle className="text-center text-2xl text-white">Detailed Comparison</CardTitle>
+          <CardTitle className="text-center text-2xl text-white">{t('pro.comparison.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/20">
-                  <th className="text-left py-4 px-4 text-white">Features</th>
-                  <th className="text-center py-4 px-4 text-white">Free</th>
+                  <th className="text-left py-4 px-4 text-white">{t('pro.comparison.features')}</th>
+                  <th className="text-center py-4 px-4 text-white">{t('pro.freePlan')}</th>
                   <th className="text-center py-4 px-4">
                     <div className="flex items-center justify-center gap-2 text-white">
                       <Crown className="w-4 h-4 text-red-500" />
@@ -245,12 +249,12 @@ const ProPage = () => {
               </thead>
               <tbody>
                 <tr className="border-b border-white/20">
-                  <td className="py-4 px-4 font-medium text-white">Number of applications</td>
-                  <td className="text-center py-4 px-4 text-white/70">50 max</td>
-                  <td className="text-center py-4 px-4 text-green-400 font-semibold">Unlimited</td>
+                  <td className="py-4 px-4 font-medium text-white">{t('pro.comparison.applicationsCount')}</td>
+                  <td className="text-center py-4 px-4 text-white/70">{t('pro.comparison.maxApplications')}</td>
+                  <td className="text-center py-4 px-4 text-green-400 font-semibold">{t('pro.comparison.unlimited')}</td>
                 </tr>
                 <tr className="border-b border-white/20">
-                  <td className="py-4 px-4 font-medium text-white">Kanban view</td>
+                  <td className="py-4 px-4 font-medium text-white">{t('pro.comparison.kanbanView')}</td>
                   <td className="text-center py-4 px-4">
                     <X className="w-5 h-5 text-red-500 mx-auto" />
                   </td>
@@ -259,7 +263,7 @@ const ProPage = () => {
                   </td>
                 </tr>
                 <tr className="border-b border-white/20">
-                  <td className="py-4 px-4 font-medium text-white">Interview questions</td>
+                  <td className="py-4 px-4 font-medium text-white">{t('pro.comparison.interviewQuestions')}</td>
                   <td className="text-center py-4 px-4">
                     <X className="w-5 h-5 text-red-500 mx-auto" />
                   </td>
@@ -268,7 +272,7 @@ const ProPage = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-4 font-medium text-white">Premium resources</td>
+                  <td className="py-4 px-4 font-medium text-white">{t('pro.comparison.premiumResources')}</td>
                   <td className="text-center py-4 px-4">
                     <X className="w-5 h-5 text-red-500 mx-auto" />
                   </td>

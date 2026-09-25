@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@/hooks/useLanguage';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { Crown, CreditCard, Mail, AlertTriangle, ExternalLink, RefreshCw } from 'lucide-react';
@@ -16,8 +16,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const SubscriptionPage = () => {
-  const { t, i18n } = useTranslation();
-  const { currentLanguage, loading: languageLoading } = useLanguage();
+  const { t } = useTranslation();
+  const { formatDate } = useDateFormatter();
   const { user } = useAuth();
   const { toast } = useToast();
   const { subscribed, subscription_tier, subscription_end, loading: subscriptionLoading, checkSubscription } = useSubscription();
@@ -29,14 +29,6 @@ const SubscriptionPage = () => {
   });
   const [isSendingSupport, setIsSendingSupport] = useState(false);
   const [supportDialogOpen, setSupportDialogOpen] = useState(false);
-
-  // Force language update when component mounts or language changes
-  useEffect(() => {
-    console.log(currentLanguage)
-    if (currentLanguage && i18n.language !== currentLanguage) {
-      i18n.changeLanguage(currentLanguage);
-    }
-  }, [currentLanguage, i18n]);
 
   // Update support form email when user changes
   useEffect(() => {
@@ -115,8 +107,7 @@ const SubscriptionPage = () => {
     }
   };
 
-  // Show loading while language is being loaded
-  if (subscriptionLoading || languageLoading) {
+  if (subscriptionLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
         <div className="text-center">
@@ -164,7 +155,7 @@ const SubscriptionPage = () => {
                     ? "bg-green-500 text-white" 
                     : "bg-gray-500 text-white"
                   }>
-                    {subscribed ? (subscription_tier || 'ProZilla') : 'Free'}
+                    {subscribed ? (subscription_tier || 'ProZilla') : t('subscription.freePlan')}
                   </Badge>
                   {subscribed && <Crown className="w-4 h-4 text-yellow-400" />}
                 </div>
@@ -179,7 +170,7 @@ const SubscriptionPage = () => {
                 <div className="md:col-span-2">
                   <p className="text-white/70 mb-2">{t('subscription.nextRenewal')}</p>
                   <p className="text-white">
-                    {new Date(subscription_end).toLocaleDateString(currentLanguage === 'it' ? 'it-IT' : 'en-US', {
+                    {formatDate(subscription_end, {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'

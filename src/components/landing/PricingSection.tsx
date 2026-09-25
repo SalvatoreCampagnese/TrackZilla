@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Crown, Zap } from 'lucide-react';
@@ -11,20 +12,10 @@ interface PricingSectionProps {
 export const PricingSection: React.FC<PricingSectionProps> = ({
   onGetStarted
 }) => {
+  const { t } = useTranslation();
   const features = {
-    free: [
-      "Track up to 50 applications",
-      "Basic analytics dashboard", 
-      "Manual status updates",
-      "Basic export functionality"
-    ],
-    pro: [
-      "Unlimited applications tracking",
-      "Kanban board for Jobs",
-      "Advanced analytics & insights", 
-      "Interview questions history",
-      "Company reviews database"
-    ]
+    free: t('landing.pricing.freePlan.features', { returnObjects: true }) as string[],
+    pro: t('landing.pricing.proPlan.features', { returnObjects: true }) as string[]
   };
 
   return (
@@ -35,13 +26,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium text-white/90 mb-6">
-            💰 Simple Pricing
+            {t('landing.pricing.badge')}
           </div>
           <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6">
-            Choose your hunting power level
+            {t('landing.pricing.heading')}
           </h2>
           <p className="text-xl text-white/70 max-w-2xl mx-auto font-light">
-            Start free, upgrade when you're ready to unleash the full beast
+            {t('landing.pricing.subtitle')}
           </p>
         </div>
 
@@ -57,7 +48,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               </div>
               <div className="text-white mb-6">
                 <span className="text-4xl font-bold">€0</span>
-                <span className="text-white/60 ml-2">/month</span>
+                <span className="text-white/60 ml-2">{t('landing.pricing.perMonth')}</span>
               </div>
             </CardHeader>
             <CardContent className="p-0 flex-1 flex flex-col">
@@ -74,7 +65,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 transition-all duration-300 self-end"
                 variant="outline"
               >
-                Start for free
+                {t('landing.pricing.freePlan.cta')}
               </Button>
             </CardContent>
           </Card>
@@ -90,7 +81,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               </div>
               <div className="text-white mb-6">
                 <span className="text-4xl font-bold">€4.79</span>
-                <span className="text-white/60 ml-2">/month</span>
+                <span className="text-white/60 ml-2">{t('landing.pricing.perMonth')}</span>
               </div>
             </CardHeader>
             <CardContent className="p-0">
@@ -107,7 +98,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold transition-all duration-300"
               >
                 <Crown className="w-4 h-4 mr-2" />
-                Get pro now
+                {t('landing.pricing.proPlan.cta')}
               </Button>
             </CardContent>
           </Card>

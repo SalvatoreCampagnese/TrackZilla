@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 
 interface CTASectionProps {
@@ -9,6 +10,8 @@ interface CTASectionProps {
 export const CTASection: React.FC<CTASectionProps> = ({
   onGetStarted
 }) => {
+  const { t } = useTranslation();
+
   return (
     <section className="relative py-24 lg:py-32">
       {/* Background effects */}
@@ -19,15 +22,15 @@ export const CTASection: React.FC<CTASectionProps> = ({
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="card-modern p-12 lg:p-16 text-center max-w-4xl mx-auto animate-fade-in">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium text-white/90 mb-8">
-            🎯 Ready to dominate?
+            {t('landing.cta.badge')}
           </div>
           
           <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6">
-            Ready to level up your job hunting game?
+            {t('landing.cta.title')}
           </h2>
           
           <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed font-light">
-            Time to become the apex predator of the job market! 🦖
+            {t('landing.cta.subtitle')}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -36,7 +39,7 @@ export const CTASection: React.FC<CTASectionProps> = ({
               size="lg" 
               className="bg-white text-gray-900 hover:bg-white/90 px-10 py-4 text-lg rounded-2xl font-semibold shadow-2xl transition-all duration-300 hover:scale-105"
             >
-              Start hunting for free
+              {t('landing.cta.button')}
             </Button>
           </div>
         </div>

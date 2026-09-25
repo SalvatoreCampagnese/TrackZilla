@@ -7,7 +7,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Trash2, Building2, Calendar, DollarSign, MapPin } from 'lucide-react';
-import { format } from 'date-fns';
+import { useTranslatedLabels } from '@/hooks/useTranslatedLabels';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 
 interface KanbanCardProps {
   application: JobApplication;
@@ -18,6 +19,8 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   application,
   onDelete,
 }) => {
+  const { getWorkModeLabel } = useTranslatedLabels();
+  const { formatPattern } = useDateFormatter();
   const {
     attributes,
     listeners,
@@ -42,19 +45,6 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         return 'bg-blue-500/20 text-blue-300 border-blue-400/30';
       default:
         return 'bg-gray-500/20 text-gray-300 border-gray-400/30';
-    }
-  };
-
-  const getWorkModeLabel = (workMode: string) => {
-    switch (workMode) {
-      case 'remoto':
-        return 'Remote';
-      case 'ibrido':
-        return 'Hybrid';
-      case 'in-presenza':
-        return 'On-site';
-      default:
-        return 'N/A';
     }
   };
 
@@ -102,7 +92,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-white/60 text-xs">
               <Calendar className="w-3 h-3 flex-shrink-0" />
-              <span>{format(new Date(application.applicationDate), 'MMM dd, yyyy')}</span>
+              <span>{formatPattern(application.applicationDate, 'PP')}</span>
             </div>
 
             {application.salary && application.salary !== 'ND' && (

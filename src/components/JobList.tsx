@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { JobApplication, JobStatus } from '@/types/job';
 import { useTranslatedLabels } from '@/hooks/useTranslatedLabels';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,6 +27,7 @@ export const JobList: React.FC<JobListProps> = ({
 }) => {
   const { t } = useTranslation();
   const { getJobStatusLabel, jobStatusOptions, getWorkModeLabel } = useTranslatedLabels();
+  const { formatDate } = useDateFormatter();
   const navigate = useNavigate();
   const [filter, setFilter] = useState<JobStatus | 'all'>('all');
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; application: JobApplication | null }>({
@@ -141,7 +143,7 @@ export const JobList: React.FC<JobListProps> = ({
                 <div className="grid grid-cols-2 gap-2 sm:gap-4">
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-200 min-w-0">
                     <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                    <span className="truncate">{new Date(application.applicationDate).toLocaleDateString('en-US')}</span>
+                    <span className="truncate">{formatDate(application.applicationDate)}</span>
                   </div>
                   
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-200 min-w-0">

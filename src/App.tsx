@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { useLanguage } from "@/hooks/useLanguage";
 import Index from "./pages/Index";
 import AddJobPage from "./pages/AddJobPage";
 import ImportPage from "./pages/ImportPage";
@@ -30,9 +31,16 @@ const AnalyticsTracker = () => {
   return null;
 };
 
+// Applies the logged-in user's saved language preference on every page.
+const LanguageSync = () => {
+  useLanguage();
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <LanguageSync />
       <TooltipProvider>
         <Toaster />
         <Sonner />

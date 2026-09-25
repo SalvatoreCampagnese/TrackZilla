@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
+import { useTranslation } from 'react-i18next';
 
 interface DeleteConfirmationModalProps {
   open: boolean;
@@ -27,6 +28,9 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
   itemName,
   itemType
 }) => {
+  const { t } = useTranslation();
+  // itemType is an identifier (e.g. 'application'); fall back to the raw value if there is no translation.
+  const itemTypeLabel = t(`deleteConfirmation.itemTypes.${itemType}`, { defaultValue: itemType });
   const [confirmationInput, setConfirmationInput] = useState('');
 
   const handleConfirm = () => {
@@ -45,16 +49,16 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="bg-card border-gray-700">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-foreground">Confirm Deletion</AlertDialogTitle>
+          <AlertDialogTitle className="text-foreground">{t('deleteConfirmation.title')}</AlertDialogTitle>
           <AlertDialogDescription className="text-muted-foreground">
-            This action cannot be undone. To confirm deletion, please type the {itemType} name "{itemName}" below.
+            {t('deleteConfirmation.typeToConfirmDescription', { itemType: itemTypeLabel, itemName })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="my-4">
           <Input
             value={confirmationInput}
             onChange={(e) => setConfirmationInput(e.target.value)}
-            placeholder={`Type ${itemType} name to confirm`}
+            placeholder={t('deleteConfirmation.typeToConfirmPlaceholder', { itemType: itemTypeLabel })}
             className="bg-background border-gray-600 text-foreground"
           />
         </div>
@@ -63,14 +67,14 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
             onClick={handleCancel}
             className="border-gray-600 hover:bg-accent"
           >
-            Cancel
+            {t('common.cancel')}
           </AlertDialogCancel>
           <AlertDialogAction 
             onClick={handleConfirm}
             disabled={confirmationInput !== itemName}
             className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Delete {itemType}
+            {t('deleteConfirmation.deleteItem', { itemType: itemTypeLabel })}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

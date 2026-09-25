@@ -9,6 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Star, Plus, Building } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 
 interface CompanyReview {
   id: string;
@@ -29,6 +31,8 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
   roleDescription
 }) => {
   const { user } = useAuth();
+  const { t } = useTranslation();
+  const { formatDate } = useDateFormatter();
   const [reviews, setReviews] = useState<CompanyReview[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -63,8 +67,8 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
     } catch (error) {
       console.error('Error fetching reviews:', error);
       toast({
-        title: "Error loading reviews",
-        description: "Could not load company reviews",
+        title: t('companyReviews.errorLoading'),
+        description: t('companyReviews.errorLoadingDescription'),
         variant: "destructive"
       });
     } finally {
@@ -91,8 +95,8 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
         if (error) throw error;
         
         toast({
-          title: "Review updated",
-          description: "Your company review has been updated successfully"
+          title: t('companyReviews.reviewUpdated'),
+          description: t('companyReviews.reviewUpdatedDescription')
         });
       } else {
         // Create new review
@@ -109,8 +113,8 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
         if (error) throw error;
         
         toast({
-          title: "Review added",
-          description: "Your company review has been saved successfully"
+          title: t('companyReviews.reviewAdded'),
+          description: t('companyReviews.reviewAddedDescription')
         });
       }
 
@@ -119,8 +123,8 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
     } catch (error) {
       console.error('Error saving review:', error);
       toast({
-        title: "Error saving review",
-        description: "Could not save your company review",
+        title: t('companyReviews.errorSaving'),
+        description: t('companyReviews.errorSavingDescription'),
         variant: "destructive"
       });
     } finally {
@@ -156,7 +160,7 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
     return (
       <Card className="bg-white/10 backdrop-blur-md border-white/20">
         <CardContent className="p-6">
-          <div className="animate-pulse text-white">Loading reviews...</div>
+          <div className="animate-pulse text-white">{t('companyReviews.loading')}</div>
         </CardContent>
       </Card>
     );
@@ -169,7 +173,7 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Building className="w-5 h-5" />
-            {companyName} Reviews
+            {t('companyReviews.title', { companyName })}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -177,7 +181,7 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
             <div className="text-3xl font-bold text-white">{getAverageRating()}</div>
             <div>
               {renderStars(Math.round(parseFloat(getAverageRating())))}
-              <p className="text-white/70 text-sm">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</p>
+              <p className="text-white/70 text-sm">{t('companyReviews.reviewCount', { count: reviews.length })}</p>
             </div>
           </div>
 
@@ -187,7 +191,7 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
               className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Review
+              {t('companyReviews.addReview')}
             </Button>
           )}
 
@@ -197,25 +201,25 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
               variant="outline"
               className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
             >
-              Edit Your Review
+              {t('companyReviews.editYourReview')}
             </Button>
           )}
 
           {showAddForm && (
             <div className="space-y-4 mt-4">
               <div>
-                <Label className="text-white">Rating</Label>
+                <Label className="text-white">{t('companyReviews.rating')}</Label>
                 <div className="mt-2">
                   {renderStars(rating, true)}
                 </div>
               </div>
               <div>
-                <Label htmlFor="comment" className="text-white">Comment (Optional)</Label>
+                <Label htmlFor="comment" className="text-white">{t('companyReviews.commentOptional')}</Label>
                 <Textarea
                   id="comment"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Share your experience with this company..."
+                  placeholder={t('companyReviews.commentPlaceholder')}
                   className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                   rows={4}
                 />
@@ -226,7 +230,7 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
                   disabled={!rating || submitting}
                   className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
                 >
-                  {submitting ? 'Saving...' : userReview ? 'Update Review' : 'Add Review'}
+                  {submitting ? t('companyReviews.saving') : userReview ? t('companyReviews.updateReview') : t('companyReviews.addReview')}
                 </Button>
                 <Button
                   onClick={() => {
@@ -242,7 +246,7 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
                   variant="outline"
                   className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
               </div>
             </div>
@@ -255,8 +259,8 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
         <Card className="bg-white/10 backdrop-blur-md border-white/20">
           <CardContent className="p-6 text-center">
             <Building className="w-12 h-12 text-white/50 mx-auto mb-4" />
-            <p className="text-white/70">No reviews yet</p>
-            <p className="text-white/50 text-sm">Be the first to review this company!</p>
+            <p className="text-white/70">{t('companyReviews.emptyTitle')}</p>
+            <p className="text-white/50 text-sm">{t('companyReviews.emptyDescription')}</p>
           </CardContent>
         </Card>
       ) : (
@@ -269,7 +273,7 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
                     <div className="flex items-center gap-2 mb-2">
                       {renderStars(review.rating)}
                       <span className="text-white/70 text-sm">
-                        {new Date(review.created_at).toLocaleDateString()}
+                        {formatDate(review.created_at)}
                       </span>
                     </div>
                     {review.role_applied && (
@@ -283,7 +287,7 @@ export const CompanyReviews: React.FC<CompanyReviewsProps> = ({
                   </div>
                   {review.user_id === user?.id && (
                     <Badge variant="outline" className="border-red-500 text-red-400">
-                      Your Review
+                      {t('companyReviews.yourReview')}
                     </Badge>
                   )}
                 </div>

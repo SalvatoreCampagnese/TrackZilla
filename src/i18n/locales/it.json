@@ -33,7 +33,30 @@
     "welcome": "Benvenuto",
     "createAccount": "Crea un account",
     "alreadyHaveAccount": "Hai già un account?",
-    "dontHaveAccount": "Non hai un account?"
+    "dontHaveAccount": "Non hai un account?",
+    "tagline": "Accedi al tuo account per iniziare a tracciare le tue candidature",
+    "logoAlt": "Logo TrackZilla",
+    "backToHome": "Torna alla home",
+    "enterEmailAndPassword": "Inserisci email e password",
+    "loginFailed": "Accesso non riuscito",
+    "accountNotFound": "Account non trovato. Registrati prima oppure controlla le tue credenziali.",
+    "loginError": "Si è verificato un errore durante l'accesso",
+    "registrationError": "Si è verificato un errore durante la registrazione",
+    "genericError": "Si è verificato un errore",
+    "registrationCompleted": "Registrazione completata",
+    "confirmEmailDescription": "Controlla la tua email per confermare l'account",
+    "enterEmailAbove": "Inserisci la tua email nel campo qui sopra",
+    "magicLinkSent": "Magic Link inviato",
+    "magicLinkSentDescription": "Controlla la tua email per trovare il link di accesso",
+    "emailPlaceholder": "inserisci la tua email",
+    "passwordPlaceholder": "inserisci la tua password",
+    "createPasswordPlaceholder": "crea una password",
+    "signingIn": "Accesso in corso...",
+    "creatingAccount": "Creazione account...",
+    "or": "oppure",
+    "sendingMagicLink": "Invio Magic Link...",
+    "termsNotice": "Continuando, accetti i nostri",
+    "termsLink": "Termini e Condizioni e l'Informativa sulla Privacy"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -45,7 +68,11 @@
     "totalApplications": "Totale Candidature",
     "thisMonth": "Questo Mese",
     "pending": "In Attesa",
-    "interviews": "Colloqui"
+    "interviews": "Colloqui",
+    "becomeProZilla": "Diventa ProZilla",
+    "total": "Totale",
+    "avgTime": "Tempo medio",
+    "daysShort": "{{count}}g"
   },
   "applications": {
     "title": "Candidature",
@@ -67,7 +94,10 @@
     "applicationLimitMessage": "Gli utenti gratuiti possono tracciare fino a 50 candidature. Passa a Pro per tracciamento illimitato.",
     "statusUpdated": "Stato aggiornato",
     "statusUpdatedDescription": "Candidatura spostata in \"{{status}}\".",
-    "errorUpdatingStatus": "Impossibile aggiornare lo stato della candidatura."
+    "errorUpdatingStatus": "Impossibile aggiornare lo stato della candidatura.",
+    "errorLoadingTitle": "Errore nel caricamento",
+    "errorLoadingDescription": "Impossibile caricare le tue candidature.",
+    "applicationAddedFor": "Candidatura per {{company}} salvata con successo."
   },
   "jobStatus": {
     "in-corso": "In Corso",
@@ -101,7 +131,34 @@
     "overview": "Panoramica",
     "monthlyTrend": "Trend Mensile",
     "statusDistribution": "Distribuzione Stati",
-    "responseRate": "Tasso di Risposta"
+    "responseRate": "Tasso di Risposta",
+    "noApplications": "Nessuna candidatura trovata",
+    "noApplicationsDescription": "Aggiungi qualche candidatura per vedere le statistiche",
+    "unknownCompany": "Sconosciuta",
+    "outOf": "{{count}} su {{total}}",
+    "interviewRate": "Tasso di Colloqui",
+    "percentOfTotal": "{{percentage}}% del totale",
+    "successRate": "Tasso di Successo",
+    "offersReceived_one": "{{count}} offerta ricevuta",
+    "offersReceived_other": "{{count}} offerte ricevute",
+    "avgFeedbackTime": "Tempo Medio di Risposta",
+    "days": "giorni",
+    "timeToInterview": "Tempo per il Colloquio",
+    "avgDays": "giorni in media",
+    "weeklyApplications": "Candidature Settimanali",
+    "last4Weeks": "ultime 4 settimane",
+    "activeCompanies": "Aziende Attive",
+    "companiesAppliedTo": "aziende a cui ti sei candidato",
+    "workModeDistribution": "Distribuzione Modalità di Lavoro",
+    "noData": "Nessun dato disponibile",
+    "applicationStatus": "Stato Candidature",
+    "topCompanies": "Aziende con Più Candidature",
+    "applicationCount_one": "{{count}} candidatura",
+    "applicationCount_other": "{{count}} candidature",
+    "noCompaniesData": "Nessun dato sulle aziende disponibile",
+    "mostAdvancedStages": "Fasi di Colloquio Più Avanzate",
+    "appliedOn": "Candidatura: {{date}}",
+    "noInterviewData": "Nessun dato sui colloqui disponibile"
   },
   "subscription": {
     "title": "Gestione Abbonamento",
@@ -133,7 +190,10 @@
     "fillAllFields": "Compila tutti i campi richiesti.",
     "emailPrepared": "Email preparata",
     "emailPreparedDescription": "L'email è stata preparata nel tuo client di posta.",
-    "errorPreparingEmail": "Errore durante la preparazione dell'email."
+    "errorPreparingEmail": "Errore durante la preparazione dell'email.",
+    "freePlan": "Gratuito",
+    "responseTimeLabel": "Tempo di risposta:",
+    "responseTimeBody": "Rispondiamo a tutti i reclami e alle richieste di rimborso entro 72 ore lavorative."
   },
   "settings": {
     "title": "Impostazioni",
@@ -144,14 +204,85 @@
     "english": "English",
     "languageUpdated": "Lingua aggiornata",
     "languageUpdatedDescription": "La lingua è stata cambiata con successo.",
-    "errorUpdatingLanguage": "Errore durante l'aggiornamento della lingua."
+    "errorUpdatingLanguage": "Errore durante l'aggiornamento della lingua.",
+    "subtitle": "Gestisci le preferenze del tuo account",
+    "personalInfo": "Informazioni personali",
+    "firstName": "Nome",
+    "middleName": "Secondo nome",
+    "lastName": "Cognome",
+    "role": "Ruolo",
+    "currentCompany": "Azienda attuale",
+    "firstNamePlaceholder": "Il tuo nome",
+    "middleNamePlaceholder": "Il tuo secondo nome",
+    "lastNamePlaceholder": "Il tuo cognome",
+    "rolePlaceholder": "es. Software Engineer, Product Manager",
+    "currentCompanyPlaceholder": "La tua azienda attuale",
+    "ghostedApplications": "Candidature in ghosting",
+    "applicationSettings": "Impostazioni candidature",
+    "ghostingDaysLabel": "Giorni dopo i quali una candidatura è considerata in \"ghosting\"",
+    "currentlyDays_one": "Attualmente: {{count}} giorno",
+    "currentlyDays_other": "Attualmente: {{count}} giorni",
+    "privacySecurity": "Privacy e sicurezza",
+    "privacyDescription": "I tuoi dati sono archiviati in modo sicuro e crittografati. Solo tu hai accesso ai dati delle tue candidature.",
+    "saveSettings": "Salva impostazioni",
+    "backToHome": "Torna alla home"
   },
   "pro": {
     "title": "TrackZilla Pro",
     "unlimitedApplications": "Candidature Illimitate",
     "advancedAnalytics": "Analisi Avanzate",
     "prioritySupport": "Supporto Prioritario",
-    "upgrade": "Passa a Pro"
+    "upgrade": "Passa a Pro",
+    "loginRequiredTitle": "Accesso richiesto",
+    "loginRequiredDescription": "Devi accedere per procedere con l'upgrade.",
+    "checkoutError": "Si è verificato un errore durante l'avvio del pagamento. Riprova.",
+    "portalError": "Impossibile aprire il portale di gestione.",
+    "activeSubscription": "Abbonamento attivo",
+    "tierActive": "{{tier}} - Attivo",
+    "renewal": "Rinnovo: {{date}}",
+    "manageSubscription": "Gestisci abbonamento",
+    "subtitleSubscribed": "Stai sfruttando tutto il potenziale del tuo job tracking!",
+    "subtitleFree": "Sblocca tutto il potenziale del tuo job tracking. Gestisci candidature illimitate con strumenti professionali.",
+    "freePlan": "Gratuito",
+    "perMonth": "/mese",
+    "currentPlan": "Attuale",
+    "basicPlan": "Piano base",
+    "activeBadge": "✅ Attivo",
+    "recommendedBadge": "🚀 Consigliato",
+    "everythingIncluded": "Tutto incluso",
+    "becomePro": "Diventa ProZilla ora",
+    "features": {
+      "pro": {
+        "unlimitedTitle": "Candidature illimitate",
+        "unlimitedDescription": "Traccia tutte le tue candidature senza limiti",
+        "kanbanTitle": "Vista Kanban completa",
+        "kanbanDescription": "Organizza le tue candidature con il drag & drop",
+        "questionsTitle": "Domande del colloquio in anticipo",
+        "questionsDescription": "Preparati meglio per i tuoi colloqui",
+        "resourcesTitle": "Risorse consigliate",
+        "resourcesDescription": "Accesso esclusivo a contenuti premium"
+      },
+      "free": {
+        "limitTitle": "Limite di 50 candidature",
+        "limitDescription": "Tracciamento delle candidature limitato",
+        "kanbanTitle": "Vista Kanban bloccata",
+        "kanbanDescription": "Disponibile solo la vista elenco",
+        "questionsTitle": "Domande nascoste",
+        "questionsDescription": "Nessuna preparazione in anticipo",
+        "resourcesTitle": "Nessuna risorsa premium",
+        "resourcesDescription": "Solo contenuti di base"
+      }
+    },
+    "comparison": {
+      "title": "Confronto dettagliato",
+      "features": "Funzionalità",
+      "applicationsCount": "Numero di candidature",
+      "maxApplications": "50 max",
+      "unlimited": "Illimitate",
+      "kanbanView": "Vista Kanban",
+      "interviewQuestions": "Domande del colloquio",
+      "premiumResources": "Risorse premium"
+    }
   },
   "addJob": {
     "title": "Aggiungi Candidatura",
@@ -165,7 +296,39 @@
     "addApplication": "Aggiungi Candidatura",
     "applicationAdded": "Candidatura aggiunta",
     "applicationAddedDescription": "La candidatura è stata aggiunta con successo.",
-    "errorAddingApplication": "Errore durante l'aggiunta della candidatura."
+    "errorAddingApplication": "Errore durante l'aggiunta della candidatura.",
+    "addNewApplication": "Aggiungi Nuova Candidatura",
+    "headerSubtitle": "Monitora l'avanzamento della tua candidatura",
+    "pageSubtitle": "Tieni traccia delle tue candidature senza fatica",
+    "logoAlt": "Logo TrackZilla",
+    "enterDescriptionFirst": "Inserisci prima la descrizione dell'offerta",
+    "dataExtracted": "Dati estratti!",
+    "dataExtractedDescription": "I dati sono stati estratti automaticamente. Ora completa i dettagli.",
+    "companyNameRequired": "Il nome dell'azienda è obbligatorio",
+    "extractAndContinue": "Estrai Dati e Continua",
+    "extractData": "Estrai Dati",
+    "stepExtraction": "Estrazione",
+    "stepDetails": "Dettagli",
+    "extractedDataEditable": "Dati Estratti (modificabili)",
+    "salaryPlaceholder": "es. 45k, ND",
+    "applicationStatus": "Stato Candidatura",
+    "jobDescriptionPlaceholder": "Incolla qui la descrizione completa dell'offerta...",
+    "jobDescriptionHint": "Incolla l'intera descrizione dell'offerta per estrarre automaticamente i dati principali",
+    "customTags": "Tag Personalizzati",
+    "predefinedTags": "Tag predefiniti:",
+    "addCustomTagPlaceholder": "Aggiungi un tag personalizzato...",
+    "addTag": "Aggiungi tag",
+    "removeTag": "Rimuovi il tag {{tag}}",
+    "predefinedTagList": {
+      "dreamJob": "Lavoro dei Sogni",
+      "startup": "Startup",
+      "important": "Importante",
+      "interestingSalary": "Stipendio Interessante",
+      "referral": "Referral",
+      "remoteFriendly": "Remote Friendly",
+      "bigCompany": "Grande Azienda",
+      "growthOpportunity": "Opportunità di Crescita"
+    }
   },
   "csv": {
     "export": "Esporta CSV",
@@ -224,18 +387,34 @@
     "confirmDelete": "Elimina",
     "applicationDeleted": "Candidatura eliminata",
     "applicationDeletedDescription": "La candidatura è stata eliminata con successo.",
-    "errorDeletingApplication": "Errore durante l'eliminazione della candidatura."
+    "errorDeletingApplication": "Errore durante l'eliminazione della candidatura.",
+    "typeToConfirmDescription": "Questa azione non può essere annullata. Per confermare, digita qui sotto il nome \"{{itemName}}\".",
+    "typeToConfirmPlaceholder": "Digita il nome per confermare",
+    "deleteItem": "Elimina {{itemType}}",
+    "itemTypes": {
+      "application": "candidatura"
+    }
   },
   "filters": {
     "all": "Tutti",
-    "searchPlaceholder": "Cerca per azienda o ruolo..."
+    "searchPlaceholder": "Cerca per azienda o ruolo...",
+    "filterByStatus": "Filtra per stato",
+    "allStatuses": "Tutti gli stati",
+    "sortBy": "Ordina per"
   },
   "landing": {
     "hero": {
       "title": "Traccia le tue candidature di lavoro con facilità",
       "subtitle": "Organizza, monitora e analizza le tue candidature di lavoro in un unico posto. Non perdere mai più un'opportunità.",
       "cta": "Inizia Gratis",
-      "watchDemo": "Guarda Demo"
+      "watchDemo": "Guarda Demo",
+      "badge": "🚀 Ora in Beta - Inizia a tracciare gratis",
+      "headline": "DOMA LA RICERCA DI LAVORO",
+      "roar": "Grrrawww!",
+      "gilaMonster": "Cercare lavoro ti sembra come combattere un <link>mostro di Gila</link> armato solo di un cucchiaio?",
+      "meet": "Ecco Trackzilla: il tuo alleato doma-bestie e schiaccia-caos per tenere traccia di ogni candidatura.",
+      "startHunt": "Inizia subito la caccia",
+      "dashboardAlt": "Dashboard di TrackZilla"
     },
     "features": {
       "title": "Tutto quello di cui hai bisogno per il tuo job hunting",
@@ -250,6 +429,35 @@
       "tracking": {
         "title": "Tracciamento Completo",
         "description": "Monitora ogni fase del processo di candidatura"
+      },
+      "badge": "⚡ Funzionalità potenti",
+      "heading": "Tutto quello che ti serve per una caccia al lavoro epica",
+      "subtitle": "Perché cercare lavoro è un'idra a più teste e la tua memoria non è un database.",
+      "items": {
+        "track": {
+          "title": "Traccia ogni candidatura",
+          "description": "Nessuna offerta sfuggirà! Trackzilla registra ogni posizione a cui punti, con date, note e tutti i dettagli succosi. 🦖 RAWR! Candidatura tracciata!"
+        },
+        "analytics": {
+          "title": "Analytics avanzate",
+          "description": "Vuoi sapere quali aziende ti ghostano più in fretta di un vampiro alla luce del sole? Abbiamo statistiche a sangue freddo. Trackzilla vede tutto. Persino i tuoi dubbi. 👁️"
+        },
+        "followUps": {
+          "title": "Follow-up automatici",
+          "description": "Non lasciarti scappare nessuna candidatura rimasta senza risposta. Trackzilla ricorda quello che tu dimentichi e ruggisce quando è ora di farti sentire. 💌 Grrrrrr... dov'è il mio colloquio?!"
+        },
+        "dashboard": {
+          "title": "Dashboard intuitiva",
+          "description": "Segui i progressi della tua missione con grafici brillanti e metriche gustose. Così facile che potrebbe usarla anche un troll delle caverne. ✨ Ooh, le barre salgono!"
+        },
+        "statuses": {
+          "title": "Stati personalizzabili",
+          "description": "Candidatura? Colloquio? In attesa nel silenzio eterno? Personalizza il tuo flusso di lavoro come un vero domatore di mostri. 🧌 Il controllo è tutto tuo."
+        },
+        "summon": {
+          "title": "Evocalo in pochi secondi",
+          "description": "Niente tutorial. Niente rituali. Un clic e boom, il tuo covo per la caccia al lavoro è pronto. ⚡️ Trackzilla è entrato in chat."
+        }
       }
     },
     "pricing": {
@@ -274,7 +482,236 @@
           "Supporto prioritario",
           "Export dati"
         ]
+      },
+      "badge": "💰 Prezzi semplici",
+      "heading": "Scegli il livello della tua potenza di caccia",
+      "subtitle": "Inizia gratis e passa al piano superiore quando sei pronto a scatenare la bestia",
+      "perMonth": "/mese",
+      "freePlan": {
+        "features": [
+          "Traccia fino a 50 candidature",
+          "Dashboard di analytics di base",
+          "Aggiornamenti di stato manuali",
+          "Funzionalità di export di base"
+        ],
+        "cta": "Inizia gratis"
+      },
+      "proPlan": {
+        "features": [
+          "Candidature illimitate",
+          "Vista Kanban per le offerte",
+          "Analytics e insight avanzati",
+          "Storico delle domande dei colloqui",
+          "Database delle recensioni sulle aziende"
+        ],
+        "cta": "Passa a Pro ora"
       }
+    },
+    "header": {
+      "logoAlt": "Logo di TrackZilla",
+      "signIn": "Accedi",
+      "huntNow": "Inizia la caccia!"
+    },
+    "extension": {
+      "badge": "Estensione Chrome",
+      "titleStart": "Automazione LinkedIn",
+      "titleHighlight": "sotto steroidi",
+      "subtitle": "Trasforma la navigazione su LinkedIn in una macchina da guerra per tracciare le candidature. Un clic per dominarle tutte!",
+      "stopTitle": "Basta con il copia-incolla infinito",
+      "description": "La nostra estensione per Chrome trasforma LinkedIn nel tuo centro di comando personale per le candidature. Vedi un'offerta che ti piace? BAM! È tracciata. Dettagli dell'azienda? BOOM! Estratti in automatico. Aggiornamenti di stato? ZAP! Fatto senza lasciare la pagina.",
+      "features": [
+        "Traccia le candidature da LinkedIn con un clic",
+        "Estrazione automatica dei dettagli dell'offerta e dell'azienda",
+        "Aggiornamenti di stato istantanei senza uscire da LinkedIn",
+        "Analisi intelligente della descrizione dell'offerta",
+        "Promemoria automatici per i follow-up",
+        "Sincronizzazione perfetta con la tua dashboard"
+      ],
+      "install": "Installa l'estensione",
+      "compatibility": "Gratis • Funziona con Chrome ed Edge",
+      "cardAlt": "Estensione TrackZilla",
+      "cardTitle": "Estensione TrackZilla",
+      "cardDescription": "Il compagno definitivo per tracciare le offerte su LinkedIn, che rende il tuo browser 10 volte più intelligente",
+      "mockDetected": "✅ Offerta rilevata: Senior React Developer",
+      "mockExtracted": "📊 Estratto in automatico: €50k-70k, Da remoto",
+      "mockAdded": "🚀 Aggiunta alla dashboard in 0,2s"
+    },
+    "analytics": {
+      "badge": "📊 Analytics e insight",
+      "title": "Corso base di caccia ai mostri",
+      "description": "TrackZilla ti offre insight dettagliati sui tuoi tassi di risposta, ti aiuta a individuare gli schemi che portano al successo e ottimizza la tua strategia di ricerca. È come avere i superpoteri dell'analisi dati per la tua carriera! 📊",
+      "benefits": [
+        "Monitoraggio automatico dei tempi di risposta (chi ha tempo di contare i giorni?)",
+        "Scopri le aziende che rispondono di più (quelle da tenersi strette!)",
+        "Suggerimenti intelligenti per migliorare il tuo approccio (come avere un mentore per la ricerca di lavoro)"
+      ],
+      "imageAlt": "Illustrazione di due mostri uno di fronte all'altro, simbolo delle sfide e degli ostacoli nella ricerca di lavoro.",
+      "cta": "Inizia la caccia con TrackZilla"
+    },
+    "cta": {
+      "badge": "🎯 Pronto a dominare?",
+      "title": "Pronto a portare la tua ricerca di lavoro al livello successivo?",
+      "subtitle": "È ora di diventare il super predatore del mercato del lavoro! 🦖",
+      "button": "Inizia la caccia gratis"
+    },
+    "footer": {
+      "madeWith": "Fatto con amore (e Lovable) da <guido>Guido Penta</guido> e <salvatore>Salvatore Campagnese</salvatore>",
+      "copyright": "© 2025 TrackZilla. Dai una marcia in più alla tua ricerca di lavoro come un boss! 🚀",
+      "openSource": "Questo è un progetto Open Source, vieni a contribuire"
     }
+  },
+  "success": {
+    "title": "🎉 Congratulazioni!",
+    "subtitle": "Il tuo abbonamento è stato attivato con successo",
+    "welcome": "Benvenuto in ProZilla!",
+    "accessIntro": "Ora hai accesso a tutte le funzionalità premium di TrackZilla:",
+    "features": [
+      "Candidature illimitate",
+      "Vista Kanban completa",
+      "Domande del colloquio in anticipo",
+      "Risorse consigliate premium"
+    ],
+    "startUsing": "Inizia a usare TrackZilla",
+    "manageSubscription": "Gestisci abbonamento",
+    "footer": "Il tuo abbonamento è ora attivo. Potrai gestire tutti i dettagli dalla pagina del tuo account."
+  },
+  "notFound": {
+    "message": "Ops! Pagina non trovata",
+    "backHome": "Torna alla home"
+  },
+  "sitemap": {
+    "loading": "Caricamento sitemap...",
+    "title": "Sitemap"
+  },
+  "terms": {
+    "redirecting": "Reindirizzamento a Termini e Privacy..."
+  },
+  "importPage": {
+    "processing": "Elaborazione in corso..."
+  },
+  "applicationDetail": {
+    "errorLoading": "Errore nel caricamento della candidatura",
+    "errorLoadingDescription": "Impossibile caricare i dettagli della candidatura",
+    "proFeature": "Funzionalità Pro",
+    "proFeatureToast": "Le domande dei colloqui e le recensioni delle aziende sono disponibili solo per gli utenti Pro.",
+    "notFound": "Candidatura non trovata",
+    "goBackToDashboard": "Torna alla dashboard",
+    "backToDashboard": "Torna alla Dashboard",
+    "jobDescriptionLabel": "Descrizione Lavoro:",
+    "viewLess": "Mostra meno",
+    "viewMore": "Mostra di più",
+    "interviewQuestionsTab": "Domande dei Colloqui",
+    "companyReviewsTab": "Recensioni Azienda",
+    "interviewQuestionsLocked": "Le domande dei colloqui sono disponibili solo per gli utenti Pro. Passa a Pro per sbloccare questa e altre funzionalità!",
+    "companyReviewsLocked": "Le recensioni delle aziende sono disponibili solo per gli utenti Pro. Passa a Pro per sbloccare questa e altre funzionalità!"
+  },
+  "interviewQuestions": {
+    "title": "Domande dei Colloqui",
+    "loading": "Caricamento domande...",
+    "errorLoading": "Errore nel caricamento delle domande",
+    "errorLoadingDescription": "Impossibile caricare le domande dei colloqui",
+    "questionAdded": "Domanda aggiunta",
+    "questionAddedDescription": "La domanda del colloquio è stata salvata con successo",
+    "errorAdding": "Errore nell'aggiunta della domanda",
+    "errorAddingDescription": "Impossibile salvare la domanda del colloquio",
+    "addInterviewQuestion": "Aggiungi Domanda del Colloquio",
+    "question": "Domanda",
+    "questionPlaceholder": "Scrivi la domanda del colloquio...",
+    "roleOptional": "Ruolo (facoltativo)",
+    "rolePlaceholder": "es. Frontend Developer",
+    "technologiesOptional": "Tecnologie (facoltativo)",
+    "technologiesPlaceholder": "es. React, Node.js, Python",
+    "roundOptional": "Fase del Colloquio (facoltativo)",
+    "selectRound": "Seleziona la fase del colloquio",
+    "rounds": {
+      "first": "Primo Colloquio",
+      "second": "Secondo Colloquio",
+      "technical": "Colloquio Tecnico",
+      "final": "Colloquio Finale",
+      "hr": "Colloquio HR"
+    },
+    "adding": "Aggiunta in corso...",
+    "addQuestion": "Aggiungi Domanda",
+    "emptyTitle": "Ancora nessuna domanda",
+    "emptyDescription": "Aggiungi tu la prima domanda!"
+  },
+  "companyReviews": {
+    "title": "Recensioni di {{companyName}}",
+    "loading": "Caricamento recensioni...",
+    "errorLoading": "Errore nel caricamento delle recensioni",
+    "errorLoadingDescription": "Impossibile caricare le recensioni dell'azienda",
+    "reviewUpdated": "Recensione aggiornata",
+    "reviewUpdatedDescription": "La tua recensione dell'azienda è stata aggiornata con successo",
+    "reviewAdded": "Recensione aggiunta",
+    "reviewAddedDescription": "La tua recensione dell'azienda è stata salvata con successo",
+    "errorSaving": "Errore nel salvataggio della recensione",
+    "errorSavingDescription": "Impossibile salvare la tua recensione dell'azienda",
+    "reviewCount_one": "{{count}} recensione",
+    "reviewCount_other": "{{count}} recensioni",
+    "addReview": "Aggiungi Recensione",
+    "editYourReview": "Modifica la tua Recensione",
+    "rating": "Valutazione",
+    "commentOptional": "Commento (facoltativo)",
+    "commentPlaceholder": "Racconta la tua esperienza con questa azienda...",
+    "saving": "Salvataggio...",
+    "updateReview": "Aggiorna Recensione",
+    "emptyTitle": "Ancora nessuna recensione",
+    "emptyDescription": "Sii il primo a recensire questa azienda!",
+    "yourReview": "La tua Recensione"
+  },
+  "alerts": {
+    "title": "Gestisci Promemoria - {{companyName}}",
+    "interviewDate": "Data Colloquio",
+    "deadline": "Scadenza",
+    "addInterviewAlert": "Aggiungi Promemoria Colloquio",
+    "addDeadlineAlert": "Aggiungi Promemoria Scadenza",
+    "activeAlerts": "Promemoria Attivi",
+    "types": {
+      "interview": "Promemoria Colloquio",
+      "deadline": "Promemoria Scadenza"
+    },
+    "removeAlert": "Rimuovi promemoria",
+    "alertBefore": "Avvisami Prima",
+    "units": {
+      "minutes": "Minuti",
+      "hours": "Ore",
+      "days": "Giorni"
+    },
+    "repeatAfter": "Ripeti Dopo",
+    "recurring": "Ricorrente",
+    "active": "Attivo",
+    "saveAlerts": "Salva Promemoria"
+  },
+  "kanban": {
+    "dropHere": "Trascina qui le candidature",
+    "statusValues": "Valori di stato",
+    "addStatus": "Aggiungi stato",
+    "color": "Colore",
+    "colors": {
+      "blue": "Blu",
+      "green": "Verde",
+      "yellow": "Giallo",
+      "orange": "Arancione",
+      "red": "Rosso",
+      "purple": "Viola",
+      "pink": "Rosa",
+      "indigo": "Indaco",
+      "gray": "Grigio"
+    }
+  },
+  "sidebar": {
+    "freeBadge": "FREE",
+    "activeBadge": "ATTIVO"
+  },
+  "ghosting": {
+    "updatedTitle": "Candidature aggiornate",
+    "updatedDescription_one": "{{count}} candidatura è stata segnata automaticamente come \"ghosting\".",
+    "updatedDescription_other": "{{count}} candidature sono state segnate automaticamente come \"ghosting\".",
+    "errorTitle": "Errore di aggiornamento",
+    "errorDescription_one": "Impossibile aggiornare {{count}} candidatura.",
+    "errorDescription_other": "Impossibile aggiornare {{count}} candidature."
+  },
+  "subscriptionCheck": {
+    "error": "Impossibile verificare lo stato del tuo abbonamento."
   }
 }

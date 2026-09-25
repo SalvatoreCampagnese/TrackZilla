@@ -12,7 +12,9 @@ import { ArrowLeft, Building2, Calendar, Euro, MapPin, Edit, ChevronDown, Chevro
 import { InterviewQuestions } from '@/components/application-detail/InterviewQuestions';
 import { CompanyReviews } from '@/components/application-detail/CompanyReviews';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { JOB_STATUS_LABELS } from '@/types/job';
+import { useTranslation } from 'react-i18next';
+import { useTranslatedLabels } from '@/hooks/useTranslatedLabels';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 import { toast } from '@/hooks/use-toast';
 
 export default function ApplicationDetailPage() {
@@ -20,6 +22,9 @@ export default function ApplicationDetailPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { subscribed } = useSubscription();
+  const { t } = useTranslation();
+  const { getJobStatusLabel, getWorkModeLabel } = useTranslatedLabels();
+  const { formatDate } = useDateFormatter();
   const [application, setApplication] = useState<JobApplication | null>(null);
   const [loading, setLoading] = useState(true);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
@@ -56,8 +61,8 @@ export default function ApplicationDetailPage() {
       } catch (error) {
         console.error('Error fetching application:', error);
         toast({
-          title: "Error loading application",
-          description: "Could not load application details",
+          title: t('applicationDetail.errorLoading'),
+          description: t('applicationDetail.errorLoadingDescription'),
           variant: "destructive"
         });
         navigate('/');
@@ -67,7 +72,7 @@ export default function ApplicationDetailPage() {
     };
 
     fetchApplication();
-  }, [id, user, navigate]);
+  }, [id, user, navigate, t]);
 
   const getWorkModeIcon = (workMode: string) => {
     switch (workMode) {
@@ -104,8 +109,8 @@ export default function ApplicationDetailPage() {
   const handleTabChange = (value: string) => {
     if (!subscribed && (value === 'questions' || value === 'reviews')) {
       toast({
-        title: "Pro feature",
-        description: "Interview questions and company reviews are only available for Pro users.",
+        title: t('applicationDetail.proFeature'),
+        description: t('applicationDetail.proFeatureToast'),
         variant: "destructive",
       });
       navigate('/?tab=pro');
@@ -148,9 +153,9 @@ export default function ApplicationDetailPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
         <div className="text-center text-white">
-          <h2 className="text-2xl font-bold mb-2">Application not found</h2>
+          <h2 className="text-2xl font-bold mb-2">{t('applicationDetail.notFound')}</h2>
           <Button onClick={() => navigate('/')} variant="outline">
-            Go back to dashboard
+            {t('applicationDetail.goBackToDashboard')}
           </Button>
         </div>
       </div>
@@ -169,7 +174,7 @@ export default function ApplicationDetailPage() {
             className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Dashboard
+            {t('applicationDetail.backToDashboard')}
           </Button>
           
           <Button
@@ -177,7 +182,7 @@ export default function ApplicationDetailPage() {
             className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
           >
             <Edit className="w-4 h-4 mr-2" />
-            Edit Application
+            {t('applications.editApplication')}
           </Button>
         </div>
 
@@ -192,7 +197,7 @@ export default function ApplicationDetailPage() {
                 </CardTitle>
                 <p className="text-lg text-white/80 mb-4">{application.roleDescription}</p>
                 <Badge className={getStatusColor(application.status)}>
-                  {JOB_STATUS_LABELS[application.status]}
+                  {getJobStatusLabel(application.status)}
                 </Badge>
               </div>
             </div>
@@ -201,7 +206,7 @@ export default function ApplicationDetailPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="flex items-center gap-2 text-white/80">
                 <Calendar className="w-4 h-4" />
-                <span>{new Date(application.applicationDate).toLocaleDateString()}</span>
+                <span>{formatDate(application.applicationDate)}</span>
               </div>
               <div className="flex items-center gap-2 text-white/80">
                 <Euro className="w-4 h-4" />
@@ -209,7 +214,7 @@ export default function ApplicationDetailPage() {
               </div>
               <div className="flex items-center gap-2 text-white/80">
                 <MapPin className="w-4 h-4" />
-                <span>{getWorkModeIcon(application.workMode)} {application.workMode}</span>
+                <span>{getWorkModeIcon(application.workMode)} {getWorkModeLabel(application.workMode)}</span>
               </div>
             </div>
 
@@ -224,7 +229,7 @@ export default function ApplicationDetailPage() {
             )}
 
             <div className="bg-white/5 rounded-lg p-4">
-              <h3 className="text-white font-medium mb-2">Job Description:</h3>
+              <h3 className="text-white font-medium mb-2">{t('applicationDetail.jobDescriptionLabel')}</h3>
               <div className="text-white/80 whitespace-pre-wrap text-sm leading-relaxed">
                 {isDescriptionExpanded 
                   ? application.jobDescription 
@@ -241,12 +246,12 @@ export default function ApplicationDetailPage() {
                   {isDescriptionExpanded ? (
                     <>
                       <ChevronUp className="w-4 h-4 mr-1" />
-                      View less
+                      {t('applicationDetail.viewLess')}
                     </>
                   ) : (
                     <>
                       <ChevronDown className="w-4 h-4 mr-1" />
-                      View more
+                      {t('applicationDetail.viewMore')}
                     </>
                   )}
                 </Button>
@@ -262,14 +267,14 @@ export default function ApplicationDetailPage() {
               value="questions"
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70 relative"
             >
-              Interview Questions
+              {t('applicationDetail.interviewQuestionsTab')}
               {!subscribed && <Crown className="w-3 h-3 ml-1 text-yellow-400" />}
             </TabsTrigger>
             <TabsTrigger 
               value="reviews"
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white text-white/70 relative"
             >
-              Company Reviews
+              {t('applicationDetail.companyReviewsTab')}
               {!subscribed && <Crown className="w-3 h-3 ml-1 text-yellow-400" />}
             </TabsTrigger>
           </TabsList>
@@ -285,16 +290,16 @@ export default function ApplicationDetailPage() {
               <Card className="bg-white/10 backdrop-blur-md border-white/20">
                 <CardContent className="p-8 text-center">
                   <Lock className="w-16 h-16 text-white/50 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-white mb-2">Pro Feature</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">{t('applicationDetail.proFeature')}</h3>
                   <p className="text-white/70 mb-6">
-                    Interview questions are only available for Pro users. Upgrade to unlock this feature and more!
+                    {t('applicationDetail.interviewQuestionsLocked')}
                   </p>
                   <Button 
                     onClick={() => navigate('/?tab=pro')}
                     className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
                   >
                     <Crown className="w-4 h-4 mr-2" />
-                    Upgrade to Pro
+                    {t('pro.upgrade')}
                   </Button>
                 </CardContent>
               </Card>
@@ -311,16 +316,16 @@ export default function ApplicationDetailPage() {
               <Card className="bg-white/10 backdrop-blur-md border-white/20">
                 <CardContent className="p-8 text-center">
                   <Lock className="w-16 h-16 text-white/50 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-white mb-2">Pro Feature</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">{t('applicationDetail.proFeature')}</h3>
                   <p className="text-white/70 mb-6">
-                    Company reviews are only available for Pro users. Upgrade to unlock this feature and more!
+                    {t('applicationDetail.companyReviewsLocked')}
                   </p>
                   <Button 
                     onClick={() => navigate('/?tab=pro')}
                     className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
                   >
                     <Crown className="w-4 h-4 mr-2" />
-                    Upgrade to Pro
+                    {t('pro.upgrade')}
                   </Button>
                 </CardContent>
               </Card>

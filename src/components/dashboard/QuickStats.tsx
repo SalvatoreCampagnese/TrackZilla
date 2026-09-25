@@ -2,6 +2,7 @@
 import React from 'react';
 import { Target, TrendingUp, CheckCircle, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 import { JobApplication } from '@/types/job';
 
 interface QuickStatsProps {
@@ -9,6 +10,7 @@ interface QuickStatsProps {
 }
 
 export const QuickStats: React.FC<QuickStatsProps> = ({ applications }) => {
+  const { t } = useTranslation();
   const totalApplications = applications.length;
   
   const responseRate = totalApplications > 0 
@@ -32,7 +34,7 @@ export const QuickStats: React.FC<QuickStatsProps> = ({ applications }) => {
       <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-xl border-blue-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
         <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm font-medium text-blue-200/70 mb-1 sm:mb-2 truncate">Total</p>
+            <p className="text-xs sm:text-sm font-medium text-blue-200/70 mb-1 sm:mb-2 truncate">{t('dashboard.total')}</p>
             <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{totalApplications}</p>
             <div className="w-8 sm:w-12 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-2 sm:mt-3"></div>
           </div>
@@ -45,7 +47,7 @@ export const QuickStats: React.FC<QuickStatsProps> = ({ applications }) => {
       <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-xl border-green-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
         <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm font-medium text-green-200/70 mb-1 sm:mb-2 truncate">Response Rate</p>
+            <p className="text-xs sm:text-sm font-medium text-green-200/70 mb-1 sm:mb-2 truncate">{t('statistics.responseRate')}</p>
             <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{responseRate.toFixed(1)}%</p>
             <div className="w-8 sm:w-12 h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full mt-2 sm:mt-3"></div>
           </div>
@@ -58,7 +60,7 @@ export const QuickStats: React.FC<QuickStatsProps> = ({ applications }) => {
       <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl border-purple-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
         <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm font-medium text-purple-200/70 mb-1 sm:mb-2 truncate">Interviews</p>
+            <p className="text-xs sm:text-sm font-medium text-purple-200/70 mb-1 sm:mb-2 truncate">{t('dashboard.interviews')}</p>
             <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{interviewsObtained}</p>
             <div className="w-8 sm:w-12 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mt-2 sm:mt-3"></div>
           </div>
@@ -71,8 +73,8 @@ export const QuickStats: React.FC<QuickStatsProps> = ({ applications }) => {
       <Card className="group hover:scale-105 transition-all duration-300 bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-xl border-orange-300/20 shadow-xl hover:shadow-2xl rounded-2xl">
         <CardContent className="flex items-center justify-between p-3 sm:p-4 lg:p-6">
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm font-medium text-orange-200/70 mb-1 sm:mb-2 truncate">Avg Time</p>
-            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{avgFeedbackTime}d</p>
+            <p className="text-xs sm:text-sm font-medium text-orange-200/70 mb-1 sm:mb-2 truncate">{t('dashboard.avgTime')}</p>
+            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{t('dashboard.daysShort', { count: avgFeedbackTime })}</p>
             <div className="w-8 sm:w-12 h-1 bg-gradient-to-r from-orange-400 to-red-400 rounded-full mt-2 sm:mt-3"></div>
           </div>
           <div className="p-2 sm:p-3 lg:p-4 bg-orange-500/20 rounded-xl sm:rounded-2xl group-hover:scale-110 transition-transform flex-shrink-0 ml-2">

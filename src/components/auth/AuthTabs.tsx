@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MagicLinkButton } from './MagicLinkButton';
+import { useTranslation } from 'react-i18next';
 
 interface AuthTabsProps {
   activeTab: string;
@@ -19,19 +20,22 @@ interface AuthTabsProps {
   onMagicLink: () => void;
 }
 
-const TermsNotice = () => (
-  <p className="text-xs text-white/70 text-center mt-4">
-    By continuing, you accept our{' '}
-    <a 
-      href="/terms" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      className="text-white underline hover:text-white/90"
-    >
-      Terms & Conditions and Privacy Policy
-    </a>
-  </p>
-);
+const TermsNotice = () => {
+  const { t } = useTranslation();
+  return (
+    <p className="text-xs text-white/70 text-center mt-4">
+      {t('auth.termsNotice')}{' '}
+      <a 
+        href="/terms" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-white underline hover:text-white/90"
+      >
+        {t('auth.termsLink')}
+      </a>
+    </p>
+  );
+};
 
 export const AuthTabs: React.FC<AuthTabsProps> = ({
   activeTab,
@@ -45,36 +49,37 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
   onFormSubmit,
   onMagicLink,
 }) => {
+  const { t } = useTranslation();
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-md border border-white/20">
         <TabsTrigger value="signin" className="text-white/70 data-[state=active]:bg-white/20 data-[state=active]:text-white">
-          Sign In
+          {t('auth.login')}
         </TabsTrigger>
         <TabsTrigger value="signup" className="text-white/70 data-[state=active]:bg-white/20 data-[state=active]:text-white">
-          Sign Up
+          {t('auth.register')}
         </TabsTrigger>
       </TabsList>
       
       <TabsContent value="signin" className="space-y-4 mt-4">
         <form onSubmit={onFormSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="signin-email" className="text-white">Email</Label>
+            <Label htmlFor="signin-email" className="text-white">{t('auth.email')}</Label>
             <Input
               id="signin-email"
               type="email"
-              placeholder="enter your email"
+              placeholder={t('auth.emailPlaceholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="signin-password" className="text-white">Password</Label>
+            <Label htmlFor="signin-password" className="text-white">{t('auth.password')}</Label>
             <Input
               id="signin-password"
               type="password"
-              placeholder="enter your password"
+              placeholder={t('auth.passwordPlaceholder')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
@@ -85,7 +90,7 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
             className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl" 
             disabled={loading}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('auth.signingIn') : t('auth.login')}
           </Button>
         </form>
 
@@ -96,22 +101,22 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
       <TabsContent value="signup" className="space-y-4 mt-4">
         <form onSubmit={onFormSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="signup-email" className="text-white">Email</Label>
+            <Label htmlFor="signup-email" className="text-white">{t('auth.email')}</Label>
             <Input
               id="signup-email"
               type="email"
-              placeholder="enter your email"
+              placeholder={t('auth.emailPlaceholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="signup-password" className="text-white">Password</Label>
+            <Label htmlFor="signup-password" className="text-white">{t('auth.password')}</Label>
             <Input
               id="signup-password"
               type="password"
-              placeholder="create a password"
+              placeholder={t('auth.createPasswordPlaceholder')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40"
@@ -122,7 +127,7 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
             className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl" 
             disabled={loading}
           >
-            {loading ? 'Creating account...' : 'Sign Up'}
+            {loading ? t('auth.creatingAccount') : t('auth.register')}
           </Button>
         </form>
         <TermsNotice />

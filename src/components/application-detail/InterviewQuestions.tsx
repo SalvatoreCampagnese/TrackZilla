@@ -11,6 +11,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Plus, MessageSquare } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
+
+const INTERVIEW_ROUNDS = ['first', 'second', 'technical', 'final', 'hr'] as const;
 
 interface InterviewQuestion {
   id: string;
@@ -34,6 +38,8 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
   roleDescription
 }) => {
   const { user } = useAuth();
+  const { t } = useTranslation();
+  const { formatDate } = useDateFormatter();
   const [questions, setQuestions] = useState<InterviewQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -103,8 +109,8 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
     } catch (error) {
       console.error('Error fetching questions:', error);
       toast({
-        title: "Error loading questions",
-        description: "Could not load interview questions",
+        title: t('interviewQuestions.errorLoading'),
+        description: t('interviewQuestions.errorLoadingDescription'),
         variant: "destructive"
       });
     } finally {
@@ -131,8 +137,8 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
       if (error) throw error;
 
       toast({
-        title: "Question added",
-        description: "Interview question has been saved successfully"
+        title: t('interviewQuestions.questionAdded'),
+        description: t('interviewQuestions.questionAddedDescription')
       });
 
       setNewQuestion('');
@@ -144,8 +150,8 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
     } catch (error) {
       console.error('Error adding question:', error);
       toast({
-        title: "Error adding question",
-        description: "Could not save the interview question",
+        title: t('interviewQuestions.errorAdding'),
+        description: t('interviewQuestions.errorAddingDescription'),
         variant: "destructive"
       });
     } finally {
@@ -168,7 +174,7 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
     return (
       <Card className="bg-white/10 backdrop-blur-md border-white/20">
         <CardContent className="p-6">
-          <div className="animate-pulse text-white">Loading questions...</div>
+          <div className="animate-pulse text-white">{t('interviewQuestions.loading')}</div>
         </CardContent>
       </Card>
     );
@@ -181,7 +187,7 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <MessageSquare className="w-5 h-5" />
-            Interview Questions
+            {t('interviewQuestions.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -191,55 +197,53 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
               className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Interview Question
+              {t('interviewQuestions.addInterviewQuestion')}
             </Button>
           ) : (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="question" className="text-white">Question</Label>
+                <Label htmlFor="question" className="text-white">{t('interviewQuestions.question')}</Label>
                 <Textarea
                   id="question"
                   value={newQuestion}
                   onChange={(e) => setNewQuestion(e.target.value)}
-                  placeholder="Enter the interview question..."
+                  placeholder={t('interviewQuestions.questionPlaceholder')}
                   className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                   rows={3}
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="role" className="text-white">Role (Optional)</Label>
+                  <Label htmlFor="role" className="text-white">{t('interviewQuestions.roleOptional')}</Label>
                   <Input
                     id="role"
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    placeholder="e.g., Frontend Developer"
+                    placeholder={t('interviewQuestions.rolePlaceholder')}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="technologies" className="text-white">Technologies (Optional)</Label>
+                  <Label htmlFor="technologies" className="text-white">{t('interviewQuestions.technologiesOptional')}</Label>
                   <Input
                     id="technologies"
                     value={technologies}
                     onChange={(e) => setTechnologies(e.target.value)}
-                    placeholder="e.g., React, Node.js, Python"
+                    placeholder={t('interviewQuestions.technologiesPlaceholder')}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                   />
                 </div>
               </div>
               <div>
-                <Label htmlFor="round" className="text-white">Interview Round (Optional)</Label>
+                <Label htmlFor="round" className="text-white">{t('interviewQuestions.roundOptional')}</Label>
                 <Select value={interviewRound} onValueChange={setInterviewRound}>
                   <SelectTrigger className="bg-white/10 border-white/20 text-white">
-                    <SelectValue placeholder="Select interview round" />
+                    <SelectValue placeholder={t('interviewQuestions.selectRound')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="first">First Interview</SelectItem>
-                    <SelectItem value="second">Second Interview</SelectItem>
-                    <SelectItem value="technical">Technical Interview</SelectItem>
-                    <SelectItem value="final">Final Interview</SelectItem>
-                    <SelectItem value="hr">HR Interview</SelectItem>
+                    {INTERVIEW_ROUNDS.map(round => (
+                      <SelectItem key={round} value={round}>{t(`interviewQuestions.rounds.${round}`)}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -249,7 +253,7 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
                   disabled={!newQuestion.trim() || submitting}
                   className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
                 >
-                  {submitting ? 'Adding...' : 'Add Question'}
+                  {submitting ? t('interviewQuestions.adding') : t('interviewQuestions.addQuestion')}
                 </Button>
                 <Button
                   onClick={() => {
@@ -262,7 +266,7 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
                   variant="outline"
                   className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
               </div>
             </div>
@@ -275,8 +279,8 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
         <Card className="bg-white/10 backdrop-blur-md border-white/20">
           <CardContent className="p-6 text-center">
             <MessageSquare className="w-12 h-12 text-white/50 mx-auto mb-4" />
-            <p className="text-white/70">No interview questions yet</p>
-            <p className="text-white/50 text-sm">Be the first to add a question!</p>
+            <p className="text-white/70">{t('interviewQuestions.emptyTitle')}</p>
+            <p className="text-white/50 text-sm">{t('interviewQuestions.emptyDescription')}</p>
           </CardContent>
         </Card>
       ) : (
@@ -290,7 +294,7 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
                     <div className="flex items-center gap-2 flex-wrap">
                       {question.interview_round && (
                         <Badge className={getRoundColor(question.interview_round)}>
-                          {question.interview_round} interview
+                          {t(`interviewQuestions.rounds.${question.interview_round}`, { defaultValue: question.interview_round })}
                         </Badge>
                       )}
                       {question.role && (
@@ -304,7 +308,7 @@ export const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({
                         </Badge>
                       )}
                       <span className="text-white/50 text-xs ml-auto">
-                        {new Date(question.created_at).toLocaleDateString()}
+                        {formatDate(question.created_at)}
                       </span>
                     </div>
                   </div>

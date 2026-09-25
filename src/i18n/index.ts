@@ -6,13 +6,20 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslations from './locales/en.json';
 import itTranslations from './locales/it.json';
 
+export const SUPPORTED_LANGUAGES = ['it', 'en'] as const;
+export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     debug: false,
-    fallbackLng: 'it', // Default to Italian
-    lng: 'it', // Default language
+    // No fixed `lng`: the detector picks the saved choice (localStorage) or the
+    // browser language, so the whole app always renders in a single language.
+    fallbackLng: 'it',
+    supportedLngs: SUPPORTED_LANGUAGES,
+    nonExplicitSupportedLngs: true,
+    load: 'languageOnly',
     interpolation: {
       escapeValue: false,
     },
@@ -29,5 +36,11 @@ i18n
       caches: ['localStorage'],
     },
   });
+
+const syncDocumentLanguage = (language: string) => {
+  document.documentElement.lang = language;
+};
+syncDocumentLanguage(i18n.resolvedLanguage || 'it');
+i18n.on('languageChanged', syncDocumentLanguage);
 
 export default i18n;

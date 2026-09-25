@@ -35,7 +35,9 @@ test('every static t() key exists in all locales', () => {
     const source = readFileSync(file, 'utf8');
     for (const [, key] of source.matchAll(/\bt\(\s*['"]([\w.-]+)['"]/g)) {
       for (const [lang, messages] of Object.entries(locales)) {
-        if (lookup(messages, key) === undefined) missing.push(`${relative(root, file)}: ${key} (${lang})`);
+        // Plural keys are stored as key_one / key_other (i18next count plurals).
+        const defined = [key, `${key}_one`, `${key}_other`].some((k) => lookup(messages, k) !== undefined);
+        if (!defined) missing.push(`${relative(root, file)}: ${key} (${lang})`);
       }
     }
   }

@@ -4,8 +4,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { JobApplication, JobStatus } from '@/types/job';
 import { toast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export const useJobApplications = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,8 +48,8 @@ export const useJobApplications = () => {
       console.error('Error fetching applications:', error);
       setError(error);
       toast({
-        title: "Errore nel caricamento",
-        description: "Impossibile caricare le candidature",
+        title: t('applications.errorLoadingTitle'),
+        description: t('applications.errorLoadingDescription'),
         variant: "destructive"
       });
     } finally {
@@ -94,14 +96,14 @@ export const useJobApplications = () => {
       setApplications(prev => [newApplication, ...prev]);
       
       toast({
-        title: "Candidatura aggiunta",
-        description: `Candidatura per ${application.companyName} salvata con successo`
+        title: t('addJob.applicationAdded'),
+        description: t('applications.applicationAddedFor', { company: application.companyName })
       });
     } catch (error) {
       console.error('Error adding application:', error);
       toast({
-        title: "Errore nel salvataggio",
-        description: "Impossibile salvare la candidatura",
+        title: t('common.error'),
+        description: t('addJob.errorAddingApplication'),
         variant: "destructive"
       });
     }
@@ -174,29 +176,16 @@ export const useJobApplications = () => {
     await updateApplication(id, { status });
   };
 
+  // Throws on failure; callers are responsible for showing feedback to the user.
   const deleteApplication = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('job_applications')
-        .update({ deleted: true })
-        .eq('id', id);
+    const { error } = await supabase
+      .from('job_applications')
+      .update({ deleted: true })
+      .eq('id', id);
 
-      if (error) throw error;
+    if (error) throw error;
 
-      setApplications(prev => prev.filter(app => app.id !== id));
-      
-      toast({
-        title: "Candidatura eliminata",
-        description: "La candidatura è stata eliminata con successo"
-      });
-    } catch (error) {
-      console.error('Error deleting application:', error);
-      toast({
-        title: "Errore nell'eliminazione",
-        description: "Impossibile eliminare la candidatura",
-        variant: "destructive"
-      });
-    }
+    setApplications(prev => prev.filter(app => app.id !== id));
   };
 
   useEffect(() => {

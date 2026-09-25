@@ -13,8 +13,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
+import { useDateFormatter } from '@/hooks/useDateFormatter';
 
 export const SubscriptionContent = () => {
+  const { t } = useTranslation();
+  const { formatDate } = useDateFormatter();
   const { user } = useAuth();
   const { toast } = useToast();
   const { subscribed, subscription_tier, subscription_end, loading: subscriptionLoading, checkSubscription } = useSubscription();
@@ -32,8 +36,8 @@ export const SubscriptionContent = () => {
     await checkSubscription();
     setIsRefreshing(false);
     toast({
-      title: "Stato abbonamento aggiornato",
-      description: "Le informazioni dell'abbonamento sono state aggiornate.",
+      title: t('subscription.subscriptionUpdated'),
+      description: t('subscription.subscriptionUpdatedDescription'),
     });
   };
 
@@ -51,8 +55,8 @@ export const SubscriptionContent = () => {
     } catch (error) {
       console.error('Error opening customer portal:', error);
       toast({
-        title: "Errore",
-        description: "Impossibile aprire il portale di gestione.",
+        title: t('common.error'),
+        description: t('subscription.errorOpeningPortal'),
         variant: "destructive",
       });
     }
@@ -61,8 +65,8 @@ export const SubscriptionContent = () => {
   const handleSendSupportEmail = async () => {
     if (!supportForm.subject.trim() || !supportForm.message.trim()) {
       toast({
-        title: "Errore",
-        description: "Compila tutti i campi richiesti.",
+        title: t('common.error'),
+        description: t('subscription.fillAllFields'),
         variant: "destructive",
       });
       return;
@@ -80,14 +84,14 @@ export const SubscriptionContent = () => {
       setSupportForm({ subject: '', message: '', email: user?.email || '' });
       
       toast({
-        title: "Email preparata",
-        description: "L'email è stata preparata nel tuo client di posta.",
+        title: t('subscription.emailPrepared'),
+        description: t('subscription.emailPreparedDescription'),
       });
     } catch (error) {
       console.error('Error preparing support email:', error);
       toast({
-        title: "Errore",
-        description: "Errore durante la preparazione dell'email.",
+        title: t('common.error'),
+        description: t('subscription.errorPreparingEmail'),
         variant: "destructive",
       });
     } finally {
@@ -100,7 +104,7 @@ export const SubscriptionContent = () => {
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-500 mx-auto"></div>
-          <p className="mt-4 text-white">Caricamento stato abbonamento...</p>
+          <p className="mt-4 text-white">{t('subscription.loadingSubscription')}</p>
         </div>
       </div>
     );
@@ -112,7 +116,7 @@ export const SubscriptionContent = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Crown className="w-8 h-8 text-purple-500" />
-          <h1 className="text-2xl lg:text-3xl font-bold text-white">Gestione Abbonamento</h1>
+          <h1 className="text-2xl lg:text-3xl font-bold text-white">{t('subscription.title')}</h1>
         </div>
         <Button 
           onClick={handleRefreshSubscription}
@@ -121,7 +125,7 @@ export const SubscriptionContent = () => {
           className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
         >
           <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-          Aggiorna
+          {t('common.refresh')}
         </Button>
       </div>
 
@@ -130,34 +134,34 @@ export const SubscriptionContent = () => {
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <CreditCard className="w-5 h-5" />
-            Stato Abbonamento
+            {t('subscription.status')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <p className="text-white/70 mb-2">Piano Attuale</p>
+              <p className="text-white/70 mb-2">{t('subscription.currentPlan')}</p>
               <div className="flex items-center gap-2">
                 <Badge className={subscribed 
                   ? "bg-green-500 text-white" 
                   : "bg-gray-500 text-white"
                 }>
-                  {subscribed ? subscription_tier || 'ProZilla' : 'Free'}
+                  {subscribed ? subscription_tier || 'ProZilla' : t('subscription.freePlan')}
                 </Badge>
                 {subscribed && <Crown className="w-4 h-4 text-yellow-400" />}
               </div>
             </div>
             <div>
-              <p className="text-white/70 mb-2">Stato</p>
+              <p className="text-white/70 mb-2">{t('subscription.status')}</p>
               <Badge variant={subscribed ? "default" : "secondary"}>
-                {subscribed ? 'Attivo' : 'Non Attivo'}
+                {subscribed ? t('subscription.active') : t('subscription.inactive')}
               </Badge>
             </div>
             {subscription_end && (
               <div className="md:col-span-2">
-                <p className="text-white/70 mb-2">Prossimo Rinnovo</p>
+                <p className="text-white/70 mb-2">{t('subscription.nextRenewal')}</p>
                 <p className="text-white">
-                  {new Date(subscription_end).toLocaleDateString('it-IT', {
+                  {formatDate(subscription_end, {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
@@ -174,10 +178,10 @@ export const SubscriptionContent = () => {
                 className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Gestisci con Stripe
+                {t('subscription.manageWithStripe')}
               </Button>
               <p className="text-sm text-white/60 mt-2">
-                Apre il portale Stripe per gestire pagamenti, fatture e cancellazione
+                {t('subscription.manageDescription')}
               </p>
             </div>
           )}
@@ -187,13 +191,13 @@ export const SubscriptionContent = () => {
       {/* Transaction History Placeholder */}
       <Card className="bg-white/10 backdrop-blur-md border-white/20">
         <CardHeader>
-          <CardTitle className="text-white">Cronologia Transazioni</CardTitle>
+          <CardTitle className="text-white">{t('subscription.transactionHistory')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
             <CreditCard className="w-12 h-12 text-white/40 mx-auto mb-4" />
             <p className="text-white/70 mb-4">
-              Per visualizzare la cronologia completa delle transazioni e scaricare le fatture
+              {t('subscription.transactionHistoryDescription')}
             </p>
             <Button 
               onClick={handleManageSubscription}
@@ -201,7 +205,7 @@ export const SubscriptionContent = () => {
               className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
-              Apri Portale Stripe
+              {t('subscription.openStripePortal')}
             </Button>
           </div>
         </CardContent>
@@ -212,35 +216,35 @@ export const SubscriptionContent = () => {
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Mail className="w-5 h-5" />
-            Supporto e Reclami
+            {t('subscription.supportAndClaims')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Alert className="mb-6 bg-yellow-500/10 border-yellow-500/20">
             <AlertTriangle className="h-4 w-4 text-yellow-500" />
             <AlertDescription className="text-yellow-100">
-              <strong>Tempo di risposta:</strong> Rispondiamo a tutti i reclami e richieste di refund entro 72 ore lavorative.
+              <strong>{t('subscription.responseTimeLabel')}</strong> {t('subscription.responseTimeBody')}
             </AlertDescription>
           </Alert>
           
           <p className="text-white/70 mb-6">
-            Hai problemi con il tuo abbonamento o hai bisogno di un refund? Contattaci direttamente.
+            {t('subscription.supportDescription')}
           </p>
           
           <Dialog open={supportDialogOpen} onOpenChange={setSupportDialogOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
                 <Mail className="w-4 h-4 mr-2" />
-                Contatta Supporto
+                {t('subscription.contactSupport')}
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-gray-800 border-white/20 text-white">
               <DialogHeader>
-                <DialogTitle>Contatta il Supporto</DialogTitle>
+                <DialogTitle>{t('subscription.contactSupport')}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="email">La tua Email</Label>
+                  <Label htmlFor="email">{t('subscription.yourEmail')}</Label>
                   <Input 
                     id="email"
                     value={supportForm.email}
@@ -250,22 +254,22 @@ export const SubscriptionContent = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="subject">Oggetto *</Label>
+                  <Label htmlFor="subject">{t('subscription.subject')} *</Label>
                   <Input 
                     id="subject"
                     value={supportForm.subject}
                     onChange={(e) => setSupportForm({...supportForm, subject: e.target.value})}
-                    placeholder="Es: Richiesta refund abbonamento"
+                    placeholder={t('subscription.subjectPlaceholder')}
                     className="bg-white/10 border-white/20 text-white"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="message">Messaggio *</Label>
+                  <Label htmlFor="message">{t('subscription.message')} *</Label>
                   <Textarea 
                     id="message"
                     value={supportForm.message}
                     onChange={(e) => setSupportForm({...supportForm, message: e.target.value})}
-                    placeholder="Descrivi il tuo problema o la tua richiesta in dettaglio..."
+                    placeholder={t('subscription.messagePlaceholder')}
                     className="bg-white/10 border-white/20 text-white min-h-[120px]"
                   />
                 </div>
@@ -275,14 +279,14 @@ export const SubscriptionContent = () => {
                     disabled={isSendingSupport}
                     className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                   >
-                    {isSendingSupport ? "Preparazione..." : "Invia Email"}
+                    {isSendingSupport ? t('subscription.preparing') : t('subscription.sendEmail')}
                   </Button>
                   <Button 
                     onClick={() => setSupportDialogOpen(false)}
                     variant="outline"
                     className="border-white/20 bg-white/10 hover:bg-white/20 text-white"
                   >
-                    Annulla
+                    {t('common.cancel')}
                   </Button>
                 </div>
               </div>
