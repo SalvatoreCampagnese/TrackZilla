@@ -30,7 +30,11 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   onDelete,
 }) => {
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    // Require a small movement before starting a drag so clicks on card
+    // actions (e.g. delete) are not swallowed by the drag handler.
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })

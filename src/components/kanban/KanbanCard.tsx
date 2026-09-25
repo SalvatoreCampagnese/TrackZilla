@@ -81,6 +81,8 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
               </h4>
             </div>
             <Button
+              onPointerDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete(application.id);
